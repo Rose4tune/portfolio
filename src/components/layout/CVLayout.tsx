@@ -22,11 +22,23 @@ const CVLayout = ({ children, pdfUrl }: CVLayoutProps) => {
     const elements = Array.from(
       document.querySelectorAll("h1, h2, h3, h4, h5, h6")
     );
-    const headingElements = elements.map((element) => ({
-      id: element.id,
-      text: element.textContent || "",
-      level: Number(element.tagName.charAt(1)),
-    }));
+    const headingElements = elements.map((element, index) => {
+      // id가 없는 경우 자동으로 생성
+      if (!element.id) {
+        const text = element.textContent || "";
+        const slug = text
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/(^-|-$)/g, "");
+        element.id = `${slug}-${index}`;
+      }
+
+      return {
+        id: element.id,
+        text: element.textContent || "",
+        level: Number(element.tagName.charAt(1)),
+      };
+    });
     setHeadings(headingElements);
   }, []);
 
