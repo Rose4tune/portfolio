@@ -3,7 +3,7 @@ import { Download } from "lucide-react";
 
 export default function CVPage() {
   return (
-    <CVLayout pdfUrl="/documents/resume.pdf">
+    <CVLayout>
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-4xl font-bold">Curriculum Vitae</h1>
         <a
