@@ -4,10 +4,10 @@ import { allPosts } from "contentlayer/generated";
 import BlogLayout from "@/components/layout/BlogLayout";
 import type { Post } from "contentlayer/generated";
 
-type Props = {
-  params: { slug: string };
+interface PageProps {
+  params: Promise<{ slug: string }>;
   searchParams: { [key: string]: string | string[] | undefined };
-};
+}
 
 export async function generateStaticParams() {
   return allPosts.map((post: Post) => ({
@@ -15,8 +15,9 @@ export async function generateStaticParams() {
   }));
 }
 
-export default function BlogPost({ params }: Props) {
-  const post = allPosts.find((post: Post) => post.slug === params.slug);
+export default async function BlogPost({ params }: PageProps) {
+  const resolvedParams = await params;
+  const post = allPosts.find((post: Post) => post.slug === resolvedParams.slug);
 
   if (!post) {
     notFound();
