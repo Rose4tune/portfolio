@@ -46,7 +46,7 @@ const CVLayout = ({ children }: CVLayoutProps) => {
             <TableOfContents headings={headings} />
           </div>
         </aside>
-        <article className="lg:col-span-8 prose dark:prose-invert max-w-none">
+        <article className="lg:col-span-9 prose dark:prose-invert max-w-none">
           {children}
         </article>
       </div>
