@@ -19,9 +19,7 @@ const CVLayout = ({ children, pdfUrl }: CVLayoutProps) => {
   const [headings, setHeadings] = useState<Heading[]>([]);
 
   useEffect(() => {
-    const elements = Array.from(
-      document.querySelectorAll("h1, h2, h3, h4, h5, h6")
-    );
+    const elements = Array.from(document.querySelectorAll("h2"));
     const headingElements = elements.map((element, index) => {
       // id가 없는 경우 자동으로 생성
       if (!element.id) {
@@ -62,7 +60,6 @@ const CVLayout = ({ children, pdfUrl }: CVLayoutProps) => {
         </article>
         <aside className="lg:col-span-4">
           <div className="sticky top-20">
-            <h2 className="text-lg font-semibold mb-4">Contents</h2>
             <TableOfContents headings={headings} />
           </div>
         </aside>

@@ -27,7 +27,9 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Navbar />
-          <main className="min-h-screen pt-16">{children}</main>
+          <main className="min-h-screen pt-5">
+            <div className="container mx-auto px-4 py-8">{children}</div>
+          </main>
           <Analytics />
         </ThemeProvider>
       </body>
