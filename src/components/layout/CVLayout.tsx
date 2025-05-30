@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import TableOfContents from "./TableOfContents";
-import { FiDownload } from "react-icons/fi";
 
 interface Heading {
   id: string;
@@ -12,10 +11,9 @@ interface Heading {
 
 interface CVLayoutProps {
   children: React.ReactNode;
-  pdfUrl?: string;
 }
 
-const CVLayout = ({ children, pdfUrl }: CVLayoutProps) => {
+const CVLayout = ({ children }: CVLayoutProps) => {
   const [headings, setHeadings] = useState<Heading[]>([]);
 
   useEffect(() => {
@@ -43,26 +41,14 @@ const CVLayout = ({ children, pdfUrl }: CVLayoutProps) => {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        <article className="lg:col-span-8 prose dark:prose-invert max-w-none">
-          {pdfUrl && (
-            <div className="flex justify-end mb-8">
-              <a
-                href={pdfUrl}
-                download
-                className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
-              >
-                <FiDownload className="w-4 h-4 mr-2" />
-                Download PDF
-              </a>
-            </div>
-          )}
-          {children}
-        </article>
-        <aside className="lg:col-span-4">
+        <aside className="lg:col-span-3">
           <div className="sticky top-20">
             <TableOfContents headings={headings} />
           </div>
         </aside>
+        <article className="lg:col-span-8 prose dark:prose-invert max-w-none">
+          {children}
+        </article>
       </div>
     </div>
   );
