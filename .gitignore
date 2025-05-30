@@ -71,13 +71,6 @@ Thumbs.db
 **/public/workbox-*.js.map
 **/public/worker-*.js.map
 
-# Prisma
-/src/generated/prisma
-prisma/*.db
-prisma/dev.db
-prisma/prod.db
-prisma/test.db
-
 # Logs
 logs
 *.log
