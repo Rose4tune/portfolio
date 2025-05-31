@@ -15,9 +15,12 @@
   border-radius: 9999px; /* Tailwind의 rounded-full과 동일 */
   /* 테두리 스타일 및 색상 */
   border: 10px solid #ccccff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   /* 이미지보다 앞으로 나오게 */
   transform: translate3d(-50%, -50%, 80px);
   z-index: 10; /* z-index 값을 더 높게 설정 */
   /* 애니메이션은 컨테이너에 적용되므로 여기서는 필요 없음 */
+}
+
+.imageContainer:hover::before {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }

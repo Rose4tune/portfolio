@@ -25,8 +25,8 @@ export default function HomePage() {
         const centerY = rect.height / 2;
 
         // 목표 각도 계산 (X축은 반대 방향으로 회전)
-        targetX = -(mouseY - centerY);
-        targetY = mouseX - centerX;
+        targetX = -(mouseY - centerY) * 0.06;
+        targetY = (mouseX - centerX) * 0.06;
       }
     };
 
@@ -144,7 +144,7 @@ export default function HomePage() {
             className="relative h-120 overflow-hidden rounded-full"
             style={{
               boxShadow: isHovered
-                ? "0 20px 40px rgba(0,0,0,0.2), 0 0 0 1px rgba(0,0,0,0.1)"
+                ? "0 20px 20px rgba(0,0,0,0.2), 0 0 0 1px rgba(0,0,0,0.1)"
                 : "0 10px 20px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.05)",
             }}
           >
@@ -154,9 +154,6 @@ export default function HomePage() {
               fill
               className="object-cover"
               priority
-              style={{
-                transition: "transform 0.1s ease-out",
-              }}
             />
           </div>
         </div>
