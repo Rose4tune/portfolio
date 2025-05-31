@@ -8,8 +8,8 @@ import { Analytics } from "@vercel/analytics/react";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Portfolio",
-  description: "Personal portfolio and blog",
+  title: "YeSeo, LEE Portfolio",
+  description: "Front-developer YeSeo, LEE portfolio and blog",
 };
 
 export default function RootLayout({
@@ -27,8 +27,8 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Navbar />
-          <main className="min-h-screen pt-5">
-            <div className="container max-w-7xl mx-auto px-4 py-8">
+          <main className="min-h-screen pt-13">
+            <div className="container max-w-4xl mx-auto px-4 sm:px-6">
               {children}
             </div>
           </main>

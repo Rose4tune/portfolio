@@ -11,7 +11,6 @@ const navItems = [
   { name: "Projects", path: "/projects" },
   { name: "CV", path: "/cv" },
   { name: "Repositories", path: "/repositories" },
-  { name: "Bookshelf", path: "/bookshelf" },
 ];
 
 export default function Navbar() {
@@ -24,7 +23,7 @@ export default function Navbar() {
 
   return (
     <nav className="bg-white dark:bg-gray-900 shadow-sm relative z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             {pathname !== "/" && (
