@@ -25,6 +25,44 @@ const config: Config = {
           900: "#0c4a6e",
         },
       },
+      fontFamily: {
+        sans: ["Pretendard", "sans-serif"],
+      },
+      typography: {
+        DEFAULT: {
+          css: {
+            maxWidth: "100ch",
+            color: "inherit",
+            a: {
+              color: "inherit",
+              textDecoration: "none",
+              fontWeight: "500",
+            },
+            strong: {
+              color: "inherit",
+              fontWeight: "600",
+            },
+            code: {
+              color: "inherit",
+            },
+            h1: {
+              color: "inherit",
+            },
+            h2: {
+              color: "inherit",
+            },
+            h3: {
+              color: "inherit",
+            },
+            h4: {
+              color: "inherit",
+            },
+            blockquote: {
+              color: "inherit",
+            },
+          },
+        },
+      },
     },
   },
   plugins: [typography],
