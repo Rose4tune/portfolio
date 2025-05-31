@@ -43,7 +43,7 @@ export function getProjectBySlug(slug: string): Project | null {
       content,
       ...data,
     } as Project;
-  } catch (error) {
+  } catch {
     return null;
   }
 }
