@@ -8,21 +8,23 @@ const config: Config = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/content/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
       colors: {
         primary: {
-          50: "#f0f9ff",
-          100: "#e0f2fe",
-          200: "#bae6fd",
-          300: "#7dd3fc",
-          400: "#38bdf8",
-          500: "#0ea5e9",
-          600: "#0284c7",
-          700: "#0369a1",
-          800: "#075985",
-          900: "#0c4a6e",
+          50: "#eaeafe",
+          100: "#dcdcff",
+          200: "#bebeff",
+          300: "#a0a0ff",
+          400: "#8888ff",
+          500: "#6666ff",
+          600: "#4c4cff",
+          700: "#3333ff",
+          800: "#1a1aff",
+          900: "#0000ff",
+          DEFAULT: "#6666ff",
         },
       },
       fontFamily: {
@@ -34,7 +36,6 @@ const config: Config = {
             maxWidth: "100ch",
             color: "inherit",
             a: {
-              color: "inherit",
               textDecoration: "none",
               fontWeight: "500",
             },

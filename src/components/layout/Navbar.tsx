@@ -29,7 +29,7 @@ export default function Navbar() {
             {pathname !== "/" && (
               <Link
                 href="/"
-                className="text-xl font-bold text-gray-900 dark:text-white"
+                className="text-xl font-bold text-gray-900 dark:text-white transition-colors duration-200"
               >
                 YeSeo LEE
               </Link>
@@ -42,10 +42,10 @@ export default function Navbar() {
               <Link
                 key={item.path}
                 href={item.path}
-                className={`px-3 py-2 rounded-md text-sm font-medium ${
+                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
                   pathname === item.path
-                    ? "text-blue-600 dark:text-blue-400"
-                    : "text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400"
+                    ? "text-primary-500 dark:text-primary-400"
+                    : "text-gray-700 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400"
                 }`}
               >
                 {item.name}
@@ -57,7 +57,7 @@ export default function Navbar() {
           <div className="flex md:hidden items-center">
             <button
               onClick={toggleMenu}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 focus:outline-none"
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 focus:outline-none transition-colors duration-200"
               aria-expanded="false"
             >
               <span className="sr-only">Open main menu</span>
@@ -82,10 +82,10 @@ export default function Navbar() {
             <Link
               key={item.path}
               href={item.path}
-              className={`block px-3 py-2 rounded-md text-base font-medium ${
+              className={`block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 ${
                 pathname === item.path
-                  ? "text-blue-600 dark:text-blue-400 bg-gray-50 dark:bg-gray-800"
-                  : "text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800"
+                  ? "text-primary-500 dark:text-primary-400 bg-gray-50 dark:bg-gray-800"
+                  : "text-gray-700 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 hover:bg-gray-50 dark:hover:bg-gray-800"
               }`}
               onClick={() => setIsOpen(false)}
             >
