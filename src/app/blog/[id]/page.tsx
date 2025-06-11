@@ -3,19 +3,16 @@ import { NotionProperties } from "@/types/notion";
 import { notFound } from "next/navigation";
 
 interface PageProps {
-  params: {
-    id: string;
-  };
+  params: Promise<{ id: string }>;
 }
 
 export default async function BlogPost({ params }: PageProps) {
-  const post = await getBlogPost(params.id);
+  const { id } = await params;
+  const post = await getBlogPost(id);
 
   if (!post) {
     notFound();
   }
-
-  console.log(post);
 
   const properties = post.properties as unknown as NotionProperties;
   const title = properties.이름.title[0]?.plain_text ?? "제목 없음";
