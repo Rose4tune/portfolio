@@ -67,3 +67,4 @@ const TableOfContents = ({ headings }: TableOfContentsProps) => {
 };
 
 export default TableOfContents;
+ 
