@@ -1,0 +1,45 @@
+@layer components {
+  .markdown {
+    @apply prose prose-slate dark:prose-invert max-w-none;
+  }
+
+  .markdown h1 {
+    @apply text-4xl font-bold mb-4;
+  }
+
+  .markdown h2 {
+    @apply text-3xl font-bold mb-3;
+  }
+
+  .markdown h3 {
+    @apply text-2xl font-bold mb-2;
+  }
+
+  .markdown p {
+    @apply mb-4;
+  }
+
+  .markdown a {
+    @apply text-primary hover:text-primary-600 transition-colors;
+  }
+
+  .markdown code {
+    @apply bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded;
+  }
+
+  .markdown pre {
+    @apply bg-gray-100 dark:bg-gray-800 p-4 rounded-lg mb-4;
+  }
+
+  .markdown blockquote {
+    @apply border-l-4 border-primary pl-4 italic;
+  }
+
+  .markdown ul {
+    @apply list-disc list-inside mb-4;
+  }
+
+  .markdown ol {
+    @apply list-decimal list-inside mb-4;
+  }
+}
