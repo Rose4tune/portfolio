@@ -1,3 +1,4 @@
+// tailwind.config.ts
 import type { Config } from "tailwindcss";
 
 const config: Config = {
@@ -6,12 +7,12 @@ const config: Config = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/content/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
       colors: {
         primary: {
+          DEFAULT: "#6666ff",
           50: "#eaeafe",
           100: "#dcdcff",
           200: "#bebeff",
@@ -22,7 +23,6 @@ const config: Config = {
           700: "#3333ff",
           800: "#1a1aff",
           900: "#0000ff",
-          DEFAULT: "#6666ff",
         },
       },
       fontFamily: {
@@ -64,6 +64,7 @@ const config: Config = {
       },
     },
   },
+  plugins: [],
 };
 
 export default config;
