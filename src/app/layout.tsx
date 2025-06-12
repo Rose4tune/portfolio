@@ -5,7 +5,7 @@ import Navbar from "@/components/layout/Navbar";
 import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
-  title: "YeSeo, LEE Portfolio",
+  title: "Ye Seo, LEE Portfolio",
   description: "Front-developer YeSeo, LEE portfolio and blog",
 };
 
