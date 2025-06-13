@@ -8,7 +8,7 @@ interface ProjectCardProps {
 const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
   return (
     <Link href={`/projects/${project.slug}`}>
-      <article className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden hover:border-blue-600 dark:hover:border-blue-400 transition-colors p-6">
+      <article className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden hover:border-purple-600 dark:hover:border-purple-400 transition-colors p-6">
         <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
         {project.description && (
           <p className="text-gray-700 dark:text-gray-300 mb-4">

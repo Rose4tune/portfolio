@@ -105,7 +105,7 @@ export default function HomePage() {
             <li>
               <a
                 href="mailto:rosefor2ne@gmail.com"
-                className="text-primary hover:underline"
+                className="text-purple-400 hover:underline"
               >
                 Email
               </a>
@@ -115,7 +115,7 @@ export default function HomePage() {
                 href="https://github.com/Rose4tune"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-primary hover:underline"
+                className="text-purple-400 hover:underline"
               >
                 GitHub
               </a>
@@ -125,7 +125,7 @@ export default function HomePage() {
                 href="https://linkedin.com/in/your-linkedin-username"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-primary hover:underline"
+                className="text-purple-400 hover:underline"
               >
                 LinkedIn
               </a>

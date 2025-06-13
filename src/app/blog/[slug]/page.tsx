@@ -26,7 +26,7 @@ export default async function PostPage({
     <article className="container mx-auto px-4 py-8 max-w-3xl">
       <Link
         href="/blog"
-        className="inline-block mb-8 text-primary hover:underline"
+        className="inline-block mb-8 text-purple-400 hover:underline"
       >
         ← 블로그 목록으로
       </Link>

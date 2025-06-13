@@ -45,9 +45,9 @@ const TableOfContents = ({ headings }: TableOfContentsProps) => {
           >
             <a
               href={`#${heading.id}`}
-              className={`block py-1 hover:text-primary-600 dark:hover:text-primary-400 ${
+              className={`block py-1 hover:text-purple-400 dark:hover:text-purple-300 ${
                 activeId === heading.id
-                  ? "text-primary-600 dark:text-primary-400 font-medium"
+                  ? "text-purple-400 dark:text-purple-300 font-medium"
                   : "text-gray-600 dark:text-gray-400"
               }`}
               onClick={(e) => {
@@ -67,4 +67,3 @@ const TableOfContents = ({ headings }: TableOfContentsProps) => {
 };
 
 export default TableOfContents;
- 

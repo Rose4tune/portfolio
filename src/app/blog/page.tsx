@@ -15,7 +15,7 @@ export default async function BlogPage() {
             className="block border rounded-lg p-6 hover:shadow-lg transition-shadow"
           >
             <article>
-              <h2 className="text-2xl font-semibold mb-2 hover:text-primary">
+              <h2 className="text-2xl font-semibold mb-2 hover:text-purple-400">
                 {post.title}
               </h2>
               <time className="text-sm text-gray-500">
