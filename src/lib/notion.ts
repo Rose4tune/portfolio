@@ -27,6 +27,20 @@ interface BlogPost {
   date: string;
 }
 
+type NotionAnnotation = {
+  bold?: boolean;
+  italic?: boolean;
+  strikethrough?: boolean;
+  underline?: boolean;
+  code?: boolean;
+  color?: string;
+};
+
+type NotionRichText = {
+  plain_text: string;
+  annotations?: NotionAnnotation;
+};
+
 function getPropertyValue(
   page: NotionPage,
   propertyName: string,
@@ -55,18 +69,107 @@ async function getPageContent(pageId: string): Promise<string> {
 
   return blocks.results
     .map((block) => {
-      if (
-        "type" in block &&
-        block.type === "paragraph" &&
-        "paragraph" in block
-      ) {
-        return block.paragraph.rich_text
-          .map((text: { plain_text: string }) => text.plain_text)
-          .join("");
+      if (!("type" in block)) return "";
+
+      switch (block.type) {
+        case "paragraph":
+          if ("paragraph" in block) {
+            const text = block.paragraph.rich_text
+              .map((text: NotionRichText) => {
+                let content = text.plain_text;
+                if (text.annotations) {
+                  if (text.annotations.bold) content = `**${content}**`;
+                  if (text.annotations.italic) content = `*${content}*`;
+                  if (text.annotations.strikethrough)
+                    content = `~~${content}~~`;
+                  if (text.annotations.code) content = `\`${content}\``;
+                }
+                return content;
+              })
+              .join("");
+            return text ? `${text}\n\n` : "";
+          }
+          return "";
+
+        case "heading_1":
+          if ("heading_1" in block) {
+            const text = block.heading_1.rich_text
+              .map((text: NotionRichText) => text.plain_text)
+              .join("");
+            return text ? `# ${text}\n\n` : "";
+          }
+          return "";
+
+        case "heading_2":
+          if ("heading_2" in block) {
+            const text = block.heading_2.rich_text
+              .map((text: NotionRichText) => text.plain_text)
+              .join("");
+            return text ? `## ${text}\n\n` : "";
+          }
+          return "";
+
+        case "heading_3":
+          if ("heading_3" in block) {
+            const text = block.heading_3.rich_text
+              .map((text: NotionRichText) => text.plain_text)
+              .join("");
+            return text ? `### ${text}\n\n` : "";
+          }
+          return "";
+
+        case "bulleted_list_item":
+          if ("bulleted_list_item" in block) {
+            const text = block.bulleted_list_item.rich_text
+              .map((text: NotionRichText) => text.plain_text)
+              .join("");
+            return text ? `- ${text}\n` : "";
+          }
+          return "";
+
+        case "numbered_list_item":
+          if ("numbered_list_item" in block) {
+            const text = block.numbered_list_item.rich_text
+              .map((text: NotionRichText) => text.plain_text)
+              .join("");
+            return text ? `1. ${text}\n` : "";
+          }
+          return "";
+
+        case "code":
+          if ("code" in block) {
+            const text = block.code.rich_text
+              .map((text: NotionRichText) => text.plain_text)
+              .join("");
+            const language = block.code.language;
+            return text ? `\`\`\`${language}\n${text}\n\`\`\`\n\n` : "";
+          }
+          return "";
+
+        case "quote":
+          if ("quote" in block) {
+            const text = block.quote.rich_text
+              .map((text: NotionRichText) => text.plain_text)
+              .join("");
+            return text ? `> ${text}\n\n` : "";
+          }
+          return "";
+
+        case "image":
+          if ("image" in block && block.image.type === "external") {
+            const url = block.image.external.url;
+            const caption = block.image.caption
+              ?.map((text: NotionRichText) => text.plain_text)
+              .join("");
+            return caption ? `![${caption}](${url})\n\n` : `![](${url})\n\n`;
+          }
+          return "";
+
+        default:
+          return "";
       }
-      return "";
     })
-    .join("\n");
+    .join("");
 }
 
 async function convertToBlogPost(page: NotionPage): Promise<BlogPost> {
