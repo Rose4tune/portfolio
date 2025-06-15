@@ -122,7 +122,7 @@ export default function HomePage() {
             </li>
             <li>
               <a
-                href="https://linkedin.com/in/your-linkedin-username"
+                href="https://www.linkedin.com/in/ye-seo-lee-59a68b232/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-purple-400 hover:underline"
