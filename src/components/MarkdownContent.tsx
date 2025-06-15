@@ -1,9 +1,17 @@
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { vscDarkPlus } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import { oneLight } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import Image from "next/image";
 import rehypeRaw from "rehype-raw";
+
+const customOneLight = {
+  ...oneLight,
+  'pre[class*="language-"]': {
+    ...(oneLight['pre[class*="language-"]'] as object),
+    margin: "0",
+  },
+};
 
 interface MarkdownContentProps {
   content: string;
@@ -21,7 +29,7 @@ export function MarkdownContent({ content, className }: MarkdownContentProps) {
             const match = /language-(\w+)/.exec(className || "");
             return match ? (
               <SyntaxHighlighter
-                style={vscDarkPlus}
+                style={customOneLight}
                 language={match[1]}
                 PreTag="div"
                 {...props}

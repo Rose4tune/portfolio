@@ -42,7 +42,7 @@ export default async function PostPage({
         </time>
       </header>
 
-      <div className="prose prose-slate">
+      <div className="article">
         <MarkdownContent content={post.content} />
       </div>
     </article>
