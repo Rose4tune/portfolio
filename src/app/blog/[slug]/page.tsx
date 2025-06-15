@@ -1,9 +1,7 @@
 import { notFound } from "next/navigation";
-import styles from "@/styles/markdown.module.css";
 import { getBlogPost, getBlogPosts } from "@/lib/notion";
 import Link from "next/link";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+import { MarkdownContent } from "@/components/MarkdownContent";
 
 export async function generateStaticParams() {
   const posts = await getBlogPosts();
@@ -44,10 +42,8 @@ export default async function PostPage({
         </time>
       </header>
 
-      <div className={styles.markdown}>
-        <ReactMarkdown remarkPlugins={[remarkGfm]}>
-          {post.content}
-        </ReactMarkdown>
+      <div className="prose prose-slate">
+        <MarkdownContent content={post.content} />
       </div>
     </article>
   );

@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "pretendard/dist/web/variable/pretendardvariable.css";
+@plugin "@tailwindcss/typography";
 
 @theme {
   --font-pretendard: "Pretendard";
@@ -15,4 +16,8 @@
   --color-primary-700: #3333ff;
   --color-primary-800: #1a1aff;
   --color-primary-900: #0000ff;
+}
+
+.article {
+  @apply prose prose-neutral dark:prose-invert max-w-none;
 }
