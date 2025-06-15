@@ -43,6 +43,9 @@ export default function Navbar() {
                 key={item.path}
                 href={item.path}
                 className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
+                  (item.path === "/blog" && pathname.startsWith("/blog")) ||
+                  (item.path === "/projects" &&
+                    pathname.startsWith("/projects")) ||
                   pathname === item.path
                     ? "text-purple-400 dark:text-purple-300"
                     : "text-gray-700 dark:text-gray-300 hover:text-purple-400 dark:hover:text-purple-300"
@@ -83,6 +86,9 @@ export default function Navbar() {
               key={item.path}
               href={item.path}
               className={`block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 ${
+                (item.path === "/blog" && pathname.startsWith("/blog")) ||
+                (item.path === "/projects" &&
+                  pathname.startsWith("/projects")) ||
                 pathname === item.path
                   ? "text-purple-400 dark:text-purple-300 bg-gray-50 dark:bg-gray-800"
                   : "text-gray-700 dark:text-gray-300 hover:text-purple-400 dark:hover:text-purple-300 hover:bg-gray-50 dark:hover:bg-gray-800"
