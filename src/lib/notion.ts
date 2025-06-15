@@ -205,6 +205,7 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
         direction: "descending",
       },
     ],
+    page_size: process.env.NODE_ENV === "development" ? 1 : undefined,
   });
 
   const pages = response.results as NotionPage[];
