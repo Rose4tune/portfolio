@@ -62,114 +62,183 @@ function getPropertyValue(
   }
 }
 
-async function getPageContent(pageId: string): Promise<string> {
-  const blocks = await notion.blocks.children.list({
-    block_id: pageId,
+async function getPageContent(
+  blockId: string,
+  indentation = 0
+): Promise<string> {
+  const blocksResponse = await notion.blocks.children.list({
+    block_id: blockId,
+    page_size: 100, // Notion API max page size
   });
 
-  return blocks.results
-    .map((block) => {
-      if (!("type" in block)) return "";
+  const markdownPromises = blocksResponse.results.map(async (block) => {
+    if (!("type" in block)) return "";
 
-      switch (block.type) {
-        case "paragraph":
-          if ("paragraph" in block) {
-            const text = block.paragraph.rich_text
-              .map((text: NotionRichText) => {
-                let content = text.plain_text;
-                if (text.annotations) {
-                  if (text.annotations.bold) content = `**${content}**`;
-                  if (text.annotations.italic) content = `*${content}*`;
-                  if (text.annotations.strikethrough)
-                    content = `~~${content}~~`;
-                  if (text.annotations.code) content = `\`${content}\``;
-                }
-                return content;
-              })
-              .join("");
-            return text ? `${text}\n\n` : "";
+    let blockContent = "";
+    const prefix = "  ".repeat(indentation);
+
+    switch (block.type) {
+      case "paragraph":
+        if ("paragraph" in block) {
+          const text = block.paragraph.rich_text
+            .map((text: NotionRichText) => {
+              let content = text.plain_text;
+              if (text.annotations) {
+                if (text.annotations.bold) content = `**${content}**`;
+                if (text.annotations.italic) content = `*${content}*`;
+                if (text.annotations.strikethrough) content = `~~${content}~~`;
+                if (text.annotations.code) content = `\`${content}\``;
+              }
+              return content;
+            })
+            .join("");
+          blockContent = text ? `${prefix}${text}\n\n` : "";
+        }
+        break;
+
+      case "heading_1":
+        if ("heading_1" in block) {
+          const text = block.heading_1.rich_text
+            .map((text: NotionRichText) => text.plain_text)
+            .join("");
+          blockContent = text ? `# ${text}\n\n` : "";
+        }
+        break;
+
+      case "heading_2":
+        if ("heading_2" in block) {
+          const text = block.heading_2.rich_text
+            .map((text: NotionRichText) => text.plain_text)
+            .join("");
+          blockContent = text ? `## ${text}\n\n` : "";
+        }
+        break;
+
+      case "heading_3":
+        if ("heading_3" in block) {
+          const text = block.heading_3.rich_text
+            .map((text: NotionRichText) => text.plain_text)
+            .join("");
+          blockContent = text ? `### ${text}\n\n` : "";
+        }
+        break;
+
+      case "bulleted_list_item":
+        if ("bulleted_list_item" in block) {
+          const text = block.bulleted_list_item.rich_text
+            .map((text: NotionRichText) => text.plain_text)
+            .join("");
+          blockContent = text ? `${prefix}- ${text}\n` : `${prefix}- \n`;
+          if (block.has_children) {
+            const childrenMarkdown = await getPageContent(
+              block.id,
+              indentation + 1
+            );
+            blockContent += childrenMarkdown;
           }
-          return "";
+        }
+        break;
 
-        case "heading_1":
-          if ("heading_1" in block) {
-            const text = block.heading_1.rich_text
-              .map((text: NotionRichText) => text.plain_text)
-              .join("");
-            return text ? `# ${text}\n\n` : "";
+      case "numbered_list_item":
+        if ("numbered_list_item" in block) {
+          const text = block.numbered_list_item.rich_text
+            .map((text: NotionRichText) => text.plain_text)
+            .join("");
+          blockContent = text ? `${prefix}1. ${text}\n` : `${prefix}1. \n`;
+          if (block.has_children) {
+            const childrenMarkdown = await getPageContent(
+              block.id,
+              indentation + 1
+            );
+            blockContent += childrenMarkdown;
           }
-          return "";
+        }
+        break;
 
-        case "heading_2":
-          if ("heading_2" in block) {
-            const text = block.heading_2.rich_text
-              .map((text: NotionRichText) => text.plain_text)
-              .join("");
-            return text ? `## ${text}\n\n` : "";
+      case "code":
+        if ("code" in block) {
+          const text = block.code.rich_text
+            .map((text: NotionRichText) => text.plain_text)
+            .join("");
+          const language = block.code.language;
+          blockContent = text ? `\`\`\`${language}\n${text}\n\`\`\`\n\n` : "";
+        }
+        break;
+
+      case "quote":
+        if ("quote" in block) {
+          const text = block.quote.rich_text
+            .map((text: NotionRichText) => text.plain_text)
+            .join("");
+          blockContent = text ? `> ${text}\n\n` : "";
+        }
+        break;
+
+      case "image":
+        if ("image" in block) {
+          let url: string | undefined;
+          if (block.image.type === "file") {
+            url = block.image.file.url;
+          } else if (block.image.type === "external") {
+            url = block.image.external.url;
           }
-          return "";
 
-        case "heading_3":
-          if ("heading_3" in block) {
-            const text = block.heading_3.rich_text
-              .map((text: NotionRichText) => text.plain_text)
-              .join("");
-            return text ? `### ${text}\n\n` : "";
+          if (!url) return "";
+
+          const caption = block.image.caption
+            ?.map((text: NotionRichText) => text.plain_text)
+            .join("");
+          return `<img src="${url}" alt="${caption || ""}" />\n\n`;
+        }
+        break;
+
+      case "column_list":
+        if ("column_list" in block) {
+          const columnChildren = await notion.blocks.children.list({
+            block_id: block.id,
+            page_size: 100, // Max page size for children
+          });
+
+          const columnContentsPromises = columnChildren.results.map(
+            async (colBlock) => {
+              // Each child of a column_list should be a 'column' block
+              if ("type" in colBlock && colBlock.type === "column") {
+                const content = await getPageContent(colBlock.id, indentation); // Keep same indentation for content inside column
+                return `<div class="notion-column-item">${content}</div>`; // Use a custom class
+              }
+              return "";
+            }
+          );
+          const validColumnContents = (
+            await Promise.all(columnContentsPromises)
+          ).filter(Boolean);
+          const columnCount = validColumnContents.length;
+
+          if (columnCount > 0) {
+            blockContent = `<div class="notion-column-list notion-columns-${columnCount}">${validColumnContents.join(
+              ""
+            )}</div>\n\n`;
           }
-          return "";
+        }
+        break;
 
-        case "bulleted_list_item":
-          if ("bulleted_list_item" in block) {
-            const text = block.bulleted_list_item.rich_text
-              .map((text: NotionRichText) => text.plain_text)
-              .join("");
-            return text ? `- ${text}\n` : "";
-          }
-          return "";
+      default:
+        // For any other block type that might have children (like toggle, synced block, etc.)
+        if (block.has_children && block.type !== "column") {
+          // Exclude 'column' here as it's handled by 'column_list'
+          const childrenMarkdown = await getPageContent(
+            block.id,
+            indentation + 1
+          );
+          blockContent += childrenMarkdown;
+        }
+        break;
+    }
+    return blockContent;
+  });
 
-        case "numbered_list_item":
-          if ("numbered_list_item" in block) {
-            const text = block.numbered_list_item.rich_text
-              .map((text: NotionRichText) => text.plain_text)
-              .join("");
-            return text ? `1. ${text}\n` : "";
-          }
-          return "";
-
-        case "code":
-          if ("code" in block) {
-            const text = block.code.rich_text
-              .map((text: NotionRichText) => text.plain_text)
-              .join("");
-            const language = block.code.language;
-            return text ? `\`\`\`${language}\n${text}\n\`\`\`\n\n` : "";
-          }
-          return "";
-
-        case "quote":
-          if ("quote" in block) {
-            const text = block.quote.rich_text
-              .map((text: NotionRichText) => text.plain_text)
-              .join("");
-            return text ? `> ${text}\n\n` : "";
-          }
-          return "";
-
-        case "image":
-          if ("image" in block && block.image.type === "external") {
-            const url = block.image.external.url;
-            const caption = block.image.caption
-              ?.map((text: NotionRichText) => text.plain_text)
-              .join("");
-            return caption ? `![${caption}](${url})\n\n` : `![](${url})\n\n`;
-          }
-          return "";
-
-        default:
-          return "";
-      }
-    })
-    .join("");
+  const allMarkdown = await Promise.all(markdownPromises);
+  return allMarkdown.join("");
 }
 
 async function convertToBlogPost(page: NotionPage): Promise<BlogPost> {

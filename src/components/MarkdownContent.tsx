@@ -3,6 +3,7 @@ import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import Image from "next/image";
+import rehypeRaw from "rehype-raw";
 
 interface MarkdownContentProps {
   content: string;
@@ -14,6 +15,7 @@ export function MarkdownContent({ content, className }: MarkdownContentProps) {
     <div className={className}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
+        rehypePlugins={[rehypeRaw]}
         components={{
           code({ className, children, ...props }) {
             const match = /language-(\w+)/.exec(className || "");
