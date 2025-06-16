@@ -29,7 +29,7 @@ export default function Navbar() {
             {pathname !== "/" && (
               <Link
                 href="/"
-                className="text-xl font-bold text-gray-900 dark:text-white transition-colors duration-200"
+                className="text-xl font-bold text-gray-900 dark:text-white transition-colors duration-200 hover:text-purple-600"
               >
                 YeSeo LEE
               </Link>
@@ -48,7 +48,7 @@ export default function Navbar() {
                     pathname.startsWith("/projects")) ||
                   pathname === item.path
                     ? "text-purple-400 dark:text-purple-300"
-                    : "text-gray-700 dark:text-gray-300 hover:text-purple-400 dark:hover:text-purple-300"
+                    : "text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-300"
                 }`}
               >
                 {item.name}

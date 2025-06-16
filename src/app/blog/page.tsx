@@ -12,12 +12,10 @@ export default async function BlogPage() {
           <Link
             key={post.id}
             href={`/blog/${post.slug}`}
-            className="block border rounded-lg p-6 hover:shadow-lg transition-shadow"
+            className="block border rounded-lg p-6 hover:shadow-lg transition-shadow hover:border-purple-600"
           >
             <article>
-              <h2 className="text-2xl font-semibold mb-2 hover:text-purple-400">
-                {post.title}
-              </h2>
+              <h2 className="text-2xl font-semibold mb-2">{post.title}</h2>
               <time className="text-sm text-gray-500">
                 {new Date(post.date).toLocaleDateString("ko-KR", {
                   year: "numeric",
