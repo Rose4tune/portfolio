@@ -5,6 +5,7 @@ import { useState, useRef, useEffect } from "react";
 import { TypeAnimation } from "react-type-animation";
 import styles from "./homepage.module.css";
 import { StickerLink } from "@/components/ui/StickerLink";
+import { RefreshCw } from "lucide-react";
 
 const keywords = [
   "TypeScript",
@@ -42,18 +43,31 @@ export default function HomePage() {
   const [transformStyle, setTransformStyle] = useState("");
   const [isHovered, setIsHovered] = useState(false);
   const animationRef = useRef<number | undefined>(undefined);
-  const [keywordWithStyles, setKeywordWithStyles] = useState<
-    { word: string; fontSizeClass: string }[]
-  >([]);
-
-  useEffect(() => {
-    const shuffled = shuffleArray(keywords).slice(0, 10);
-    const styledKeywords = shuffled.map((word) => ({
-      word,
-      fontSizeClass: getRandomFontSize(),
-    }));
-    setKeywordWithStyles(styledKeywords);
-  }, []);
+  const [keywordWithStyles, setKeywordWithStyles] = useState(() =>
+    shuffleArray(keywords)
+      .slice(0, 10)
+      .map((word) => ({
+        word,
+        fontSizeClass: getRandomFontSize(),
+      }))
+  );
+  const reshuffleKeywords = () => {
+    const newKeywords = shuffleArray(keywords)
+      .slice(0, 10)
+      .map((word) => ({
+        word,
+        fontSizeClass: getRandomFontSize(),
+      }));
+    setKeywordWithStyles(newKeywords);
+  };
+  // useEffect(() => {
+  //   const shuffled = shuffleArray(keywords).slice(0, 10);
+  //   const styledKeywords = shuffled.map((word) => ({
+  //     word,
+  //     fontSizeClass: getRandomFontSize(),
+  //   }));
+  //   setKeywordWithStyles(styledKeywords);
+  // }, []);
 
   useEffect(() => {
     let currentX = 0;
@@ -229,17 +243,25 @@ export default function HomePage() {
             </li>
           </ul>
           {keywordWithStyles.length > 0 ? (
-            <div className="mt-6 flex flex-wrap gap-x-3 gap-y-1">
-              {keywordWithStyles.map(({ word, fontSizeClass }) => (
-                <StickerLink
-                  key={word}
-                  href={`/tags/${encodeURIComponent(word)}`}
-                  className={fontSizeClass}
-                >
-                  {word}
-                </StickerLink>
-              ))}
-            </div>
+            <>
+              <div className="mt-6 flex flex-wrap gap-x-3 gap-y-1">
+                {keywordWithStyles.map(({ word, fontSizeClass }) => (
+                  <StickerLink
+                    key={word}
+                    href={`/tags/${encodeURIComponent(word)}`}
+                    className={fontSizeClass}
+                  >
+                    {word}
+                  </StickerLink>
+                ))}
+              </div>
+              <button
+                onClick={reshuffleKeywords}
+                className="mt-3 cursor-pointer"
+              >
+                <RefreshCw className="w-5 h-5 text-purple-100 hover:text-purple-300" />
+              </button>
+            </>
           ) : null}
         </div>
       </section>
