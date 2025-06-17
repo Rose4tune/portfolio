@@ -24,7 +24,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Navbar />
-          <main className="min-h-screen pt-13">
+          <main className="min-h-screen pt-6 md:pt-16">
             <div className="container max-w-4xl mx-auto px-4 sm:px-6">
               {children}
             </div>

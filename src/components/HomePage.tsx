@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
+import { TypeAnimation } from "react-type-animation";
 import styles from "./homepage.module.css";
 
 export default function HomePage() {
@@ -88,19 +89,71 @@ export default function HomePage() {
   }, []);
 
   return (
-    <>
-      <div
+    <div className="space-y-8">
+      <section
         ref={sectionRef}
-        className="flex flex-col items-start gap-4 md:flex-row md:justify-between md:gap-8"
+        className="flex flex-col items-start gap-8 sm:flex-row sm:justify-between sm:relative"
       >
-        <div className="flex-4 space-y-6">
+        <div className="flex-4 space-y-3">
           <h1 className="inline-block text-3xl tracking-tight lg:text-5xl font-normal">
             YeSeo, LEE
           </h1>
-          <p className="text-2xl lg:text-3xl font-light text-muted-foreground">
+          <p className="text-2xl lg:text-3xl font-light text-muted-foreground leading-[1.4]">
             안녕하세요. <br />
             개발자 이예서입니다.
           </p>
+        </div>
+        <div
+          className={`flex-3 perspective-1000 w-9/10 max-w-xs mx-auto my-0 sm:my-4 ${styles.imageContainer}`}
+          style={{
+            transform: transformStyle,
+            transition: "transform 0.1s ease-out",
+            transformStyle: "preserve-3d",
+          }}
+        >
+          <div
+            className="relative h-100 overflow-hidden rounded-full sm:h-120"
+            style={{
+              boxShadow: isHovered
+                ? "0 20px 20px rgba(0,0,0,0.2), 0 0 0 1px rgba(0,0,0,0.1)"
+                : "0 10px 20px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.05)",
+            }}
+          >
+            <Image
+              src="/images/profile.jpeg"
+              alt="YeSeo Lee"
+              sizes="(max-width: 400px) 100%, (min-width: 200px) 50%"
+              fill
+              className="object-cover object-top rounded-full"
+              priority
+            />
+          </div>
+        </div>
+        <div className="sm:absolute sm:top-33 lg:top-43 sm:max-w-1/2">
+          <div className="h-15">
+            <TypeAnimation
+              sequence={[
+                "글로 풀어내며 스스로 더 깊이 이해하려고 합니다.",
+                1000,
+                "기술을 탐구하고 공유하는 것을 좋아합니다.",
+                1000,
+                "코드로 생각을 실현하는 과정이 가장 재미있습니다.",
+                1000,
+                "대화와 협업을 통해 더 좋은 결과를 만들고자 합니다.",
+                1000,
+                "사용자와 동료를 모두 고려하는 개발자가 되고 싶습니다.",
+                1000,
+                "머리로만 아는 것보다 직접 만들어보는 걸 선호합니다.",
+                1000,
+                "동작 원리를 이해하고 응용하는 데 즐거움을 느낍니다.",
+                1000,
+              ]}
+              wrapper="span"
+              speed={50}
+              repeat={Infinity}
+              className="text-lg lg:text-xl font-light text-muted-foreground block"
+            />
+          </div>
           <ul className="flex items-center gap-4">
             <li>
               <a
@@ -132,49 +185,22 @@ export default function HomePage() {
             </li>
           </ul>
         </div>
-        <div
-          className={`flex-3 perspective-1000 ${styles.imageContainer}`}
-          style={{
-            transform: transformStyle,
-            transition: "transform 0.1s ease-out",
-            transformStyle: "preserve-3d",
-          }}
-        >
-          <div
-            className="relative h-120 overflow-hidden rounded-full"
-            style={{
-              boxShadow: isHovered
-                ? "0 20px 20px rgba(0,0,0,0.2), 0 0 0 1px rgba(0,0,0,0.1)"
-                : "0 10px 20px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.05)",
-            }}
-          >
-            <Image
-              src="/images/profile.jpeg"
-              alt="YeSeo Lee"
-              fill
-              className="object-cover"
-              priority
-            />
-          </div>
-        </div>
+      </section>
+      <div className="space-y-4">
+        <h2 className="text-2xl font-bold tracking-tight">Experience</h2>
+        <ul>
+          <li>Senior Software Engineer at Tech Company</li>
+          <li>Full Stack Developer at Startup</li>
+          <li>Freelance Web Developer</li>
+        </ul>
       </div>
-      <div className="space-y-8">
-        <div className="space-y-4">
-          <h2 className="text-2xl font-bold tracking-tight">Experience</h2>
-          <ul>
-            <li>Senior Software Engineer at Tech Company</li>
-            <li>Full Stack Developer at Startup</li>
-            <li>Freelance Web Developer</li>
-          </ul>
-        </div>
-        <div className="space-y-4">
-          <h2 className="text-2xl font-bold tracking-tight">Education</h2>
-          <ul>
-            <li>Bachelor&apos;s Degree in Computer Science</li>
-            <li>Various online certifications and courses</li>
-          </ul>
-        </div>
+      <div className="space-y-4">
+        <h2 className="text-2xl font-bold tracking-tight">Education</h2>
+        <ul>
+          <li>Bachelor&apos;s Degree in Computer Science</li>
+          <li>Various online certifications and courses</li>
+        </ul>
       </div>
-    </>
+    </div>
   );
 }

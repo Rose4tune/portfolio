@@ -24,7 +24,7 @@ export default function Navbar() {
   return (
     <nav className="bg-white dark:bg-gray-900 shadow-sm relative z-50">
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
-        <div className="flex justify-between h-16">
+        <div className="flex justify-between h-12 md:h-16">
           <div className="flex items-center">
             {pathname !== "/" && (
               <Link
@@ -60,7 +60,7 @@ export default function Navbar() {
           <div className="flex md:hidden items-center">
             <button
               onClick={toggleMenu}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 dark:text-gray-300 hover:text-purple-400 dark:hover:text-purple-300 focus:outline-none transition-colors duration-200"
+              className="inline-flex items-center justify-center rounded-md text-gray-700 dark:text-gray-300 hover:text-purple-400 dark:hover:text-purple-300 focus:outline-none transition-colors duration-200"
               aria-expanded="false"
             >
               <span className="sr-only">Open main menu</span>
