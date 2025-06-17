@@ -1,0 +1,22 @@
+// components/keywords.ts
+export const allKeywords = [
+  "TypeScript",
+  "React",
+  "Next.js",
+  "Tailwind",
+  "문제 해결",
+  "UX",
+  "자기 주도",
+  "소통",
+  "Design System",
+  "Blog",
+  "Play",
+  "Accessibility",
+  "CI/CD",
+  "Open Source",
+  "Testing",
+  "API Integration",
+  "State Management",
+  "Agile",
+  "Code Review",
+];

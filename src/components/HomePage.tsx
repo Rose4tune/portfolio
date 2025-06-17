@@ -4,70 +4,13 @@ import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
 import { TypeAnimation } from "react-type-animation";
 import styles from "./homepage.module.css";
-import { StickerLink } from "@/components/ui/StickerLink";
-import { RefreshCw } from "lucide-react";
-
-const keywords = [
-  "TypeScript",
-  "React",
-  "Next",
-  "Tailwind",
-  "문제 해결",
-  "UX",
-  "자기 주도",
-  "소통",
-  "Design System",
-  "Blog",
-  "Play",
-  "JavaScript",
-  "Figma",
-  "Growth",
-  "Ownership",
-  "공감",
-  "Blogging",
-  "TIL",
-  "Side Project",
-  "Exploration",
-];
-function getRandomFontSize(): string {
-  const sizes = ["text-2xl", "text-3xl", "text-4xl"];
-  return sizes[Math.floor(Math.random() * sizes.length)];
-}
-
-function shuffleArray<T>(array: T[]): T[] {
-  return [...array].sort(() => Math.random() - 0.5);
-}
+import { RandomKeywordCloud } from "@/components/ui/RandomKeywordCloud";
 
 export default function HomePage() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [transformStyle, setTransformStyle] = useState("");
   const [isHovered, setIsHovered] = useState(false);
   const animationRef = useRef<number | undefined>(undefined);
-  const [keywordWithStyles, setKeywordWithStyles] = useState(() =>
-    shuffleArray(keywords)
-      .slice(0, 10)
-      .map((word) => ({
-        word,
-        fontSizeClass: getRandomFontSize(),
-      }))
-  );
-  const reshuffleKeywords = () => {
-    const newKeywords = shuffleArray(keywords)
-      .slice(0, 10)
-      .map((word) => ({
-        word,
-        fontSizeClass: getRandomFontSize(),
-      }));
-    setKeywordWithStyles(newKeywords);
-  };
-  // useEffect(() => {
-  //   const shuffled = shuffleArray(keywords).slice(0, 10);
-  //   const styledKeywords = shuffled.map((word) => ({
-  //     word,
-  //     fontSizeClass: getRandomFontSize(),
-  //   }));
-  //   setKeywordWithStyles(styledKeywords);
-  // }, []);
 
   useEffect(() => {
     let currentX = 0;
@@ -242,27 +185,9 @@ export default function HomePage() {
               </a>
             </li>
           </ul>
-          {keywordWithStyles.length > 0 ? (
-            <>
-              <div className="mt-6 flex flex-wrap gap-x-3 gap-y-1">
-                {keywordWithStyles.map(({ word, fontSizeClass }) => (
-                  <StickerLink
-                    key={word}
-                    href={`/tags/${encodeURIComponent(word)}`}
-                    className={fontSizeClass}
-                  >
-                    {word}
-                  </StickerLink>
-                ))}
-              </div>
-              <button
-                onClick={reshuffleKeywords}
-                className="mt-3 cursor-pointer"
-              >
-                <RefreshCw className="w-5 h-5 text-purple-100 hover:text-purple-300" />
-              </button>
-            </>
-          ) : null}
+          <div className="mt-6 flex flex-wrap gap-x-3 gap-y-1">
+            <RandomKeywordCloud />
+          </div>
         </div>
       </section>
       <div className="space-y-4">
