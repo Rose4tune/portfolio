@@ -1,0 +1,69 @@
+.sticker {
+  color: rgba(var(--color-primary-50), 0.6);
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transform-origin: center center;
+  will-change: transform;
+  position: relative;
+}
+
+.sticker.hover {
+  transform: rotate(-3deg);
+  text-shadow: 0 2px 1px var(--color-primary-200);
+}
+
+.sticker.clicked {
+  position: relative;
+  color: transparent;
+  overflow: hidden;
+  background: white;
+  animation: peel 0.5s ease forwards, fadeLeft 0.5s ease forwards;
+}
+
+.sticker.clicked::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 110%;
+  height: 100%;
+  color: transparent;
+  background: linear-gradient(
+    to left,
+    var(--color-primary-200) 0%,
+    var(--color-white) 90%,
+    transparent 95%,
+    transparent 100%
+  );
+  mix-blend-mode: screen;
+  animation: wipeLeft 0.5s forwards ease-in;
+}
+
+@keyframes peel {
+  to {
+    transform: translateY(-20%) rotate(-5deg);
+    opacity: 0;
+  }
+}
+
+@keyframes fadeLeft {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0% 0;
+  }
+}
+
+@keyframes wipeLeft {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
