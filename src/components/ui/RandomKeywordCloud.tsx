@@ -37,12 +37,18 @@ export function RandomKeywordCloud() {
   >([]);
 
   const handleShuffle = () => {
-    setKeywords(generateKeywords());
+    const newKeywords = generateKeywords();
+    setKeywords((prev) => {
+      return JSON.stringify(prev) === JSON.stringify(newKeywords)
+        ? [...newKeywords]
+        : newKeywords;
+    });
   };
 
   useEffect(() => {
     console.log("IT CHANHED!!! : ", pathname);
-    handleShuffle();
+    const newKeywords = generateKeywords();
+    setKeywords(newKeywords);
   }, [pathname]);
 
   if (keywords.length === 0) return null;
