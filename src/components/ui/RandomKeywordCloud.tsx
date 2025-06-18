@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { StickerLink } from "./StickerLink";
 import { allKeywords } from "./keywords";
 import { RefreshCw } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 const getRandomFontSize = () => {
   const sizes = ["text-xl", "text-2xl", "text-3xl", "text-4xl"];
@@ -19,31 +20,30 @@ const shuffleArray = <T,>(array: T[]): T[] => {
   return shuffled;
 };
 
+function generateKeywords() {
+  return shuffleArray(allKeywords)
+    .slice(0, 10)
+    .map((word) => ({
+      word,
+      size: getRandomFontSize(),
+    }));
+}
+
 export function RandomKeywordCloud() {
   const [mounted, setMounted] = useState(false);
-  const [displayed, setDisplayed] = useState<
-    Array<{ word: string; size: string }>
-  >([]);
+  const pathname = usePathname();
+
+  const [keywords, setKeywords] = useState(() => generateKeywords());
+
+  const memoizedKeywords = useMemo(() => keywords, [keywords]);
 
   useEffect(() => {
-    if (!mounted) {
-      setMounted(true);
-      const initialKeywords = shuffleArray(allKeywords);
-      setDisplayed(
-        initialKeywords
-          .slice(0, 10)
-          .map((word) => ({ word, size: getRandomFontSize() }))
-      );
-    }
-  }, [mounted]);
+    setMounted(true);
+    setKeywords(generateKeywords());
+  }, [pathname]);
 
   const handleShuffle = () => {
-    const newKeywords = shuffleArray(allKeywords);
-    setDisplayed(
-      newKeywords
-        .slice(0, 10)
-        .map((word) => ({ word, size: getRandomFontSize() }))
-    );
+    setKeywords(generateKeywords());
   };
 
   if (!mounted) return null;
@@ -51,7 +51,7 @@ export function RandomKeywordCloud() {
   return (
     <>
       <div className="flex flex-wrap gap-x-3 gap-y-1 items-center">
-        {displayed.map(({ word, size }) => (
+        {memoizedKeywords.map(({ word, size }) => (
           <StickerLink
             key={word}
             href={`/tags/${encodeURIComponent(word)}`}
