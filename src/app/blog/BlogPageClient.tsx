@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import TagFilter from "./TagFilter";
 import Link from "next/link";
 import { BlogPost } from "@/lib/notion";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
 export default function BlogPageClient({
   posts,
@@ -14,22 +14,23 @@ export default function BlogPageClient({
 }) {
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
   useEffect(() => {
-    // URL에서 tag 파라미터 읽기
-    const params = new URLSearchParams(window.location.search);
-    const tagParam = params.get("tag");
+    const tagParam = searchParams.get("tag");
     setSelectedTag(tagParam);
-  }, []);
+  }, [searchParams]);
 
   const handleTagSelect = (tag: string | null) => {
     setSelectedTag(tag);
-    // URL 업데이트
-    const newUrl = tag
-      ? `${pathname}?tag=${encodeURIComponent(tag)}`
-      : pathname;
-    router.push(newUrl);
+    const params = new URLSearchParams(searchParams.toString());
+    if (tag) {
+      params.set("tag", tag);
+    } else {
+      params.delete("tag");
+    }
+    router.replace(`${pathname}?${params.toString()}`);
   };
 
   const filteredPosts = selectedTag
