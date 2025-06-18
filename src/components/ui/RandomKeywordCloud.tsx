@@ -51,7 +51,7 @@ export function RandomKeywordCloud() {
       <div className="flex flex-wrap gap-x-3 gap-y-1 items-center">
         {keywords.map(({ word, size }) => (
           <StickerLink
-            key={word}
+            key={`${word}-${size}`}
             href={`/tags/${encodeURIComponent(word)}`}
             className={size}
           >
