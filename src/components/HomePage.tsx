@@ -5,12 +5,14 @@ import { useState, useRef, useEffect } from "react";
 import { TypeAnimation } from "react-type-animation";
 import styles from "./homepage.module.css";
 import { RandomKeywordCloud } from "@/components/ui/RandomKeywordCloud";
+import { usePathname } from "next/navigation";
 
 export default function HomePage() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [transformStyle, setTransformStyle] = useState("");
   const [isHovered, setIsHovered] = useState(false);
   const animationRef = useRef<number | undefined>(undefined);
+  const pathname = usePathname();
 
   useEffect(() => {
     let currentX = 0;
@@ -186,7 +188,7 @@ export default function HomePage() {
             </li>
           </ul>
           <div className="mt-6 flex flex-wrap gap-x-3 gap-y-1">
-            <RandomKeywordCloud />
+            <RandomKeywordCloud key={pathname} />
           </div>
         </div>
       </section>
