@@ -32,7 +32,7 @@ export function StickerLink({ href, children, className }: StickerLinkProps) {
 
     timeoutRef.current = setTimeout(() => {
       setClicked(false);
-    }, 700);
+    }, 501);
   };
 
   return (
