@@ -36,13 +36,14 @@ export function RandomKeywordCloud() {
     Array<{ word: string; size: string }>
   >([]);
 
-  useEffect(() => {
-    setKeywords(generateKeywords());
-  }, [pathname]);
-
   const handleShuffle = () => {
     setKeywords(generateKeywords());
   };
+
+  useEffect(() => {
+    console.log("IT CHANHED!!! : ", pathname);
+    handleShuffle();
+  }, [pathname]);
 
   if (keywords.length === 0) return null;
 
