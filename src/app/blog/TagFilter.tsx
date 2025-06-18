@@ -15,10 +15,9 @@ const TagFilter = ({
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredTags = useMemo(() => {
-    if (!searchQuery) return uniqueTags;
-    return uniqueTags.filter((tag) =>
-      tag.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    if (!searchQuery.trim()) return uniqueTags;
+    const query = searchQuery.toLowerCase().trim();
+    return uniqueTags.filter((tag) => tag.toLowerCase().includes(query));
   }, [uniqueTags, searchQuery]);
 
   return (

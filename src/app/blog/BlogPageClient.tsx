@@ -19,7 +19,9 @@ export default function BlogPageClient({
 
   useEffect(() => {
     const tagParam = searchParams.get("tag");
-    setSelectedTag(tagParam);
+    if (tagParam) {
+      setSelectedTag(tagParam);
+    }
   }, [searchParams]);
 
   const handleTagSelect = (tag: string | null) => {
@@ -34,9 +36,7 @@ export default function BlogPageClient({
   };
 
   const filteredPosts = selectedTag
-    ? posts.filter(
-        (post) => Array.isArray(post.tags) && post.tags.includes(selectedTag)
-      )
+    ? posts.filter((post) => post.tags?.includes(selectedTag))
     : posts;
 
   const getPreviewText = (content: string) => {
