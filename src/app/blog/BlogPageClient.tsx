@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import TagFilter from "./TagFilter";
 import Link from "next/link";
 import { BlogPost } from "@/lib/notion";
-import { useSearchParams } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 export default function BlogPageClient({
   posts,
@@ -12,13 +12,25 @@ export default function BlogPageClient({
   posts: BlogPost[];
   uniqueTags: string[];
 }) {
-  const searchParams = useSearchParams();
-  const tagParam = searchParams.get("tag");
-  const [selectedTag, setSelectedTag] = useState<string | null>(tagParam);
+  const router = useRouter();
+  const pathname = usePathname();
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
   useEffect(() => {
+    // URL에서 tag 파라미터 읽기
+    const params = new URLSearchParams(window.location.search);
+    const tagParam = params.get("tag");
     setSelectedTag(tagParam);
-  }, [tagParam]);
+  }, []);
+
+  const handleTagSelect = (tag: string | null) => {
+    setSelectedTag(tag);
+    // URL 업데이트
+    const newUrl = tag
+      ? `${pathname}?tag=${encodeURIComponent(tag)}`
+      : pathname;
+    router.push(newUrl);
+  };
 
   const filteredPosts = selectedTag
     ? posts.filter(
@@ -32,7 +44,7 @@ export default function BlogPageClient({
       <TagFilter
         uniqueTags={uniqueTags}
         selectedTag={selectedTag}
-        setSelectedTag={setSelectedTag}
+        setSelectedTag={handleTagSelect}
       />
 
       <div className="grid gap-4">
@@ -57,7 +69,10 @@ export default function BlogPageClient({
                     {post.tags.map((tag: string) => (
                       <button
                         key={tag}
-                        onClick={() => setSelectedTag(tag)}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleTagSelect(tag);
+                        }}
                         className={`p-1 rounded-full font-semibold transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 ${
                           selectedTag === tag
                             ? "bg-purple-500 text-white shadow-lg ring-2 ring-purple-400"
