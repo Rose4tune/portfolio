@@ -341,5 +341,5 @@ export async function getUniqueTags(): Promise<string[]> {
     const tags = getPropertyValue(page, "키워드", "multi_select") as string[];
     return tags;
   });
-  return [...new Set(allTags)];
+  return [...new Set(allTags)].sort();
 }

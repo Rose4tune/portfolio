@@ -39,6 +39,19 @@ export default function BlogPageClient({
       )
     : posts;
 
+  const getPreviewText = (content: string) => {
+    let plainText = content.replace(/<[^>]*>/g, "");
+    plainText = plainText
+      .replace(/[#*_~`>]/g, "")
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+      .replace(/```[\s\S]*?```/g, "")
+      .replace(/`([^`]+)`/g, "$1")
+      .replace(/\n{2,}/g, " ")
+      .trim();
+
+    return plainText.length > 100 ? `${plainText.slice(0, 100)}...` : plainText;
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-4xl font-bold mb-8">블로그</h1>
@@ -48,48 +61,58 @@ export default function BlogPageClient({
         setSelectedTag={handleTagSelect}
       />
 
-      <div className="grid gap-4">
+      <ul
+        className={`grid gap-6 ${
+          filteredPosts.length <= 6
+            ? "grid-cols-1 w-full"
+            : "grid-cols-1 md:grid-cols-2"
+        }`}
+      >
         {filteredPosts.map((post) => {
           return (
-            <Link
-              key={post.id}
-              href={`/blog/${post.slug}`}
-              className="block border rounded-lg p-6 hover:shadow-lg transition-shadow hover:border-purple-600"
-            >
-              <article>
-                <h2 className="text-2xl font-semibold mb-2">{post.title}</h2>
-                <time className="text-sm text-gray-500">
-                  {new Date(post.date).toLocaleDateString("ko-KR", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
-                </time>
-                {post.tags && post.tags.length > 0 && (
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {post.tags.map((tag: string) => (
-                      <button
-                        key={tag}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          handleTagSelect(tag);
-                        }}
-                        className={`p-1 rounded-full font-semibold transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 ${
-                          selectedTag === tag
-                            ? "bg-purple-500 text-white shadow-lg ring-2 ring-purple-400"
-                            : "bg-gray-200 text-gray-800 hover:bg-purple-100"
-                        }`}
-                      >
-                        {tag}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </article>
-            </Link>
+            <li key={post.id} className="w-full">
+              <Link
+                href={`/blog/${post.slug}`}
+                className="block border rounded-lg p-6 hover:shadow-lg transition-shadow hover:border-purple-600 h-full"
+              >
+                <article className="h-full flex flex-col">
+                  <h2 className="text-xl font-semibold mb-2">{post.title}</h2>
+                  <time className="text-sm text-gray-500">
+                    {new Date(post.date).toLocaleDateString("ko-KR", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </time>
+                  <p className="mt-2 text-gray-300 line-clamp-3 flex-grow">
+                    {getPreviewText(post.content)}
+                  </p>
+                  {post.tags && post.tags.length > 0 && (
+                    <div className="mt-3 flex flex-wrap gap-3 justify-end">
+                      {post.tags.map((tag: string) => (
+                        <button
+                          key={tag}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handleTagSelect(tag);
+                          }}
+                          className={`text-xs ${
+                            selectedTag === tag
+                              ? "text-purple-400"
+                              : "text-gray-500"
+                          }`}
+                        >
+                          {tag}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </article>
+              </Link>
+            </li>
           );
         })}
-      </div>
+      </ul>
     </div>
   );
 }
