@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { StickerLink } from "./StickerLink";
-import { allKeywords } from "./keywords";
 import { RefreshCw } from "lucide-react";
 import { usePathname } from "next/navigation";
 
@@ -20,25 +19,18 @@ const shuffleArray = <T,>(array: T[]): T[] => {
   return shuffled;
 };
 
-function generateKeywords() {
-  return shuffleArray(allKeywords)
-    .slice(0, 10)
-    .map((word) => ({
-      word,
-      size: getRandomFontSize(),
-    }));
-}
-
-export function RandomKeywordCloud() {
+export function RandomKeywordCloud({ keywords }: { keywords: string[] }) {
   const pathname = usePathname();
 
-  const [keywords, setKeywords] = useState<
+  const [displayKeywords, setDisplayKeywords] = useState<
     Array<{ word: string; size: string }>
   >([]);
 
   const handleShuffle = () => {
-    const newKeywords = generateKeywords();
-    setKeywords((prev) => {
+    const newKeywords = shuffleArray(keywords)
+      .slice(0, 10)
+      .map((word) => ({ word, size: getRandomFontSize() }));
+    setDisplayKeywords((prev) => {
       return JSON.stringify(prev) === JSON.stringify(newKeywords)
         ? [...newKeywords]
         : newKeywords;
@@ -46,19 +38,21 @@ export function RandomKeywordCloud() {
   };
 
   useEffect(() => {
-    const newKeywords = generateKeywords();
-    setKeywords(newKeywords);
-  }, [pathname]);
+    const newKeywords = shuffleArray(keywords)
+      .slice(0, 10)
+      .map((word) => ({ word, size: getRandomFontSize() }));
+    setDisplayKeywords(newKeywords);
+  }, [pathname, keywords]);
 
-  if (keywords.length === 0) return null;
+  if (displayKeywords.length === 0) return null;
 
   return (
     <>
       <div className="flex flex-wrap gap-x-3 gap-y-1 items-center">
-        {keywords.map(({ word, size }) => (
+        {displayKeywords.map(({ word, size }) => (
           <StickerLink
             key={`${word}-${size}`}
-            href={`/tags/${encodeURIComponent(word)}`}
+            href={`/blog?tag=${encodeURIComponent(word)}`}
             className={size}
           >
             {word}

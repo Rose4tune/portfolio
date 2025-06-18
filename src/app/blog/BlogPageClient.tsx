@@ -1,8 +1,9 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TagFilter from "./TagFilter";
 import Link from "next/link";
 import { BlogPost } from "@/lib/notion";
+import { useSearchParams } from "next/navigation";
 
 export default function BlogPageClient({
   posts,
@@ -11,7 +12,13 @@ export default function BlogPageClient({
   posts: BlogPost[];
   uniqueTags: string[];
 }) {
-  const [selectedTag, setSelectedTag] = useState<string | null>(null);
+  const searchParams = useSearchParams();
+  const tagParam = searchParams.get("tag");
+  const [selectedTag, setSelectedTag] = useState<string | null>(tagParam);
+
+  useEffect(() => {
+    setSelectedTag(tagParam);
+  }, [tagParam]);
 
   const filteredPosts = selectedTag
     ? posts.filter(
@@ -51,7 +58,7 @@ export default function BlogPageClient({
                       <button
                         key={tag}
                         onClick={() => setSelectedTag(tag)}
-                        className={`px-3 py-1 rounded-full font-semibold transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 ${
+                        className={`p-1 rounded-full font-semibold transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 ${
                           selectedTag === tag
                             ? "bg-purple-500 text-white shadow-lg ring-2 ring-purple-400"
                             : "bg-gray-200 text-gray-800 hover:bg-purple-100"
