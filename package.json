@@ -8,6 +8,7 @@
     "build": "next build",
     "build:layer": "pnpm contentlayer build",
     "start": "next start",
+    "start:prod": "next build && next start",
     "lint": "next lint"
   },
   "dependencies": {
