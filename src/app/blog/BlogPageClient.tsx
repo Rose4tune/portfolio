@@ -84,7 +84,7 @@ export default function BlogPageClient({
             <li key={post.id} className="w-full">
               <Link
                 href={`/blog/${post.slug}`}
-                className="block border rounded-lg p-6 hover:shadow-lg transition-shadow hover:border-purple-600 h-full"
+                className="block border rounded-lg p-6 hover:shadow-lg transition-shadow hover:border-purple-600 hover:text-purple-800 h-full"
               >
                 <article className="h-full flex flex-col">
                   <h2 className="text-xl font-semibold mb-2">{post.title}</h2>
