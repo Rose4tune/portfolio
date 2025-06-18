@@ -1,8 +1,31 @@
-import { getUniqueTags } from "@/lib/notion";
+"use client";
+
+import { useState, useEffect } from "react";
 import ProfileSection from "./ProfileSection";
 
-export default async function HomePage() {
-  const uniqueTags = await getUniqueTags();
+export default function HomePage() {
+  const [uniqueTags, setUniqueTags] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTags = async () => {
+      try {
+        const response = await fetch("/api/tags");
+        if (!response.ok) throw new Error("Failed to fetch tags");
+        const tags = await response.json();
+        setUniqueTags(tags);
+      } catch (error) {
+        console.error("Error fetching tags:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchTags();
+  }, []);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="space-y-8">
