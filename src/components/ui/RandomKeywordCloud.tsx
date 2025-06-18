@@ -47,6 +47,7 @@ export function RandomKeywordCloud() {
 
   useEffect(() => {
     console.log("IT CHANHED!!! : ", pathname);
+    console.log("RANDOM worked!! : ", Math.random());
     const newKeywords = generateKeywords();
     setKeywords(newKeywords);
   }, [pathname]);
