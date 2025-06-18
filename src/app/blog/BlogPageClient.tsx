@@ -18,21 +18,33 @@ export default function BlogPageClient({
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
   useEffect(() => {
-    const tagParam = searchParams.get("tag");
-    if (tagParam) {
-      setSelectedTag(tagParam);
+    try {
+      const tagParam = searchParams.get("tag");
+      if (tagParam && uniqueTags.includes(tagParam)) {
+        setSelectedTag(tagParam);
+      } else {
+        setSelectedTag(null);
+      }
+    } catch (error) {
+      console.error("Error setting tag:", error);
+      setSelectedTag(null);
     }
-  }, [searchParams]);
+  }, [searchParams, uniqueTags]);
 
   const handleTagSelect = (tag: string | null) => {
-    setSelectedTag(tag);
-    const params = new URLSearchParams(searchParams.toString());
-    if (tag) {
-      params.set("tag", tag);
-    } else {
-      params.delete("tag");
+    try {
+      setSelectedTag(tag);
+      const params = new URLSearchParams(searchParams.toString());
+      if (tag && uniqueTags.includes(tag)) {
+        params.set("tag", tag);
+      } else {
+        params.delete("tag");
+      }
+      router.replace(`${pathname}?${params.toString()}`);
+    } catch (error) {
+      console.error("Error handling tag selection:", error);
+      setSelectedTag(null);
     }
-    router.replace(`${pathname}?${params.toString()}`);
   };
 
   const filteredPosts = selectedTag
@@ -49,7 +61,7 @@ export default function BlogPageClient({
       .replace(/\n{2,}/g, " ")
       .trim();
 
-    return plainText.length > 100 ? `${plainText.slice(0, 100)}...` : plainText;
+    return plainText.length > 60 ? `${plainText.slice(0, 60)}...` : plainText;
   };
 
   return (
