@@ -91,6 +91,8 @@ export default function HomePage() {
     };
   }, []);
 
+  console.log("random: ", Math.random);
+
   return (
     <div className="space-y-8">
       <section
