@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { StickerLink } from "./StickerLink";
 import { allKeywords } from "./keywords";
 import { RefreshCw } from "lucide-react";
@@ -30,15 +30,13 @@ function generateKeywords() {
 }
 
 export function RandomKeywordCloud() {
-  const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
 
-  const [keywords, setKeywords] = useState(() => generateKeywords());
-
-  const memoizedKeywords = useMemo(() => keywords, [keywords]);
+  const [keywords, setKeywords] = useState<
+    Array<{ word: string; size: string }>
+  >([]);
 
   useEffect(() => {
-    setMounted(true);
     setKeywords(generateKeywords());
   }, [pathname]);
 
@@ -46,12 +44,12 @@ export function RandomKeywordCloud() {
     setKeywords(generateKeywords());
   };
 
-  if (!mounted) return null;
+  if (keywords.length === 0) return null;
 
   return (
     <>
       <div className="flex flex-wrap gap-x-3 gap-y-1 items-center">
-        {memoizedKeywords.map(({ word, size }) => (
+        {keywords.map(({ word, size }) => (
           <StickerLink
             key={word}
             href={`/tags/${encodeURIComponent(word)}`}
