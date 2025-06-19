@@ -189,6 +189,15 @@ export default function ProfileSection({
               LinkedIn
             </a>
           </li>
+          <li>
+            <a
+              href="/resume"
+              rel="noopener noreferrer"
+              className="text-purple-400 hover:underline"
+            >
+              Resume
+            </a>
+          </li>
         </ul>
         <div className="mt-6 flex flex-wrap gap-x-3 gap-y-1">
           <RandomKeywordCloud keywords={uniqueTags} key={pathname} />
