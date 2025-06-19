@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
 import { TypeAnimation } from "react-type-animation";
-import styles from "./homepage.module.css";
+import styles from "./profile.module.css";
 import { RandomKeywordCloud } from "@/components/ui/RandomKeywordCloud";
 import { usePathname } from "next/navigation";
 

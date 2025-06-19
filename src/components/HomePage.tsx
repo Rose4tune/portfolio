@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react";
 import ProfileSection from "./ProfileSection";
+import React from "react";
+import Loader from "./ui/Loader/Loader";
 
 export default function HomePage() {
   const [uniqueTags, setUniqueTags] = useState<string[]>([]);
@@ -24,7 +26,7 @@ export default function HomePage() {
   }, []);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
 
   return (
