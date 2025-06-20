@@ -1,11 +1,12 @@
 "use client";
 
-import styles from "./animation.module.css";
+import styles from "@/styles/animation.module.css";
 
 interface LoaderProps {
   color?: string;
 }
-export const AnimatedLoadingText = ({ color = "#C27AFF" }: LoaderProps) => {
+
+const AnimatedLoadingText = ({ color = "#C27AFF" }: LoaderProps) => {
   return (
     <svg
       width="247"
@@ -72,3 +73,5 @@ export const AnimatedLoadingText = ({ color = "#C27AFF" }: LoaderProps) => {
     </svg>
   );
 };
+
+export default AnimatedLoadingText;

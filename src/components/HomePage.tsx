@@ -3,11 +3,9 @@
 import { useState, useEffect } from "react";
 import ProfileSection from "./ProfileSection";
 import React from "react";
-import Loader from "./ui/Loader/Loader";
 
 export default function HomePage() {
   const [uniqueTags, setUniqueTags] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchTags = async () => {
@@ -18,16 +16,10 @@ export default function HomePage() {
         setUniqueTags(tags);
       } catch (error) {
         console.error("Error fetching tags:", error);
-      } finally {
-        setIsLoading(false);
       }
     };
     fetchTags();
   }, []);
-
-  if (isLoading) {
-    return <Loader />;
-  }
 
   return (
     <div className="space-y-8">

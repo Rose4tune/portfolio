@@ -3,6 +3,7 @@ import "../styles/globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import Navbar from "@/components/layout/Navbar";
 import { Analytics } from "@vercel/analytics/react";
+import ClientLoading from "@/components/ClientLoading";
 
 export const metadata: Metadata = {
   title: "Ye Seo, LEE Portfolio",
@@ -23,13 +24,15 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Navbar />
-          <main className="h-[calc(100vh-48px)] md:h-[calc(100vh-64px)] py-6 md:py-16">
-            <div className="container max-w-4xl h-full mx-auto px-4 sm:px-6">
-              {children}
-            </div>
-          </main>
-          <Analytics />
+          <ClientLoading>
+            <Navbar />
+            <main className="py-6 md:py-16">
+              <div className="container max-w-4xl mx-auto px-4 sm:px-6">
+                {children}
+              </div>
+            </main>
+            <Analytics />
+          </ClientLoading>
         </ThemeProvider>
       </body>
     </html>
