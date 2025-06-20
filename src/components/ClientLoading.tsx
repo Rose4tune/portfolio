@@ -8,16 +8,26 @@ export default function ClientLoading({
 }: {
   children: React.ReactNode;
 }) {
-  const [showLoader, setShowLoader] = useState(true);
+  const [showLoader, setShowLoader] = useState<boolean | null>(null);
 
   useEffect(() => {
-    const timer = setTimeout(() => setShowLoader(false), 1500);
-    return () => clearTimeout(timer);
+    const isFirstRender = sessionStorage.getItem("isFirstRender");
+
+    if (!isFirstRender) {
+      setShowLoader(true);
+
+      const timer = setTimeout(() => {
+        setShowLoader(false);
+        sessionStorage.setItem("isFirstRender", "true");
+      }, 1500);
+
+      return () => clearTimeout(timer);
+    } else {
+      setShowLoader(false);
+    }
   }, []);
 
-  if (showLoader) {
-    return <Loader type={"welcome"} />;
-  }
+  if (showLoader === null) return null;
 
-  return <>{children}</>;
+  return showLoader ? <Loader type="welcome" /> : <>{children}</>;
 }
