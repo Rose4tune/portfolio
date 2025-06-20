@@ -4,6 +4,8 @@ import { ThemeProvider } from "@/components/providers/theme-provider";
 import Navbar from "@/components/layout/Navbar";
 import { Analytics } from "@vercel/analytics/react";
 import ClientLoading from "@/components/ClientLoading";
+import { AnimatePresence } from "framer-motion";
+import TransitionWrapper from "@/components/TransitionWrapper";
 
 export const metadata: Metadata = {
   title: "Ye Seo, LEE Portfolio",
@@ -28,12 +30,14 @@ export default function RootLayout({
             <Navbar />
             <main className="py-6 md:py-16">
               <div className="container max-w-4xl mx-auto px-4 sm:px-6">
-                {children}
+                <AnimatePresence mode="wait">
+                  <TransitionWrapper>{children}</TransitionWrapper>
+                </AnimatePresence>
               </div>
             </main>
-            <Analytics />
           </ClientLoading>
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
