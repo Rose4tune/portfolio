@@ -9,11 +9,12 @@ interface LoaderProps {
 const AnimatedWelcomeText = ({ color = "#C27AFF" }: LoaderProps) => {
   return (
     <svg
-      width="479"
-      height="124"
+      width="100%"
+      height="100%"
       fill="none"
-      viewBox="0 0 479 124"
+      viewBox="0 0 480 124"
       xmlns="http://www.w3.org/2000/svg"
+      className="max-w-[480px]"
     >
       <path
         stroke={color}

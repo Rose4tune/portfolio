@@ -9,16 +9,18 @@ interface LoadingProps {
 
 function Loader({ type = "default" }: LoadingProps) {
   return (
-    <div className="flex flex-col justify-center items-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-      <Image
-        src="/images/logo.svg"
-        alt="Loading"
-        width={70}
-        height={70}
-        className={`mb-5 ${styles.bouncing}`}
-        priority
-      />
-      {type === "default" ? <AnimatedLoadingText /> : <AnimatedWelcomeText />}
+    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%]">
+      <div className="flex flex-col justify-center items-center">
+        <Image
+          src="/images/logo.svg"
+          alt="Loading"
+          width={70}
+          height={70}
+          className={`mb-5 w-[15%] max-w-[70px] ${styles.bouncing}`}
+          priority
+        />
+        {type === "default" ? <AnimatedLoadingText /> : <AnimatedWelcomeText />}
+      </div>
     </div>
   );
 }
