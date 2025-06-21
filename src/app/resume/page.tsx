@@ -1,9 +1,9 @@
-import CVLayout from "@/components/layout/CVLayout";
+import ResumeLayout from "@/components/layout/ResumeLayout";
 import { Download } from "lucide-react";
 
 export default function ResumePage() {
   return (
-    <CVLayout>
+    <ResumeLayout>
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-4xl font-bold mb-0">Resume</h1>
         <a
@@ -117,6 +117,6 @@ export default function ResumePage() {
           </div>
         </section>
       </div>
-    </CVLayout>
+    </ResumeLayout>
   );
 }
