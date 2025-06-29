@@ -1,5 +1,17 @@
 import { Client, PageObjectResponse } from "@notionhq/client";
+import { NotionAPI } from "notion-client";
 
+export const notionApi = new NotionAPI();
+
+export async function getData(pageId: string) {
+  return await notionApi.getPage(pageId);
+}
+
+export const notionDatabase = new Client({
+  auth: process.env.NOTION_API_KEY,
+});
+
+// before
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
 type NotionProperty = {
@@ -267,7 +279,7 @@ async function convertToBlogPost(page: NotionPage): Promise<BlogPost> {
 }
 
 export async function getBlogPosts(): Promise<BlogPost[]> {
-  const databaseId = process.env.NOTION_DATABASE_ID!;
+  const databaseId = process.env.NOTION_BLOG_DATABASE_ID!;
   const response = await notion.databases.query({
     database_id: databaseId,
     filter: {
@@ -288,7 +300,7 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
 }
 
 export async function getBlogPost(slug: string): Promise<BlogPost | null> {
-  const databaseId = process.env.NOTION_DATABASE_ID!;
+  const databaseId = process.env.NOTION_BLOG_DATABASE_ID!;
   const response = await notion.databases.query({
     database_id: databaseId,
     filter: {
@@ -327,7 +339,7 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
 }
 
 export async function getUniqueTags(): Promise<string[]> {
-  const databaseId = process.env.NOTION_DATABASE_ID!;
+  const databaseId = process.env.NOTION_BLOG_DATABASE_ID!;
   const response = await notion.databases.query({
     database_id: databaseId,
     filter: {
