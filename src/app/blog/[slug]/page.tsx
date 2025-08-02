@@ -4,16 +4,15 @@ import { getRecordMap } from "@/lib/notion/notionClient";
 import Link from "next/link";
 import NotionPageRenderer from "@/components/NotionPageRenderer";
 
-interface Props {
-  params: {
-    slug: string;
-  };
-}
+export default async function BlogPostPage(props: { params: { slug: string } }) {
+  const { params } = props;
+  const slug = (await params).slug;
+  const pageId = await getPageIdBySlug(PostType.blog, slug);
 
-export default async function BlogPostPage({ params }: Props) {
-  const pageId = await getPageIdBySlug(PostType.blog, params.slug);
-
-  if (!pageId) return notFound();
+  if (!pageId) {
+    return notFound();
+  }
+  
   const recordMap = await getRecordMap(pageId);
 
   return (
