@@ -128,7 +128,7 @@ export async function getPosts(type: PostType) {
 
 
 export async function getPageIdBySlug(
-  database_id: string,
+  type: PostType,
   slug: string
 ): Promise<string | null> {
   
@@ -137,20 +137,33 @@ export async function getPageIdBySlug(
     return null;
   }
 
-  const response = await notion.databases.query({
-    database_id,
-    filter: {
-      property: "이름",
-      rich_text: {
-        contains: slug.replace(/-/g, " "),
+  const database_id = NOTION_DB[type];
+  
+  try {
+    const response = await notion.databases.query({
+      database_id,
+      filter: {
+        property: "숨김",
+        checkbox: { equals: false },
       },
-    },
-  });
+    });
 
-  const result = response.results[0];
-  if (!result || !("id" in result)) return null;
+    const pages = response.results as PageObjectResponse[];
+    
+    for (const page of pages) {
+      const title = getPropertyValue(page.properties["이름"]) as string;
+      const generatedSlug = generateSlug(title);
 
-  return result.id.replace(/-/g, "");
+      if (generatedSlug === slug) {
+        return page.id.replace(/-/g, "");
+      }
+    }
+    
+    return null;
+  } catch (error) {
+    console.error(`Error finding page by slug: ${slug}`, error);
+    return null;
+  }
 }
 
 
