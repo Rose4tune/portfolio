@@ -4,9 +4,10 @@ import { getRecordMap } from "@/lib/notion/notionClient";
 import Link from "next/link";
 import NotionPageRenderer from "@/components/NotionPageRenderer";
 
-export default async function BlogPostPage(props: { params: { slug: string } }) {
+export default async function BlogPostPage(props: { params: Promise<{ slug: string }> }) {
   const { params } = props;
-  const slug = (await params).slug;
+  const resolvedParams = await params;
+  const slug = resolvedParams.slug;
   const pageId = await getPageIdBySlug(PostType.blog, slug);
 
   if (!pageId) {
