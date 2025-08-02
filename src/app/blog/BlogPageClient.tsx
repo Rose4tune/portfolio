@@ -1,9 +1,11 @@
 "use client";
-import { useState, useEffect } from "react";
+
+import { useState, useEffect, useMemo } from "react";
 import TagFilter from "./TagFilter";
+import TagButton from "./TagButton";
 import Link from "next/link";
-import { BlogPost } from "@/lib/notion";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { BlogPost } from "@/lib/notion/notionhqClient";
 
 export default function BlogPageClient({
   posts,
@@ -51,6 +53,7 @@ export default function BlogPageClient({
     ? posts.filter((post) => post.tags?.includes(selectedTag))
     : posts;
 
+  const [searchQuery, setSearchQuery] = useState("");
   const getPreviewText = (content: string) => {
     let plainText = content.replace(/<[^>]*>/g, "");
     plainText = plainText
@@ -64,22 +67,55 @@ export default function BlogPageClient({
     return plainText.length > 60 ? `${plainText.slice(0, 60)}...` : plainText;
   };
 
+  const filteredTags = useMemo(() => {
+    if (!searchQuery.trim()) return uniqueTags;
+    const query = searchQuery.toLowerCase().trim();
+    return uniqueTags.filter((tag) => tag.toLowerCase().includes(query));
+  }, [uniqueTags, searchQuery]);
+  
+  const searchFilteredPosts = useMemo(() => {
+    if (!searchQuery.trim()) return filteredPosts;
+    const query = searchQuery.toLowerCase().trim();
+    return filteredPosts.filter(
+      (post) => 
+        post.title.toLowerCase().includes(query) || 
+        post.tags?.some(tag => tag.toLowerCase().includes(query))
+    );
+  }, [filteredPosts, searchQuery]);
+
   return (
     <>
-      <TagFilter
-        uniqueTags={uniqueTags}
-        selectedTag={selectedTag}
-        setSelectedTag={handleTagSelect}
-      />
+      <div className="flex items-end justify-between gap-4">
+        <h1 className="text-4xl font-bold">블로그</h1>
+        <TagFilter
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+        />
+      </div>
+      <div className="flex flex-wrap gap-2 my-6">
+        <TagButton
+          tag={null}
+          selectedTag={selectedTag}
+          onClick={() => setSelectedTag(null)}
+        />
+        {filteredTags.map((tag: string) => (
+          <TagButton
+            key={tag}
+            tag={tag}
+            selectedTag={selectedTag}
+            onClick={() => setSelectedTag(tag)}
+          />
+        ))}
+      </div>
 
       <ul
         className={`grid gap-6 ${
-          filteredPosts.length <= 6
+          searchFilteredPosts.length <= 6
             ? "grid-cols-1 w-full"
             : "grid-cols-1 md:grid-cols-2"
         }`}
       >
-        {filteredPosts.map((post) => {
+        {searchFilteredPosts.map((post) => {
           return (
             <li key={post.id} className="w-full">
               <Link
@@ -88,15 +124,13 @@ export default function BlogPageClient({
               >
                 <article className="h-full flex flex-col">
                   <h2 className="text-xl font-semibold mb-2">{post.title}</h2>
-                  <time className="text-sm text-gray-500">
-                    {new Date(post.date).toLocaleDateString("ko-KR", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
-                  </time>
+                  <time className="text-sm text-gray-500">{post.date}</time>
                   <p className="mt-2 text-gray-300 line-clamp-3 flex-grow">
-                    {getPreviewText(post.content)}
+                    {post.excerpt
+                      ? getPreviewText(post.excerpt)
+                      : post.content
+                      ? getPreviewText(post.content)
+                      : "내용을 확인하려면 클릭하세요."}
                   </p>
                   {post.tags && post.tags.length > 0 && (
                     <div className="mt-3 flex flex-wrap gap-3 justify-end">
