@@ -1,11 +1,22 @@
 import { Client, PageObjectResponse } from '@notionhq/client';
 
 const NOTION_API_KEY = process.env.NOTION_API_KEY;
+if (!NOTION_API_KEY) {
+  console.error('NOTION_API_KEY is not defined in environment variables');
+}
+
 const NOTION_DB = {
   blog: process.env.NOTION_DB_ID_BLOG as string,
   project: process.env.NOTION_DB_ID_PROJECT as string,
   book: process.env.NOTION_DB_ID_BOOK as string,
 };
+
+// 환경 변수 유효성 검사
+Object.entries(NOTION_DB).forEach(([key, value]) => {
+  if (!value) {
+    console.error(`NOTION_DB_ID_${key.toUpperCase()} is not defined in environment variables`);
+  }
+});
 
 const notion = new Client({
   auth: NOTION_API_KEY,
@@ -53,78 +64,84 @@ export async function getPosts(type: PostType.book): Promise<BookPost[]>;
 export async function getPosts(type: PostType): Promise<BlogPost[] | ProjectPost[] | BookPost[]>;
 
 export async function getPosts(type: PostType) {
-  const response = await notion.databases.query({
-    database_id: NOTION_DB[type],
-    filter: {
-      property: "숨김",
-      checkbox: {
-        equals: false,
-      },
-    },
-    sorts: [
-      {
-        property: "작성일",
-        direction: "descending",
-      },
-    ],
-  });
-
-  const pages = response.results as PageObjectResponse[];
+  const database_id = NOTION_DB[type];
   
-  const posts = await Promise.all(
-    pages.map(async (page) => {
-      const properties = page.properties;
-      const title = getPropertyValue(properties["이름"]) as string;
-      const slug = generateSlug(title);
-      const date = getPropertyValue(properties["작성일"]) as string;
-      const tags = getPropertyValue(properties["키워드"]) as string[];
+  if (!database_id) {
+    console.error(`Database ID for type ${type} is undefined. Check your environment variables.`);
+    return [];
+  }
+  
+  try {
+    const response = await notion.databases.query({
+      database_id,
+      filter: {
+        property: "숨김",
+        checkbox: {
+          equals: false,
+        },
+      },
+      sorts: [
+        {
+          property: "작성일",
+          direction: "descending",
+        },
+      ],
+    });
 
-      const basePost = {
-        id: page.id,
-        title,
-        slug,
-        date,
-        tags,
-      };
+    const pages = response.results as PageObjectResponse[];
+    
+    const posts = await Promise.all(
+      pages.map(async (page) => {
+        const properties = page.properties;
+        const title = getPropertyValue(properties["이름"]) as string;
+        const slug = generateSlug(title);
+        const date = getPropertyValue(properties["작성일"]) as string;
+        const tags = getPropertyValue(properties["키워드"]) as string[];
 
-      switch (type) {
-        case PostType.blog:
-          const excerpt = getPropertyValue(properties["요약"]) as string;
-          const content = excerpt || (await getPageFirstContent(page.id));
-          return {
-            ...basePost,
-            excerpt,
-            content,
-          } as BlogPost;
-          
-        case PostType.project:
-          return {
-            ...basePost,
-            status: getPropertyValue(properties["상태"]) as string,
-            techStack: getPropertyValue(properties["기술스택"]) as string[],
-          } as ProjectPost;
-          
-        case PostType.book:
-          return {
-            ...basePost,
-            author: getPropertyValue(properties["저자"]) as string,
-            rating: getPropertyValue(properties["평점"]) as number,
-          } as BookPost;
+        const basePost = {
+          id: page.id,
+          title,
+          slug,
+          date,
+          tags,
+        };
 
-        default:
-          return basePost;
-      }
-    })
-  );
+        switch (type) {
+          case PostType.blog:
+            const excerpt = getPropertyValue(properties["요약"]) as string;
+            const content = excerpt || (await getPageFirstContent(page.id));
+            return {
+              ...basePost,
+              excerpt,
+              content,
+            } as BlogPost;
+            
+          case PostType.project:
+            return {
+              ...basePost,
+              status: getPropertyValue(properties["상태"]) as string,
+              techStack: getPropertyValue(properties["기술스택"]) as string[],
+            } as ProjectPost;
+            
+          case PostType.book:
+            return {
+              ...basePost,
+              author: getPropertyValue(properties["저자"]) as string,
+              rating: getPropertyValue(properties["평점"]) as number,
+            } as BookPost;
 
-  return posts;
+          default:
+            return basePost;
+        }
+      })
+    );
+
+    return posts;
+  } catch (error) {
+    console.error(`Error fetching posts for type ${type}:`, error);
+    return [];
+  }
 }
-
-
-
-
-
-
 
 
 export async function getPageIdBySlug(
@@ -138,6 +155,11 @@ export async function getPageIdBySlug(
   }
 
   const database_id = NOTION_DB[type];
+  
+  if (!database_id) {
+    console.error(`Database ID for type ${type} is undefined. Check your environment variables.`);
+    return null;
+  }
   
   try {
     const response = await notion.databases.query({
@@ -207,20 +229,32 @@ function generateSlug(title: string): string {
 }
 
 export async function getUniqueTags(type: PostType): Promise<string[]> {
-  const response = await notion.databases.query({
-    database_id: NOTION_DB[type],
-    filter: {
-      property: "숨김",
-      checkbox: { equals: false },
-    },
-  });
+  const database_id = NOTION_DB[type];
+  
+  if (!database_id) {
+    console.error(`Database ID for type ${type} is undefined. Check your environment variables.`);
+    return [];
+  }
+  
+  try {
+    const response = await notion.databases.query({
+      database_id,
+      filter: {
+        property: "숨김",
+        checkbox: { equals: false },
+      },
+    });
 
-  const pages = response.results as PageObjectResponse[];
-  const allTags = pages.flatMap((page) => {
-    const tags = getPropertyValue(page.properties["키워드"]) as string[];
-    return tags;
-  });
-  return [...new Set(allTags)].sort();
+    const pages = response.results as PageObjectResponse[];
+    const allTags = pages.flatMap((page) => {
+      const tags = getPropertyValue(page.properties["키워드"]) as string[];
+      return tags;
+    });
+    return [...new Set(allTags)].sort();
+  } catch (error) {
+    console.error(`Error fetching tags for type ${type}:`, error);
+    return [];
+  }
 }
 
 export async function getPageFirstContent(pageId: string): Promise<string> {
