@@ -7,11 +7,11 @@ import styles from "./profile.module.css";
 import { RandomKeywordCloud } from "@/components/ui/RandomKeywordCloud";
 import { usePathname } from "next/navigation";
 
-export default function ProfileSection({
-  uniqueTags,
-}: {
-  uniqueTags: string[];
-}) {
+interface ProfileSectionProps {
+  uniqueTags?: string[];
+}
+
+export default function ProfileSection({ uniqueTags = [] }: ProfileSectionProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [transformStyle, setTransformStyle] = useState("");
   const [isHovered, setIsHovered] = useState(false);
