@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { BlogPost } from "@/lib/notion/notionhqClient";
 
-export default function BlogPageClient({
+export default function BlogClient({
   posts,
   uniqueTags,
 }: {
