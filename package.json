@@ -42,5 +42,10 @@
     "tailwindcss": "^4.1.8",
     "tsx": "^4.19.4",
     "typescript": "^5"
+  },
+  "resolutions": {
+    "react-notion-x": "^7.4.2",
+    "notion-client": "^7.4.2",
+    "notion-types": "^7.4.2"
   }
 }

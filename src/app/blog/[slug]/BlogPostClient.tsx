@@ -2,12 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import Link from "next/link";
-import dynamic from 'next/dynamic';
 import { ExtendedRecordMap } from 'notion-types';
-
-const NotionPageRenderer = dynamic(() => import("@/components/NotionPageRenderer"), {
-  loading: () => <div className="py-4">콘텐츠를 불러오는 중...</div>
-});
+import NotionPageRenderer from "@/components/NotionPageRenderer";
 
 interface BlogPostClientProps {
   pageId: string;
