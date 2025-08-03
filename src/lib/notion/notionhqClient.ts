@@ -1,5 +1,13 @@
 import { Client, PageObjectResponse } from '@notionhq/client';
 
+// console.log(`[DEBUG] NotionHQ Client Environment:
+//   - Environment: ${process.env.NODE_ENV}
+//   - NOTION_API_KEY: ${process.env.NOTION_API_KEY ? "설정됨" : "설정되지 않음"}
+//   - NOTION_DB_ID_BLOG: ${process.env.NOTION_DB_ID_BLOG ? "설정됨" : "설정되지 않음"}
+//   - NOTION_DB_ID_PROJECT: ${process.env.NOTION_DB_ID_PROJECT ? "설정됨" : "설정되지 않음"}
+//   - NOTION_DB_ID_BOOK: ${process.env.NOTION_DB_ID_BOOK ? "설정됨" : "설정되지 않음"}
+// `);
+
 const NOTION_API_KEY = process.env.NOTION_API_KEY;
 if (!NOTION_API_KEY) {
   console.error('NOTION_API_KEY is not defined in environment variables');
