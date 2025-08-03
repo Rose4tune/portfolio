@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  react-notion-x: ^7.4.2
+  notion-client: ^7.4.2
+  notion-types: ^7.4.2
+
 importers:
 
   .:
