@@ -14,7 +14,15 @@ const nextConfig = {
         port: "",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "*.amazonaws.com",
+        pathname: "/**",
+      },
     ],
+  },
+  experimental: {
+    serverComponentsExternalPackages: ["notion-client", "notion-types", "react-notion-x"],
   },
 };
 
