@@ -3,7 +3,7 @@ import { Client } from "@notionhq/client";
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 const databaseId = process.env.NOTION_DB_ID_PROJECT!;
 
-export async function getProjectPageIdBySlug(
+export async function getPageIdBySlug(
   slug: string
 ): Promise<string | null> {
   const response = await notion.databases.query({
