@@ -11,7 +11,6 @@ const NOTION_DB = {
   book: process.env.NOTION_DB_ID_BOOK as string,
 };
 
-// 환경 변수 유효성 검사
 Object.entries(NOTION_DB).forEach(([key, value]) => {
   if (!value) {
     console.error(`NOTION_DB_ID_${key.toUpperCase()} is not defined in environment variables`);
@@ -161,6 +160,8 @@ export async function getPageIdBySlug(
     return null;
   }
   
+  console.log(`[DEBUG] Looking for page with slug: "${slug}" in database type: "${type}"`);
+  
   try {
     const response = await notion.databases.query({
       database_id,
@@ -171,16 +172,21 @@ export async function getPageIdBySlug(
     });
 
     const pages = response.results as PageObjectResponse[];
+    console.log(`[DEBUG] Found ${pages.length} pages in database`);
     
     for (const page of pages) {
       const title = getPropertyValue(page.properties["이름"]) as string;
       const generatedSlug = generateSlug(title);
 
+      console.log(`[DEBUG] Checking page: "${title}" with generated slug: "${generatedSlug}" (original ID: ${page.id})`);
+
       if (generatedSlug === slug) {
-        return page.id.replace(/-/g, "");
+        console.log(`[DEBUG] ✅ Found matching page. Returning ID: ${page.id}`);
+        return page.id;
       }
     }
     
+    console.log(`[DEBUG] ❌ No page found with slug: "${slug}"`);
     return null;
   } catch (error) {
     console.error(`Error finding page by slug: ${slug}`, error);
