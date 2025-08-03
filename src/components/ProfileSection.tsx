@@ -32,21 +32,17 @@ export default function ProfileSection({ uniqueTags = [] }: ProfileSectionProps)
         const centerX = rect.width / 2;
         const centerY = rect.height / 2;
 
-        // 목표 각도 계산 (X축은 반대 방향으로 회전)
         targetX = -(mouseY - centerY) * 0.06;
         targetY = (mouseX - centerX) * 0.06;
       }
     };
 
     const animate = () => {
-      // 부드러운 보간을 위한 계수
       const ease = 0.1;
 
-      // 현재 값을 목표 값으로 부드럽게 이동
       currentX += (targetX - currentX) * ease;
       currentY += (targetY - currentY) * ease;
 
-      // transform 스타일 업데이트
       setTransformStyle(
         `perspective(1000px) 
          rotateX(${currentX}deg) 
@@ -66,12 +62,10 @@ export default function ProfileSection({ uniqueTags = [] }: ProfileSectionProps)
       targetX = 0;
       targetY = 0;
 
-      // 애니메이션 중단
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }
 
-      // 원래 상태로 즉시 복귀
       setTransformStyle("perspective(1000px) rotateX(0deg) rotateY(0deg)");
     };
 

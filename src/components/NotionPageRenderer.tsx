@@ -9,7 +9,6 @@ import 'react-notion-x/src/styles.css';
 import 'prismjs/themes/prism-tomorrow.css';
 import 'katex/dist/katex.min.css';
 
-// 간소화된 구현으로 대체
 const Code = () => null;
 const Equation = () => null;
 const Modal = () => null;
