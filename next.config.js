@@ -21,9 +21,7 @@ const nextConfig = {
       },
     ],
   },
-  experimental: {
-    serverComponentsExternalPackages: ["notion-client", "notion-types", "react-notion-x"],
-  },
+  serverExternalPackages: ["notion-client", "notion-types", "react-notion-x"],
 };
 
 export default nextConfig;
