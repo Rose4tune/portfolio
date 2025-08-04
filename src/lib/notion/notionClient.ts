@@ -6,12 +6,7 @@ import { NotionAPI } from "notion-client";
 //   - Auth Token: ${process.env.NOTION_AUTH_TOKEN ? "설정됨" : "설정되지 않음"}
 //   - 환경: ${process.env.NODE_ENV}
 // `);
-const notionApi = new NotionAPI({
-  apiBaseUrl: process.env.NOTION_API_BASE_URL || "https://www.notion.so/api/v3",
-  userTimeZone: "Asia/Seoul",
-  activeUser: process.env.NOTION_ACTIVE_USER,
-  authToken: process.env.NOTION_AUTH_TOKEN_V2,
-});
+const notionApi = new NotionAPI();
 
 async function withRetry<T>(
   fn: () => Promise<T>,
