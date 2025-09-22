@@ -1,19 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import TableOfContents from "./TableOfContents";
+import { ResumeContents, TableOfContents } from "./ui";
+import { Heading } from "./types";
 
-interface Heading {
-  id: string;
-  text: string;
-  level: number;
-}
-
-interface ResumeLayoutProps {
-  children: React.ReactNode;
-}
-
-const ResumeLayout = ({ children }: ResumeLayoutProps) => {
+export default function ResumeScreen() {
   const [headings, setHeadings] = useState<Heading[]>([]);
 
   useEffect(() => {
@@ -44,11 +35,10 @@ const ResumeLayout = ({ children }: ResumeLayoutProps) => {
           <TableOfContents headings={headings} />
         </div>
       </aside>
+
       <article className="lg:col-span-9 prose dark:prose-invert max-w-none">
-        {children}
+        <ResumeContents />
       </article>
     </div>
   );
-};
-
-export default ResumeLayout;
+}

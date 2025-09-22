@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { StickerLink } from "./StickerLink";
 import { RefreshCw } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { ReactNode } from "react";
 
 const getRandomFontSize = () => {
   const sizes = ["text-xl", "text-2xl", "text-3xl", "text-4xl"];
@@ -19,7 +19,15 @@ const shuffleArray = <T,>(array: T[]): T[] => {
   return shuffled;
 };
 
-export function RandomKeywordCloud({ keywords }: { keywords: string[] }) {
+interface RandomKeywordCloudProps {
+  keywords: string[];
+  renderKeyword: (word: string, size: string) => ReactNode;
+}
+
+export default function RandomKeywordCloud({
+  keywords,
+  renderKeyword,
+}: RandomKeywordCloudProps) {
   const pathname = usePathname();
 
   const [displayKeywords, setDisplayKeywords] = useState<
@@ -49,15 +57,7 @@ export function RandomKeywordCloud({ keywords }: { keywords: string[] }) {
   return (
     <>
       <div className="flex flex-wrap gap-x-3 gap-y-1 items-center">
-        {displayKeywords.map(({ word, size }) => (
-          <StickerLink
-            key={`${word}-${size}`}
-            href={`/blog?tag=${encodeURIComponent(word)}`}
-            className={size}
-          >
-            {word}
-          </StickerLink>
-        ))}
+        {displayKeywords.map(({ word, size }) => renderKeyword(word, size))}
       </div>
       <button
         onClick={handleShuffle}

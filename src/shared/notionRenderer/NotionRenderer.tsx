@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { useState, useEffect, Suspense } from 'react';
-import Image from 'next/image';
-import { ExtendedRecordMap } from 'notion-types';
-import { NotionRenderer } from 'react-notion-x';
+import { useState, useEffect, Suspense } from "react";
+import Image from "next/image";
+import { ExtendedRecordMap } from "notion-types";
+import { NotionRenderer as ReactNotionRenderer } from "react-notion-x";
 
-import 'react-notion-x/src/styles.css';
-import 'prismjs/themes/prism-tomorrow.css';
-import 'katex/dist/katex.min.css';
+import "react-notion-x/src/styles.css";
+import "prismjs/themes/prism-tomorrow.css";
+import "katex/dist/katex.min.css";
 
 const Code = () => null;
 const Equation = () => null;
@@ -18,9 +18,9 @@ interface NotionRendererProps {
   recordMap: ExtendedRecordMap;
 }
 
-export default function NotionPageRenderer({ recordMap }: NotionRendererProps) {
+export default function NotionRenderer({ recordMap }: NotionRendererProps) {
   const [isMounted, setIsMounted] = useState(false);
-  
+
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -31,7 +31,7 @@ export default function NotionPageRenderer({ recordMap }: NotionRendererProps) {
 
   return (
     <Suspense fallback={<div>콘텐츠를 불러오는 중...</div>}>
-      <NotionRenderer
+      <ReactNotionRenderer
         recordMap={recordMap}
         fullPage={true}
         components={{

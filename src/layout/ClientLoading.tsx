@@ -1,13 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import Loader from "./Loader";
+import { useEffect, useState, ReactNode } from "react";
+import Loader from "./ui/Loader";
+
+interface ClientLoadingProps {
+  children: ReactNode;
+  loadingContent?: ReactNode;
+}
 
 export default function ClientLoading({
   children,
-}: {
-  children: React.ReactNode;
-}) {
+  loadingContent,
+}: ClientLoadingProps) {
   const [showLoader, setShowLoader] = useState<boolean | null>(null);
 
   useEffect(() => {
@@ -29,5 +33,5 @@ export default function ClientLoading({
 
   if (showLoader === null) return null;
 
-  return showLoader ? <Loader type="welcome" /> : <>{children}</>;
+  return showLoader ? <Loader>{loadingContent}</Loader> : <>{children}</>;
 }

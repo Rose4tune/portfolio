@@ -3,20 +3,18 @@
 import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
 import { TypeAnimation } from "react-type-animation";
-import styles from "./profile.module.css";
-import { RandomKeywordCloud } from "@/components/ui/RandomKeywordCloud";
-import { usePathname } from "next/navigation";
+import styles from "./profileSection.module.css";
+import { ReactNode } from "react";
 
 interface ProfileSectionProps {
-  uniqueTags?: string[];
+  children?: ReactNode;
 }
 
-export default function ProfileSection({ uniqueTags = [] }: ProfileSectionProps) {
+export default function ProfileSection({ children }: ProfileSectionProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [transformStyle, setTransformStyle] = useState("");
   const [isHovered, setIsHovered] = useState(false);
   const animationRef = useRef<number | undefined>(undefined);
-  const pathname = usePathname();
 
   useEffect(() => {
     let currentX = 0;
@@ -193,9 +191,7 @@ export default function ProfileSection({ uniqueTags = [] }: ProfileSectionProps)
             </a>
           </li>
         </ul>
-        <div className="mt-6 flex flex-wrap gap-x-3 gap-y-1">
-          <RandomKeywordCloud keywords={uniqueTags} key={pathname} />
-        </div>
+        <div className="mt-6 flex flex-wrap gap-x-3 gap-y-1">{children}</div>
       </div>
     </section>
   );

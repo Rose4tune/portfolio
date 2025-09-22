@@ -8,9 +8,9 @@ import { Menu, X } from "lucide-react";
 const navItems = [
   { name: "About", path: "/" },
   { name: "Blog", path: "/blog" },
-  // { name: "Projects", path: "/projects" },
-  // { name: "Resume", path: "/resume" },
-  // { name: "Repositories", path: "/repositories" },
+  { name: "Projects", path: "/projects" },
+  { name: "Resume", path: "/resume" },
+  { name: "Repositories", path: "/repositories" },
 ];
 
 export default function Navbar() {

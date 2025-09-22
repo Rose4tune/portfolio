@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
-export default function TransitionWrapper({
+export default function AnimatedLayout({
   children,
 }: {
   children: React.ReactNode;

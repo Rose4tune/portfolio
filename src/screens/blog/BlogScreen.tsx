@@ -1,13 +1,12 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import TagFilter from "./TagFilter";
-import TagButton from "./TagButton";
 import Link from "next/link";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { BlogPost } from "@/lib/notion/notionhqClient";
+import { TagFilter, TagButton } from "@/shared/notionRenderer";
 
-export default function BlogClient({
+export default function BlogScreen({
   posts,
   uniqueTags,
 }: {
@@ -72,14 +71,14 @@ export default function BlogClient({
     const query = searchQuery.toLowerCase().trim();
     return uniqueTags.filter((tag) => tag.toLowerCase().includes(query));
   }, [uniqueTags, searchQuery]);
-  
+
   const searchFilteredPosts = useMemo(() => {
     if (!searchQuery.trim()) return filteredPosts;
     const query = searchQuery.toLowerCase().trim();
     return filteredPosts.filter(
-      (post) => 
-        post.title.toLowerCase().includes(query) || 
-        post.tags?.some(tag => tag.toLowerCase().includes(query))
+      (post) =>
+        post.title.toLowerCase().includes(query) ||
+        post.tags?.some((tag) => tag.toLowerCase().includes(query))
     );
   }, [filteredPosts, searchQuery]);
 
@@ -87,10 +86,7 @@ export default function BlogClient({
     <>
       <div className="flex items-end justify-between gap-4">
         <h1 className="text-4xl font-bold">블로그</h1>
-        <TagFilter
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-        />
+        <TagFilter searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       </div>
       <div className="flex flex-wrap gap-2 my-6">
         <TagButton

@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import HomePage from "@/components/HomePage";
+import HomeScreen from "@/screens/home/HomeScreen";
 
 export const metadata: Metadata = {
   title: "Ye Seo, LEE",
@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
-  return <HomePage />;
+  return <HomeScreen />;
 }

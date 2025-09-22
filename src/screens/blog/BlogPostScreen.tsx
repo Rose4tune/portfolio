@@ -1,16 +1,19 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ExtendedRecordMap } from 'notion-types';
-import NotionPageRenderer from "@/components/NotionPageRenderer";
+import { ExtendedRecordMap } from "notion-types";
+import NotionRenderer from "@/shared/notionRenderer/NotionRenderer";
 
-interface BlogPostClientProps {
+interface BlogPostScreenProps {
   pageId: string;
   serializedRecordMap: string;
 }
 
-export default function BlogPostClient({ pageId, serializedRecordMap }: BlogPostClientProps) {
+export default function BlogPostScreen({
+  pageId,
+  serializedRecordMap,
+}: BlogPostScreenProps) {
   const [error, setError] = useState<Error | null>(null);
   const [loading, setLoading] = useState(true);
   const [recordMap, setRecordMap] = useState<ExtendedRecordMap | null>(null);
@@ -18,7 +21,9 @@ export default function BlogPostClient({ pageId, serializedRecordMap }: BlogPost
   useEffect(() => {
     try {
       if (serializedRecordMap) {
-        const parsedRecordMap = JSON.parse(serializedRecordMap) as ExtendedRecordMap;
+        const parsedRecordMap = JSON.parse(
+          serializedRecordMap
+        ) as ExtendedRecordMap;
         setRecordMap(parsedRecordMap);
       } else {
         setError(new Error("서버에서 데이터를 가져오지 못했습니다."));
@@ -44,9 +49,13 @@ export default function BlogPostClient({ pageId, serializedRecordMap }: BlogPost
           ← 블로그 목록으로
         </Link>
         <div className="mt-8 p-4 border border-red-200 rounded bg-red-50">
-          <h1 className="text-xl font-bold text-red-600 mb-2">콘텐츠를 불러오는 중 오류가 발생했습니다</h1>
-          <p className="mb-4">다시 시도해주세요. 문제가 계속되면 관리자에게 문의하세요.</p>
-          <button 
+          <h1 className="text-xl font-bold text-red-600 mb-2">
+            콘텐츠를 불러오는 중 오류가 발생했습니다
+          </h1>
+          <p className="mb-4">
+            다시 시도해주세요. 문제가 계속되면 관리자에게 문의하세요.
+          </p>
+          <button
             onClick={handleRetry}
             className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
           >
@@ -81,7 +90,7 @@ export default function BlogPostClient({ pageId, serializedRecordMap }: BlogPost
         ← 블로그 목록으로
       </Link>
       <div className="mt-4">
-        <NotionPageRenderer recordMap={recordMap} />
+        <NotionRenderer recordMap={recordMap} />
       </div>
     </article>
   );
