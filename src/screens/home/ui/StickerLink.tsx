@@ -11,7 +11,11 @@ interface StickerLinkProps {
   className?: string;
 }
 
-export function StickerLink({ href, children, className }: StickerLinkProps) {
+export default function StickerLink({
+  href,
+  children,
+  className,
+}: StickerLinkProps) {
   const [isHover, setHover] = useState(false);
   const [isClicked, setClicked] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);

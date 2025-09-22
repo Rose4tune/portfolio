@@ -1,12 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
-interface Heading {
-  id: string;
-  text: string;
-  level: number;
-}
+import { Heading } from "../types";
 
 interface TableOfContentsProps {
   headings: Heading[];
@@ -27,7 +22,7 @@ const TableOfContents = ({ headings }: TableOfContentsProps) => {
       { rootMargin: "-20% 0px -80% 0px" }
     );
 
-    headings.forEach((heading) => {
+    headings.forEach((heading: Heading) => {
       const element = document.getElementById(heading.id);
       if (element) observer.observe(element);
     });
@@ -38,7 +33,7 @@ const TableOfContents = ({ headings }: TableOfContentsProps) => {
   return (
     <nav className="sticky top-20 max-h-[calc(100vh-5rem)] overflow-y-auto">
       <ul className="space-y-2 text-sm">
-        {headings.map((heading) => (
+        {headings.map((heading: Heading) => (
           <li
             key={heading.id}
             style={{ marginLeft: `${(heading.level - 1) * 1}rem` }}

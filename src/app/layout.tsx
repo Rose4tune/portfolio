@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
-import "../styles/globals.css";
-import { ThemeProvider } from "@/components/providers/theme-provider";
-import Navbar from "@/components/layout/Navbar";
 import { Analytics } from "@vercel/analytics/react";
-import ClientLoading from "@/components/ClientLoading";
-import AnimatedLayout from "@/components/layout/AnimatedLayout";
+import ThemeProvider from "@/shared/providers/ThemeProvider";
+import {
+  Navbar,
+  ClientLoading,
+  AnimatedLayout,
+  AnimatedWelcomeText,
+} from "@/layout";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Ye Seo, LEE Portfolio",
@@ -25,7 +28,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <ClientLoading>
+          <ClientLoading loadingContent={<AnimatedWelcomeText />}>
             <Navbar />
             <main className="py-6 md:py-16">
               <div className="container max-w-4xl mx-auto px-4 sm:px-6">
