@@ -1,24 +1,30 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
 import {
-  RandomKeywordCloud,
-  StickerLink,
   ProfileSection,
-  ProjectSection,
-} from "./ui";
-import { ProjectPost } from "@/shared/types/notion";
+  // SkillSection,
+} from "./section";
+import { RandomKeywordCloud, StickerLink } from "./ui";
+import { usePathname } from "next/navigation";
 
-interface HomeScreenProps {
-  initialTags: string[];
-  initialProjects: ProjectPost[];
-}
-
-export default function HomeScreen({
-  initialTags,
-  initialProjects,
-}: HomeScreenProps) {
+export default function HomeScreen() {
+  const [uniqueTags, setUniqueTags] = useState<string[]>([]);
   const pathname = usePathname();
+
+  useEffect(() => {
+    const fetchTags = async () => {
+      try {
+        const response = await fetch("/api/tags");
+        if (!response.ok) throw new Error("Failed to fetch tags");
+        const tags = await response.json();
+        setUniqueTags(tags);
+      } catch (error) {
+        console.error("Error fetching tags:", error);
+      }
+    };
+    fetchTags();
+  }, []);
 
   const renderKeyword = (word: string, size: string) => (
     <StickerLink
@@ -31,15 +37,15 @@ export default function HomeScreen({
   );
 
   return (
-    <div className="space-y-25">
+    <div className="space-y-8">
       <ProfileSection>
         <RandomKeywordCloud
-          keywords={initialTags}
+          keywords={uniqueTags}
           renderKeyword={renderKeyword}
           key={pathname}
         />
       </ProfileSection>
-      <ProjectSection projects={initialProjects} />
+      {/* <SkillSection /> */}
     </div>
   );
 }

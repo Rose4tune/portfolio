@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
-import { Navbar, ConditionalLayout } from "@/shared/layout";
-import { ThemeProvider } from "@/shared/providers";
-import { AnimatedWelcomeText, ClientLoading } from "@/shared/ui";
-import "@/styles/globals.css";
+import ThemeProvider from "@/shared/providers/ThemeProvider";
+import {
+  Navbar,
+  ClientLoading,
+  AnimatedLayout,
+  AnimatedWelcomeText,
+} from "@/layout";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Ye Seo, LEE Portfolio",

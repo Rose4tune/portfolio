@@ -1,4 +1,4 @@
-import { AnimatedLoadingText, Loader } from "@/shared/ui";
+import { Loader, AnimatedLoadingText } from "@/layout";
 
 function Loading() {
   return (

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Heading } from "@/shared/types/common";
+import { Heading } from "../types";
 
 interface TableOfContentsProps {
   headings: Heading[];
