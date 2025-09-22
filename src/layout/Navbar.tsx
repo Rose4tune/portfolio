@@ -7,10 +7,16 @@ import { Menu, X } from "lucide-react";
 
 const navItems = [
   { name: "Blog", path: "/blog" },
+<<<<<<< HEAD
   { name: "Projects", path: "/projects" },
   { name: "About", path: "/" },
   // { name: "Repositories", path: "/repositories" },
   // { name: "Memoir", path: "/memoir" },
+=======
+  // { name: "Projects", path: "/projects" },
+  // { name: "Resume", path: "/resume" },
+  // { name: "Repositories", path: "/repositories" },
+>>>>>>> 2f3e534 (refactor: nav)
 ];
 
 export default function Navbar() {
