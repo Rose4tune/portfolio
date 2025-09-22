@@ -69,7 +69,7 @@ export async function getPosts(type: PostType) {
       },
       sorts: [
         {
-          property: "작성일",
+          property: "날짜",
           direction: "descending",
         },
       ],
@@ -79,9 +79,9 @@ export async function getPosts(type: PostType) {
     const posts = await Promise.all(
       pages.map(async (page) => {
         const properties = page.properties;
-        const title = getPropertyValue(properties["이름"]) as string;
+        const title = getPropertyValue(properties["제목"]) as string;
         const slug = generateSlug(title);
-        const date = getPropertyValue(properties["작성일"]) as string;
+        const date = getPropertyValue(properties["날짜"]) as string;
         const tags = getPropertyValue(properties["키워드"]) as string[];
 
         const basePost = {
@@ -156,7 +156,7 @@ export async function getPageIdBySlug(
 
     const pages = response.results as PageObjectResponse[];
     for (const page of pages) {
-      const title = getPropertyValue(page.properties["이름"]) as string;
+      const title = getPropertyValue(page.properties["제목"]) as string;
       const generatedSlug = generateSlug(title);
 
       if (generatedSlug === slug) {
