@@ -1,7 +1,11 @@
-import Loader from "@/components/Loader";
+import { Loader, AnimatedLoadingText } from "@/layout";
 
 function Loading() {
-  return <Loader />;
+  return (
+    <Loader>
+      <AnimatedLoadingText />
+    </Loader>
+  );
 }
 
 export default Loading;
