@@ -41,9 +41,16 @@ jobs:
 =======
           node-version: 18
 
+      - name: Install pnpm
+        run: npm install -g pnpm
+
       - name: Install dependencies
+<<<<<<< HEAD
         run: npm ci
 >>>>>>> 889611d (Feat/#12 자동 릴리즈 파이프라인 구축 (#13))
+=======
+        run: pnpm install
+>>>>>>> aac70fe (fix: 릴리즈 플로우 Install dependencies 패키지 pnpm으로 변경)
 
       - name: Run Semantic Release
         env:
