@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import ProfileSection from "./ProfileSection";
 import React from "react";
+import SkillSection from "./SkillSection";
 
 export default function HomePage() {
   const [uniqueTags, setUniqueTags] = useState<string[]>([]);
@@ -24,7 +25,8 @@ export default function HomePage() {
   return (
     <div className="space-y-8">
       <ProfileSection uniqueTags={uniqueTags} />
-      <div className="space-y-4">
+      <SkillSection />
+      {/* <div className="space-y-4">
         <h2 className="text-2xl font-bold tracking-tight">Experience</h2>
         <ul>
           <li>Senior Software Engineer at Tech Company</li>
@@ -38,7 +40,7 @@ export default function HomePage() {
           <li>Bachelor&apos;s Degree in Computer Science</li>
           <li>Various online certifications and courses</li>
         </ul>
-      </div>
+      </div> */}
     </div>
   );
 }
