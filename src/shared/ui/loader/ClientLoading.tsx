@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, ReactNode } from "react";
-import Loader from "./ui/Loader";
+import Loader from "./Loader";
 
 interface ClientLoadingProps {
   children: ReactNode;

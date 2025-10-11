@@ -5,10 +5,14 @@
 @theme {
   --font-pretendard: "Pretendard";
 
+  --breakpoint-xs: 25rem;
+
   --color-primary: #8888ff;
-  --color-primary-50: 234, 234, 254;
-  --color-primary-100: #dcdcff;
-  --color-primary-200: #bebeff;
+  --color-primary-50: 240, 91%, 96%;
+  /* --color-primary-100: #dcdcff; */
+  /* --color-primary-200: #bebeff; */
+  --color-primary-100: 240, 100%, 93%;
+  --color-primary-200: 240, 100%, 87%;
   --color-primary-300: #a0a0ff;
   --color-primary-400: #8888ff;
   --color-primary-500: #6666ff;
@@ -28,14 +32,25 @@
   border: 1px solid var(--color-gray-300);
 }
 
+/* Code */
+code[class*="language-"],
+pre[class*="language-"] {
+  color: var(--color-gray-800);
+}
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
+  background: #ece9f152;
+}
+
+/* Inline Code */
+.notion-inline-code {
+  background: #d5cdde4a;
+}
+
+.notion-quote {
+  font-size: 0.9em;
+}
+
 body {
   @apply text-gray-800;
-}
-
-h2 {
-  @apply text-2xl font-bold tracking-tight;
-}
-
-h3 {
-  @apply text-base font-semibold tracking-tight;
 }

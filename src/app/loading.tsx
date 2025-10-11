@@ -1,4 +1,5 @@
-import { Loader, AnimatedLoadingText } from "@/layout";
+import Loader from "@/shared/ui/loader/Loader";
+import { AnimatedLoadingText } from "@/shared/ui";
 
 function Loading() {
   return (

@@ -11,6 +11,7 @@ const navItems = [
   // { name: "Projects", path: "/projects" },
   // { name: "Resume", path: "/resume" },
   // { name: "Repositories", path: "/repositories" },
+  // { name: "Memoir", path: "/memoir" },
 ];
 
 export default function Navbar() {

@@ -1,6 +1,6 @@
 "use client";
 
-import styles from "./animation.module.css";
+import styles from "@/styles/animation.module.css";
 
 interface LoaderProps {
   color?: string;

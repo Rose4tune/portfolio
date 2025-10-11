@@ -1,6 +1,6 @@
 import Image from "next/image";
-import styles from "./animation.module.css";
 import { ReactNode } from "react";
+import styles from "@/styles/animation.module.css";
 
 interface LoadingProps {
   children?: ReactNode;

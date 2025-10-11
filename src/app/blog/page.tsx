@@ -1,4 +1,5 @@
-import { getPosts, getUniqueTags, PostType } from "@/lib/notion/notionhqClient";
+import { getPosts, getUniqueTags } from "@/shared/lib/api/notion";
+import { PostType } from "@/shared/types/notion";
 import BlogScreen from "@/screens/blog/BlogScreen";
 
 export default async function BlogPage() {

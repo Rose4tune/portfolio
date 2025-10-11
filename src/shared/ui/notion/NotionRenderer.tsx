@@ -2,23 +2,39 @@
 
 import { useState, useEffect, Suspense } from "react";
 import Image from "next/image";
-import { ExtendedRecordMap } from "notion-types";
+import dynamic from "next/dynamic";
+import { NotionContentProps } from "@/shared/types/common";
 import { NotionRenderer as ReactNotionRenderer } from "react-notion-x";
 
 import "react-notion-x/src/styles.css";
-import "prismjs/themes/prism-tomorrow.css";
+import "prismjs/themes/prism.css";
 import "katex/dist/katex.min.css";
 
-const Code = () => null;
-const Equation = () => null;
-const Modal = () => null;
-const Collection = () => null;
+const Code = dynamic(
+  () => import("react-notion-x/build/third-party/code").then((m) => m.Code),
+  { ssr: false }
+);
 
-interface NotionRendererProps {
-  recordMap: ExtendedRecordMap;
-}
+const Equation = dynamic(
+  () =>
+    import("react-notion-x/build/third-party/equation").then((m) => m.Equation),
+  { ssr: false }
+);
 
-export default function NotionRenderer({ recordMap }: NotionRendererProps) {
+const Collection = dynamic(
+  () =>
+    import("react-notion-x/build/third-party/collection").then(
+      (m) => m.Collection
+    ),
+  { ssr: false }
+);
+
+const Modal = dynamic(
+  () => import("react-notion-x/build/third-party/modal").then((m) => m.Modal),
+  { ssr: false }
+);
+
+export default function NotionRenderer({ recordMap }: NotionContentProps) {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {

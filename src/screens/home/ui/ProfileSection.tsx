@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
 import { TypeAnimation } from "react-type-animation";
-import styles from "./profileSection.module.css";
+import styles from "./ProfileSection.module.css";
 import { ReactNode } from "react";
 
 interface ProfileSectionProps {
@@ -90,19 +90,18 @@ export default function ProfileSection({ children }: ProfileSectionProps) {
   return (
     <section
       ref={sectionRef}
-      className="flex flex-col items-start gap-8 sm:flex-row sm:justify-between sm:relative"
+      className="flex flex-col items-start gap-8 text-center sm:flex-row sm:justify-between sm:relative sm:text-left"
     >
-      <div className="flex-4 space-y-3">
-        <h1 className="inline-block text-3xl tracking-tight lg:text-5xl font-normal">
-          YeSeo, LEE
-        </h1>
-        <p className="text-2xl lg:text-3xl font-light text-muted-foreground leading-[1.4]">
-          안녕하세요. <br />
-          개발자 이예서입니다.
+      <div className="flex-4 space-y-6 w-full">
+        <h1 className="inline-block text-3xl font-normal">Ye Seo, LEE</h1>
+        <p className="text-xl font-light text-muted-foreground leading-[1.4]">
+          안녕하세요.
+          <br />
+          프론트엔드 개발자 이예서입니다.
         </p>
       </div>
       <div
-        className={`flex-3 perspective-1000 w-9/10 max-w-xs mx-auto my-0 sm:my-4 ${styles.imageContainer}`}
+        className={`flex-2 perspective-1000 w-9/10 max-w-xs mx-auto my-4 ${styles.imageContainer}`}
         style={{
           transform: transformStyle,
           transition: "transform 0.1s ease-out",
@@ -110,7 +109,7 @@ export default function ProfileSection({ children }: ProfileSectionProps) {
         }}
       >
         <div
-          className="relative h-100 overflow-hidden rounded-full sm:h-120"
+          className="relative h-80 overflow-hidden rounded-full sm:h-90"
           style={{
             boxShadow: isHovered
               ? "0 20px 20px rgba(0,0,0,0.2), 0 0 0 1px rgba(0,0,0,0.1)"
@@ -119,7 +118,7 @@ export default function ProfileSection({ children }: ProfileSectionProps) {
         >
           <Image
             src="/images/profile.jpeg"
-            alt="YeSeo Lee"
+            alt="프로필 이미지"
             sizes="(max-width: 400px) 100%, (min-width: 200px) 50%"
             fill
             className="object-cover object-top rounded-full"
@@ -127,8 +126,8 @@ export default function ProfileSection({ children }: ProfileSectionProps) {
           />
         </div>
       </div>
-      <div className="w-full sm:absolute sm:top-33 lg:top-43 sm:max-w-1/2">
-        <div className="h-15">
+      <div className="w-full xs:max-w-5/6 mx-auto sm:absolute sm:top-35 sm:max-w-3/5">
+        <div className="mb-6 h-12 sm:h-auto">
           <TypeAnimation
             sequence={[
               "글로 풀어내며 스스로 더 깊이 이해하려고 합니다.",
@@ -149,24 +148,18 @@ export default function ProfileSection({ children }: ProfileSectionProps) {
             wrapper="span"
             speed={50}
             repeat={Infinity}
-            className="text-lg lg:text-xl font-light text-muted-foreground block"
+            className="font-light text-muted-foreground block"
           />
         </div>
-        <ul className="flex items-center gap-4">
+        <ul className="flex items-center justify-center gap-4 text-sm text-purple-400 hover:underline sm:justify-start">
           <li>
-            <a
-              href="mailto:rosefor2ne@gmail.com"
-              className="text-purple-400 hover:underline"
-            >
-              Email
-            </a>
+            <a href="mailto:rosefor2ne@gmail.com">Email</a>
           </li>
           <li>
             <a
               href="https://github.com/Rose4tune"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-purple-400 hover:underline"
             >
               GitHub
             </a>
@@ -176,22 +169,17 @@ export default function ProfileSection({ children }: ProfileSectionProps) {
               href="https://www.linkedin.com/in/ye-seo-lee-59a68b232/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-purple-400 hover:underline"
             >
               LinkedIn
             </a>
           </li>
           <li>
-            <a
-              href="/resume"
-              rel="noopener noreferrer"
-              className="text-purple-400 hover:underline"
-            >
+            <a href="/resume" rel="noopener noreferrer">
               Resume
             </a>
           </li>
         </ul>
-        <div className="mt-6 flex flex-wrap gap-x-3 gap-y-1">{children}</div>
+        <div className="mt-6 min-h-40 sm:min-h-30 relative">{children}</div>
       </div>
     </section>
   );

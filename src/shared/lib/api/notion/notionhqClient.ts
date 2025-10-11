@@ -1,4 +1,11 @@
 import { Client, PageObjectResponse } from "@notionhq/client";
+import {
+  PostType,
+  BlogPost,
+  ProjectPost,
+  BookPost,
+} from "@/shared/types/notion";
+import { generateSlug, uniqueArray, formatDate } from "../../utils";
 
 const NOTION_API_KEY = process.env.NOTION_API_KEY;
 const NOTION_DB = {
@@ -10,42 +17,6 @@ const NOTION_DB = {
 const notion = new Client({
   auth: NOTION_API_KEY,
 });
-
-export enum PostType {
-  blog = "blog",
-  project = "project",
-  book = "book",
-}
-
-export interface BlogPost {
-  id: string;
-  title: string;
-  slug: string;
-  date: string;
-  tags: string[];
-  excerpt?: string;
-  content?: string;
-}
-
-export interface ProjectPost {
-  id: string;
-  title: string;
-  slug: string;
-  date: string;
-  tags: string[];
-  status?: string;
-  techStack?: string[];
-}
-
-export interface BookPost {
-  id: string;
-  title: string;
-  slug: string;
-  date: string;
-  tags: string[];
-  author?: string;
-  rating?: number;
-}
 
 export async function getPosts(type: PostType.blog): Promise<BlogPost[]>;
 export async function getPosts(type: PostType.project): Promise<ProjectPost[]>;
@@ -83,6 +54,7 @@ export async function getPosts(type: PostType) {
         const slug = generateSlug(title);
         const date = getPropertyValue(properties["날짜"]) as string;
         const tags = getPropertyValue(properties["키워드"]) as string[];
+        const content = await getPageFirstContent(page.id);
 
         const basePost = {
           id: page.id,
@@ -90,23 +62,22 @@ export async function getPosts(type: PostType) {
           slug,
           date,
           tags,
+          content,
         };
 
         switch (type) {
           case PostType.blog:
-            const excerpt = getPropertyValue(properties["요약"]) as string;
-            const content = excerpt || (await getPageFirstContent(page.id));
             return {
               ...basePost,
-              excerpt,
-              content,
+              excerpt: getPropertyValue(properties["요약"]) as string,
             } as BlogPost;
 
           case PostType.project:
             return {
               ...basePost,
-              status: getPropertyValue(properties["상태"]) as string,
-              techStack: getPropertyValue(properties["기술스택"]) as string[],
+              date: getPropertyValue(properties["날짜"]) as object,
+              status: getPropertyValue(properties["진행 상태"]) as string,
+              techStack: getPropertyValue(properties["기술 스택"]) as string[],
             } as ProjectPost;
 
           case PostType.book:
@@ -134,14 +105,13 @@ export async function getPageIdBySlug(
   slug: string
 ): Promise<string | null> {
   if (!slug || typeof slug !== "string") {
-    console.log(`에러: 유효하지 않은 slug 제공됨. ${slug}`);
     return null;
   }
 
+  const decodedSlug = decodeURIComponent(slug);
   const database_id = NOTION_DB[type];
 
   if (!database_id) {
-    console.log(`에러: ${type} 타입의 데이터베이스 ID가 정의되지 않음.`);
     return null;
   }
 
@@ -159,13 +129,12 @@ export async function getPageIdBySlug(
       const title = getPropertyValue(page.properties["제목"]) as string;
       const generatedSlug = generateSlug(title);
 
-      if (generatedSlug === slug) {
-        console.log(
-          `페이지 ID 찾음: ${page.id} (제목: ${title}, slug: ${generatedSlug})`
-        );
+      if (generatedSlug === decodedSlug) {
         return page.id;
       }
     }
+
+    console.log(`❌ 일치하는 페이지를 찾지 못함`);
     return null;
   } catch (error) {
     console.log(error);
@@ -185,11 +154,7 @@ function getPropertyValue(
       return property.rich_text?.[0]?.plain_text || "";
     case "date":
       const date = property.date?.start || "";
-      return new Date(date).toLocaleDateString("ko-KR", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      });
+      return formatDate(date);
     case "select":
       return property.select?.name || "";
     case "multi_select":
@@ -201,14 +166,6 @@ function getPropertyValue(
     default:
       return "";
   }
-}
-
-function generateSlug(title: string): string {
-  return title
-    .toLowerCase()
-    .replace(/\s+/g, "-")
-    .replace(/[^a-z0-9-]/g, "")
-    .replace(/-+$/, "");
 }
 
 export async function getUniqueTags(type: PostType): Promise<string[]> {
@@ -232,8 +189,8 @@ export async function getUniqueTags(type: PostType): Promise<string[]> {
       const tags = getPropertyValue(page.properties["키워드"]) as string[];
       return tags;
     });
-    const uniqueTags = [...new Set(allTags)].sort();
-    console.log(`고유 태그 목록 생성 완료`);
+    const uniqueTags = uniqueArray(allTags).sort();
+    // console.log(`고유 태그 목록 생성 완료`);
 
     return uniqueTags;
   } catch (error) {
@@ -307,12 +264,7 @@ export async function getPageFirstContent(pageId: string): Promise<string> {
       if (content.length > 100) break;
     }
 
-    const trimmedContent = content.trim().substring(0, 200);
-    console.log(
-      `페이지 첫 번째 콘텐츠 가져오기 완료: ${trimmedContent.length}자`
-    );
-
-    return trimmedContent;
+    return content.trim().substring(0, 200);
   } catch (error) {
     console.log(error);
     return "";
