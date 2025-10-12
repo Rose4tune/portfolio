@@ -190,7 +190,6 @@ export async function getUniqueTags(type: PostType): Promise<string[]> {
       return tags;
     });
     const uniqueTags = uniqueArray(allTags).sort();
-    // console.log(`고유 태그 목록 생성 완료`);
 
     return uniqueTags;
   } catch (error) {

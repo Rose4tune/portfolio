@@ -2,6 +2,7 @@
 
 import { NotionRenderer, PostLayout } from "@/shared/ui";
 import { useNotionRecord } from "@/shared/lib/hooks";
+import Loading from "@/app/loading";
 
 interface BlogPostScreenProps {
   pageId: string;
@@ -49,14 +50,7 @@ export default function BlogPostScreen({
   }
 
   if (loading || !recordMap) {
-    return (
-      <PostLayout linkText={linkText} href={href}>
-        <div className="mt-4 py-8 flex flex-col items-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500 mb-4"></div>
-          <p>콘텐츠를 불러오는 중...</p>
-        </div>
-      </PostLayout>
-    );
+    return <Loading />;
   }
 
   return (
