@@ -1,14 +1,11 @@
-"use client";
+import { TagButtonProps } from "../types";
 
-interface TagButtonProps {
-  tag: string | null;
-  selectedTag: string | null;
-  onClick: () => void;
-}
-
-const TagButton = ({ tag, selectedTag, onClick }: TagButtonProps) => {
+export default function TagButton({
+  tag,
+  selectedTag,
+  onClick,
+}: TagButtonProps) {
   const isSelected = tag === selectedTag;
-
   return (
     <button
       onClick={onClick}
@@ -21,6 +18,4 @@ const TagButton = ({ tag, selectedTag, onClick }: TagButtonProps) => {
       {tag || "전체"}
     </button>
   );
-};
-
-export default TagButton;
+}

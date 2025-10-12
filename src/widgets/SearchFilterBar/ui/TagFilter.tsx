@@ -1,10 +1,9 @@
-const TagFilter = ({
+import { TagFilterProps } from "../types";
+
+export default function TagFilter({
   searchQuery,
   setSearchQuery,
-}: {
-  searchQuery: string;
-  setSearchQuery: (query: string) => void;
-}) => {
+}: TagFilterProps) {
   return (
     <div className="relative w-2/5">
       <input
@@ -24,6 +23,4 @@ const TagFilter = ({
       )}
     </div>
   );
-};
-
-export default TagFilter;
+}
