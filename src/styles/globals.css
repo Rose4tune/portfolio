@@ -8,11 +8,9 @@
   --breakpoint-xs: 25rem;
 
   --color-primary: #8888ff;
-  --color-primary-50: 240, 91%, 96%;
-  /* --color-primary-100: #dcdcff; */
-  /* --color-primary-200: #bebeff; */
-  --color-primary-100: 240, 100%, 93%;
-  --color-primary-200: 240, 100%, 87%;
+  --color-primary-50: #ececfe;
+  --color-primary-100: #dcdcff;
+  --color-primary-200: #bebeff;
   --color-primary-300: #a0a0ff;
   --color-primary-400: #8888ff;
   --color-primary-500: #6666ff;
@@ -20,6 +18,9 @@
   --color-primary-700: #3333ff;
   --color-primary-800: #1a1aff;
   --color-primary-900: #0000ff;
+  --color-primary-50-hsl: 240, 91%, 96%;
+  --color-primary-100-hsl: 240, 100%, 93%;
+  --color-primary-200-hsl: 240, 100%, 87%;
 }
 
 .article {
