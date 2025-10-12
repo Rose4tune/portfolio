@@ -28,7 +28,7 @@ export default function RootLayout({
           <ClientLoading loadingContent={<AnimatedWelcomeText />}>
             <Navbar />
             <main className="py-6 md:py-12">
-              <div className="container max-w-3xl mx-auto px-4 sm:px-6">
+              <div className="container max-w-3xl mx-auto px-8">
                 <AnimatedLayout>{children}</AnimatedLayout>
               </div>
             </main>

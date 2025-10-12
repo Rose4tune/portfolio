@@ -33,25 +33,12 @@
   border: 1px solid var(--color-gray-300);
 }
 
-/* Code */
-code[class*="language-"],
-pre[class*="language-"] {
-  color: var(--color-gray-800);
-}
-:not(pre) > code[class*="language-"],
-pre[class*="language-"] {
-  background: #ece9f152;
-}
-
-/* Inline Code */
-.notion-inline-code {
-  background: #d5cdde4a;
-}
-
-.notion-quote {
-  font-size: 0.9em;
-}
-
 body {
   @apply text-gray-800;
+}
+
+@media (max-width: 768px) {
+  html {
+    font-size: 12px;
+  }
 }

@@ -1,0 +1,86 @@
+/* Notion Contents Custom */
+.notion {
+  font-size: 0.9rem;
+}
+
+.notion-page {
+  width: 100%;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Notion Text Custom */
+.notion-title {
+  font-size: 2.1em;
+}
+
+.notion-simple-table {
+  font-size: 1em;
+}
+
+/* Page Icon Custom */
+.notion-page-icon-hero {
+  display: none;
+}
+.notion-page-no-cover {
+  padding-top: 0;
+  margin-top: 0 !important;
+}
+
+/* List Custom */
+.notion-list-disc {
+  width: 100%;
+  padding-inline-start: 1em;
+}
+
+/* Code Block Custom */
+code[class*="language-"],
+pre[class*="language-"] {
+  color: var(--color-gray-800);
+}
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
+  background: #ece9f152;
+}
+
+/* Inline Code Custom */
+.notion-inline-code {
+  background: #d5cdde4a;
+}
+
+/* Quote Custom */
+.notion-quote {
+  font-size: 1em;
+}
+
+/* Notion Responsive */
+@media (max-width: 768px) {
+  .notion {
+    font-size: 1rem;
+  }
+
+  .notion-title {
+    font-size: 1.75em;
+  }
+
+  /* Notion Text Size Custom */
+  .notion-h1 {
+    font-size: 1.6em;
+  }
+
+  .notion-h2 {
+    font-size: 1.4em;
+  }
+
+  .notion-h3 {
+    font-size: 1.2em;
+  }
+
+  .notion-text {
+    font-size: 1em;
+  }
+
+  .notion-quote {
+    border-left-width: 2px;
+  }
+}

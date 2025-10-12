@@ -17,9 +17,7 @@ export default function SearchFilterBar({
     <div className={`mb-12 ${className}`}>
       {title && <h2 className="text-4xl font-bold mb-6">{title}</h2>}
 
-      <div className="flex items-end justify-between gap-4">
-        <TagFilter searchQuery={searchQuery} setSearchQuery={onSearchChange} />
-      </div>
+      <TagFilter searchQuery={searchQuery} setSearchQuery={onSearchChange} />
 
       <div className="flex flex-wrap gap-2 mt-6">
         <TagButton

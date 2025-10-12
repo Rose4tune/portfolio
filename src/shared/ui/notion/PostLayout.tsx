@@ -13,7 +13,7 @@ export default function PostLayout({
 }: postLayoutProps) {
   return (
     <article>
-      <Link href={href} className="mb-8 inline-block">
+      <Link href={href} className="inline-block">
         ← {linkText}
       </Link>
       <div className="mt-4">{children}</div>

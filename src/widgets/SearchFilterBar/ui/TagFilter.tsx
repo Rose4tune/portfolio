@@ -5,7 +5,7 @@ export default function TagFilter({
   setSearchQuery,
 }: TagFilterProps) {
   return (
-    <div className="relative w-2/5">
+    <div className="relative w-full md:w-2/3">
       <input
         type="text"
         placeholder="태그 및 제목 검색..."
