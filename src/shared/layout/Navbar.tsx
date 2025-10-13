@@ -22,9 +22,9 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-white dark:bg-gray-900 shadow-sm relative z-50">
+    <nav className="bg-white dark:bg-gray-900 shadow-sm z-50 fixed top-0 left-0 w-full">
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
-        <div className="flex justify-between h-12 md:h-16">
+        <div className="flex justify-between py-3 sm:py-1">
           <div className="flex items-center">
             {pathname !== "/" && (
               <Link

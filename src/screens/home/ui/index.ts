@@ -1,6 +1,6 @@
 // Sections
 export { default as ProfileSection } from "./ProfileSection";
-export { default as Section } from "./Section";
+export { default as ProjectSection } from "./ProjectSection";
 
 // Components
 export { default as RandomKeywordCloud } from "./RandomKeywordCloud";

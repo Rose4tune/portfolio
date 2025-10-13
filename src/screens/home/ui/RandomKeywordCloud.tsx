@@ -24,7 +24,7 @@ export default function RandomKeywordCloud({
 
   const handleShuffle = () => {
     const newKeywords = shuffleArray(keywords)
-      .slice(0, 10)
+      .slice(0, 12)
       .map((word) => ({ word, size: getRandomItem(FontSizes) }));
     setDisplayKeywords((prev) => {
       return JSON.stringify(prev) === JSON.stringify(newKeywords)

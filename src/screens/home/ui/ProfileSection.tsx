@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
 import { TypeAnimation } from "react-type-animation";
@@ -90,10 +91,10 @@ export default function ProfileSection({ children }: ProfileSectionProps) {
   return (
     <section
       ref={sectionRef}
-      className="flex flex-col items-start gap-8 text-center sm:flex-row sm:justify-between sm:relative sm:text-left"
+      className="max-w-4xl mx-auto px-8 flex flex-col items-start gap-8 text-center sm:flex-row sm:justify-between sm:relative sm:text-left"
     >
-      <div className="flex-4 space-y-6 w-full">
-        <h1 className="inline-block text-3xl font-normal">Ye Seo, LEE</h1>
+      <div className="flex-4 space-y-6 w-full sm:mt-10">
+        <h1 className="inline-block text-4xl font-normal">Ye Seo, LEE</h1>
         <p className="text-xl font-light text-muted-foreground leading-[1.4]">
           안녕하세요.
           <br />
@@ -101,7 +102,7 @@ export default function ProfileSection({ children }: ProfileSectionProps) {
         </p>
       </div>
       <div
-        className={`flex-2 perspective-1000 w-9/10 max-w-xs mx-auto my-4 ${styles.imageContainer}`}
+        className={`flex-3 perspective-1000 w-9/10 max-w-xs mx-auto my-5 sm:my-0 ${styles.imageContainer}`}
         style={{
           transform: transformStyle,
           transition: "transform 0.1s ease-out",
@@ -109,7 +110,7 @@ export default function ProfileSection({ children }: ProfileSectionProps) {
         }}
       >
         <div
-          className="relative h-80 overflow-hidden rounded-full sm:h-90"
+          className="relative h-80 overflow-hidden rounded-full sm:h-120"
           style={{
             boxShadow: isHovered
               ? "0 20px 20px rgba(0,0,0,0.2), 0 0 0 1px rgba(0,0,0,0.1)"
@@ -126,8 +127,8 @@ export default function ProfileSection({ children }: ProfileSectionProps) {
           />
         </div>
       </div>
-      <div className="w-full xs:max-w-5/6 mx-auto sm:absolute sm:top-35 sm:max-w-3/5">
-        <div className="mb-6 h-12 sm:h-auto">
+      <div className="w-full xs:max-w-5/6 mx-auto sm:absolute sm:top-45 sm:max-w-1/2">
+        <div className="h-12 sm:h-auto text-lg md:text-base">
           <TypeAnimation
             sequence={[
               "글로 풀어내며 스스로 더 깊이 이해하려고 합니다.",
@@ -151,35 +152,30 @@ export default function ProfileSection({ children }: ProfileSectionProps) {
             className="font-light text-muted-foreground block"
           />
         </div>
-        <ul className="flex items-center justify-center gap-4 text-sm text-purple-400 hover:underline sm:justify-start">
-          <li>
-            <a href="mailto:rosefor2ne@gmail.com">Email</a>
+        <ul className="flex items-center justify-center gap-4 my-6 text-base md:text-sm text-purple-400 sm:justify-start">
+          <li className="hover:underline">
+            <Link href="mailto:rosefor2ne@gmail.com">Email</Link>
           </li>
-          <li>
-            <a
-              href="https://github.com/Rose4tune"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+          <li className="hover:underline">
+            <Link href="https://github.com/Rose4tune" target="_blank">
               GitHub
-            </a>
+            </Link>
           </li>
-          <li>
-            <a
+          <li className="hover:underline">
+            <Link
               href="https://www.linkedin.com/in/ye-seo-lee-59a68b232/"
               target="_blank"
-              rel="noopener noreferrer"
             >
               LinkedIn
-            </a>
+            </Link>
           </li>
-          <li>
-            <a href="/resume" rel="noopener noreferrer">
+          <li className="hover:underline">
+            <Link href="/resume" rel="noopener noreferrer">
               Resume
-            </a>
+            </Link>
           </li>
         </ul>
-        <div className="mt-6 min-h-40 sm:min-h-30 relative">{children}</div>
+        <div className="min-h-30 relative">{children}</div>
       </div>
     </section>
   );
