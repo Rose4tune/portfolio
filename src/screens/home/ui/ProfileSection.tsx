@@ -4,11 +4,21 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
 import { TypeAnimation } from "react-type-animation";
+<<<<<<< HEAD
+=======
+<<<<<<<< HEAD:src/screens/home/section/ProfileSection.tsx
+>>>>>>> 057a29a (Feat/#9 프로젝트 노션 연동 (#16))
 <<<<<<<< HEAD:src/screens/home/ui/ProfileSection.tsx
 import styles from "./ProfileSection.module.css";
 ========
 import styles from "./profileSection.module.css";
 >>>>>>>> f2a4627 (Refactor/#10 화면 정리하기 (#11)):src/screens/home/section/ProfileSection.tsx
+<<<<<<< HEAD
+=======
+========
+import styles from "./ProfileSection.module.css";
+>>>>>>>> 057a29a (Feat/#9 프로젝트 노션 연동 (#16)):src/screens/home/ui/ProfileSection.tsx
+>>>>>>> 057a29a (Feat/#9 프로젝트 노션 연동 (#16))
 import { ReactNode } from "react";
 
 interface ProfileSectionProps {
@@ -173,6 +183,10 @@ export default function ProfileSection({ children }: ProfileSectionProps) {
               LinkedIn
             </Link>
           </li>
+<<<<<<< HEAD
+=======
+<<<<<<<< HEAD:src/screens/home/section/ProfileSection.tsx
+>>>>>>> 057a29a (Feat/#9 프로젝트 노션 연동 (#16))
           {/* <li className="hover:underline">
             <Link href="/resume" rel="noopener noreferrer">
               Resume
@@ -184,6 +198,18 @@ export default function ProfileSection({ children }: ProfileSectionProps) {
 ========
         <div className="mt-6 flex flex-wrap gap-x-3 gap-y-1">{children}</div>
 >>>>>>>> f2a4627 (Refactor/#10 화면 정리하기 (#11)):src/screens/home/section/ProfileSection.tsx
+<<<<<<< HEAD
+=======
+========
+          <li className="hover:underline">
+            <Link href="/resume" rel="noopener noreferrer">
+              Resume
+            </Link>
+          </li>
+        </ul>
+        <div className="min-h-30 relative">{children}</div>
+>>>>>>>> 057a29a (Feat/#9 프로젝트 노션 연동 (#16)):src/screens/home/ui/ProfileSection.tsx
+>>>>>>> 057a29a (Feat/#9 프로젝트 노션 연동 (#16))
       </div>
     </section>
   );

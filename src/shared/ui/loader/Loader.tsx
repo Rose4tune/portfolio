@@ -1,4 +1,8 @@
 import Image from "next/image";
+<<<<<<< HEAD
+=======
+<<<<<<<< HEAD:src/layout/ui/Loader.tsx
+>>>>>>> 057a29a (Feat/#9 프로젝트 노션 연동 (#16))
 <<<<<<<< HEAD:src/shared/ui/loader/Loader.tsx
 import { ReactNode } from "react";
 import styles from "@/styles/animation.module.css";
@@ -6,6 +10,13 @@ import styles from "@/styles/animation.module.css";
 import styles from "./animation.module.css";
 import { ReactNode } from "react";
 >>>>>>>> f2a4627 (Refactor/#10 화면 정리하기 (#11)):src/layout/ui/Loader.tsx
+<<<<<<< HEAD
+=======
+========
+import { ReactNode } from "react";
+import styles from "@/styles/animation.module.css";
+>>>>>>>> 057a29a (Feat/#9 프로젝트 노션 연동 (#16)):src/shared/ui/loader/Loader.tsx
+>>>>>>> 057a29a (Feat/#9 프로젝트 노션 연동 (#16))
 
 interface LoadingProps {
   children?: ReactNode;
