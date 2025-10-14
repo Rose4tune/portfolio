@@ -1,6 +1,7 @@
 "use client";
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { useHeadings } from "@/shared/lib/hooks";
 import { ResumeContents, TableOfContents } from "./ui";
 
@@ -8,10 +9,13 @@ export default function ResumeScreen() {
   const headings = useHeadings("h2");
 =======
 import { useEffect, useState } from "react";
+=======
+import { useHeadings } from "@/shared/lib/hooks";
+>>>>>>> 057a29a (Feat/#9 프로젝트 노션 연동 (#16))
 import { ResumeContents, TableOfContents } from "./ui";
-import { Heading } from "./types";
 
 export default function ResumeScreen() {
+<<<<<<< HEAD
   const [headings, setHeadings] = useState<Heading[]>([]);
 
   useEffect(() => {
@@ -35,6 +39,9 @@ export default function ResumeScreen() {
     setHeadings(headingElements);
   }, []);
 >>>>>>> f2a4627 (Refactor/#10 화면 정리하기 (#11))
+=======
+  const headings = useHeadings("h2");
+>>>>>>> 057a29a (Feat/#9 프로젝트 노션 연동 (#16))
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">

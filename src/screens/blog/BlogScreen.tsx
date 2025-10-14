@@ -1,6 +1,7 @@
 "use client";
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 import Link from "next/link";
 import { BlogPost } from "@/shared/types/notion";
 import { getPreviewText } from "@/shared/lib/utils";
@@ -16,6 +17,16 @@ import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { BlogPost } from "@/lib/notion/notionhqClient";
 import { TagFilter, TagButton } from "@/shared/notionRenderer";
 >>>>>>> f2a4627 (Refactor/#10 화면 정리하기 (#11))
+=======
+import Link from "next/link";
+import { BlogPost } from "@/shared/types/notion";
+import { getPreviewText } from "@/shared/lib/utils";
+import {
+  SearchFilterBar,
+  useSearchTagFilterBar,
+} from "@/widgets/SearchFilterBar";
+import animate from "@/styles/animation.module.css";
+>>>>>>> 057a29a (Feat/#9 프로젝트 노션 연동 (#16))
 
 export default function BlogScreen({
   posts,
@@ -25,6 +36,9 @@ export default function BlogScreen({
   uniqueTags: string[];
 }) {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 057a29a (Feat/#9 프로젝트 노션 연동 (#16))
   const {
     filteredItems,
     selectedTag,
@@ -33,6 +47,7 @@ export default function BlogScreen({
     setSearchQuery,
     filteredTags,
   } = useSearchTagFilterBar(posts, uniqueTags);
+<<<<<<< HEAD
 
   return (
     <>
@@ -146,56 +161,57 @@ export default function BlogScreen({
         post.tags?.some((tag) => tag.toLowerCase().includes(query))
     );
   }, [filteredPosts, searchQuery]);
+=======
+>>>>>>> 057a29a (Feat/#9 프로젝트 노션 연동 (#16))
 
   return (
     <>
-      <div className="flex items-end justify-between gap-4">
-        <h1 className="text-4xl font-bold">블로그</h1>
-        <TagFilter searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-      </div>
-      <div className="flex flex-wrap gap-2 my-6">
-        <TagButton
-          tag={null}
-          selectedTag={selectedTag}
-          onClick={() => setSelectedTag(null)}
-        />
-        {filteredTags.map((tag: string) => (
-          <TagButton
-            key={tag}
-            tag={tag}
-            selectedTag={selectedTag}
-            onClick={() => setSelectedTag(tag)}
-          />
-        ))}
-      </div>
+      <SearchFilterBar
+        selectedTag={selectedTag}
+        searchQuery={searchQuery}
+        filteredTags={filteredTags}
+        onTagSelect={handleTagSelect}
+        onSearchChange={setSearchQuery}
+      />
 
-      <ul
-        className={`grid gap-6 ${
-          searchFilteredPosts.length <= 6
-            ? "grid-cols-1 w-full"
-            : "grid-cols-1 md:grid-cols-2"
-        }`}
-      >
-        {searchFilteredPosts.map((post) => {
+      <div className="space-y-0 border-t border-primary-100 dark:border-gray-700">
+        {filteredItems.map((post) => {
           return (
-            <li key={post.id} className="w-full">
-              <Link
-                href={`/blog/${post.slug}`}
-                className="block border rounded-lg p-6 hover:shadow-lg transition-shadow hover:border-purple-600 hover:text-purple-800 h-full"
+            <div
+              className={`${animate.shimmerEffect} -mx-1 px-1`}
+              key={post.id}
+            >
+              <div
+                key={post.id}
+                className="py-6 border-b border-primary-100 dark:border-gray-700"
               >
-                <article className="h-full flex flex-col">
-                  <h2 className="text-xl font-semibold mb-2">{post.title}</h2>
-                  <time className="text-sm text-gray-500">{post.date}</time>
-                  <p className="mt-2 text-gray-300 line-clamp-3 flex-grow">
-                    {post.excerpt
-                      ? getPreviewText(post.excerpt)
-                      : post.content
-                      ? getPreviewText(post.content)
-                      : "내용을 확인하려면 클릭하세요."}
-                  </p>
+                <Link href={`/blog/${post.slug}`}>
+                  <h2 className="text-xl font-normal">{post.title}</h2>
+                  <div className="mt-1 mb-3 font-light text-sm text-gray-400 dark:text-gray-500">
+                    <p className="leading-relaxed line-clamp-3">
+                      <span className="after:content-['|'] after:mx-2">
+                        {post.tags[0]}
+                      </span>
+                      {post.excerpt
+                        ? post.excerpt
+                        : post.content
+                        ? getPreviewText(post.content, 100)
+                        : "내용을 확인하려면 클릭하세요."}
+                    </p>
+                  </div>
                   {post.tags && post.tags.length > 0 && (
+<<<<<<< HEAD
                     <div className="mt-3 flex flex-wrap gap-3 justify-end">
 >>>>>>> f2a4627 (Refactor/#10 화면 정리하기 (#11))
+=======
+                    <div className="flex flex-wrap gap-3 font-light text-gray-400">
+                      <time className="text-xs w-[70px]">
+                        {post.date
+                          .replaceAll("년", ".")
+                          .replaceAll("월", ".")
+                          .replaceAll("일", ".")}
+                      </time>
+>>>>>>> 057a29a (Feat/#9 프로젝트 노션 연동 (#16))
                       {post.tags.map((tag: string) => (
                         <button
                           key={tag}
@@ -203,6 +219,7 @@ export default function BlogScreen({
                             e.preventDefault();
                             handleTagSelect(tag);
                           }}
+<<<<<<< HEAD
 <<<<<<< HEAD
                           className={`text-xs cursor-pointer ${
                             selectedTag === tag
@@ -214,6 +231,12 @@ export default function BlogScreen({
                               ? "text-purple-400"
                               : "text-gray-500"
 >>>>>>> f2a4627 (Refactor/#10 화면 정리하기 (#11))
+=======
+                          className={`text-xs cursor-pointer ${
+                            selectedTag === tag
+                              ? "text-primary-300"
+                              : "text-gray-400"
+>>>>>>> 057a29a (Feat/#9 프로젝트 노션 연동 (#16))
                           }`}
                         >
                           {tag}
@@ -221,6 +244,7 @@ export default function BlogScreen({
                       ))}
                     </div>
                   )}
+<<<<<<< HEAD
 <<<<<<< HEAD
                 </Link>
               </div>
@@ -236,6 +260,14 @@ export default function BlogScreen({
         })}
       </ul>
 >>>>>>> f2a4627 (Refactor/#10 화면 정리하기 (#11))
+=======
+                </Link>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+>>>>>>> 057a29a (Feat/#9 프로젝트 노션 연동 (#16))
     </>
   );
 }

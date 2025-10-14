@@ -3,6 +3,7 @@ import {
   getPageIdBySlug,
   getPosts,
 <<<<<<< HEAD
+<<<<<<< HEAD
   getRecordMap,
 } from "@/shared/lib/api/notion";
 import { PostType } from "@/shared/types/notion";
@@ -11,12 +12,18 @@ import { PostType } from "@/shared/types/notion";
 } from "@/lib/notion/notionhqClient";
 import { getRecordMap } from "@/lib/notion/notionClient";
 >>>>>>> f2a4627 (Refactor/#10 화면 정리하기 (#11))
+=======
+  getRecordMap,
+} from "@/shared/lib/api/notion";
+import { PostType } from "@/shared/types/notion";
+>>>>>>> 057a29a (Feat/#9 프로젝트 노션 연동 (#16))
 import BlogPostScreen from "@/screens/blog/BlogPostScreen";
 
 export const revalidate = 3600;
 
 export async function generateStaticParams() {
   try {
+<<<<<<< HEAD
 <<<<<<< HEAD
     const posts = await getPosts(PostType.blog);
 
@@ -41,16 +48,24 @@ export async function generateStaticParams() {
     );
 
 >>>>>>> f2a4627 (Refactor/#10 화면 정리하기 (#11))
+=======
+    const posts = await getPosts(PostType.blog);
+
+>>>>>>> 057a29a (Feat/#9 프로젝트 노션 연동 (#16))
     return posts.map((post) => ({
       slug: post.slug,
     }));
   } catch (error) {
+<<<<<<< HEAD
 <<<<<<< HEAD
     throw error;
 =======
     console.error("❌ [ISR] Error generating static params:", error);
     return [];
 >>>>>>> f2a4627 (Refactor/#10 화면 정리하기 (#11))
+=======
+    throw error;
+>>>>>>> 057a29a (Feat/#9 프로젝트 노션 연동 (#16))
   }
 }
 
@@ -84,6 +99,7 @@ const withTimeout = <T,>(
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default async function BlogPostPage(props: any) {
 <<<<<<< HEAD
+<<<<<<< HEAD
   const { slug } = await props.params;
 =======
   const slug = props.params?.slug;
@@ -102,6 +118,9 @@ export default async function BlogPostPage(props: any) {
   }
 
 >>>>>>> f2a4627 (Refactor/#10 화면 정리하기 (#11))
+=======
+  const { slug } = await props.params;
+>>>>>>> 057a29a (Feat/#9 프로젝트 노션 연동 (#16))
   try {
     const pageId = await withTimeout(
       getPageIdBySlug(PostType.blog, slug),
@@ -117,6 +136,7 @@ export default async function BlogPostPage(props: any) {
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     try {
 =======
     console.log(`[DEBUG] Found page ID: "${pageId}" for slug: "${slug}"`);
@@ -127,6 +147,9 @@ export default async function BlogPostPage(props: any) {
       );
 
 >>>>>>> f2a4627 (Refactor/#10 화면 정리하기 (#11))
+=======
+    try {
+>>>>>>> 057a29a (Feat/#9 프로젝트 노션 연동 (#16))
       let recordMap;
       try {
         recordMap = await withTimeout(getRecordMap(pageId), 60000);
@@ -136,9 +159,12 @@ export default async function BlogPostPage(props: any) {
           !process.env.NEXT_RUNTIME
         ) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
           console.log(`[DEBUG] First attempt failed, retrying after delay...`);
 >>>>>>> f2a4627 (Refactor/#10 화면 정리하기 (#11))
+=======
+>>>>>>> 057a29a (Feat/#9 프로젝트 노션 연동 (#16))
           await new Promise((resolve) => setTimeout(resolve, 5000));
           recordMap = await withTimeout(getRecordMap(pageId), 90000);
         } else {
@@ -150,11 +176,14 @@ export default async function BlogPostPage(props: any) {
       try {
         const serializedRecordMap = JSON.stringify(recordMap);
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
         console.log(
           `[DEBUG] ✅ Successfully fetched and serialized record map`
         );
 >>>>>>> f2a4627 (Refactor/#10 화면 정리하기 (#11))
+=======
+>>>>>>> 057a29a (Feat/#9 프로젝트 노션 연동 (#16))
         return (
           <BlogPostScreen
             pageId={pageId}
@@ -162,6 +191,7 @@ export default async function BlogPostPage(props: any) {
           />
         );
       } catch (serializeError) {
+<<<<<<< HEAD
 <<<<<<< HEAD
         if (process.env.NODE_ENV === "production") {
 =======
@@ -178,6 +208,9 @@ export default async function BlogPostPage(props: any) {
             "[DEBUG] Returning empty record map for build to continue"
           );
 >>>>>>> f2a4627 (Refactor/#10 화면 정리하기 (#11))
+=======
+        if (process.env.NODE_ENV === "production") {
+>>>>>>> 057a29a (Feat/#9 프로젝트 노션 연동 (#16))
           return <BlogPostScreen pageId={pageId} serializedRecordMap="" />;
         }
 
@@ -185,6 +218,7 @@ export default async function BlogPostPage(props: any) {
         throw serializeError;
       }
     } catch (error) {
+<<<<<<< HEAD
 <<<<<<< HEAD
       throw error;
     }
@@ -228,6 +262,11 @@ export default async function BlogPostPage(props: any) {
     }
 
 >>>>>>> f2a4627 (Refactor/#10 화면 정리하기 (#11))
+=======
+      throw error;
+    }
+  } catch {
+>>>>>>> 057a29a (Feat/#9 프로젝트 노션 연동 (#16))
     return notFound();
   }
 }

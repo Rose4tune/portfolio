@@ -1,6 +1,7 @@
 "use client";
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { NotionRenderer, PostLayout } from "@/shared/ui";
 import { useNotionRecord } from "@/shared/lib/hooks";
 import Loading from "@/app/loading";
@@ -10,21 +11,32 @@ import Link from "next/link";
 import { ExtendedRecordMap } from "notion-types";
 import NotionRenderer from "@/shared/notionRenderer/NotionRenderer";
 >>>>>>> f2a4627 (Refactor/#10 화면 정리하기 (#11))
+=======
+import { NotionRenderer, PostLayout } from "@/shared/ui";
+import { useNotionRecord } from "@/shared/lib/hooks";
+import Loading from "@/app/loading";
+>>>>>>> 057a29a (Feat/#9 프로젝트 노션 연동 (#16))
 
 interface BlogPostScreenProps {
   pageId: string;
   serializedRecordMap: string;
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 const linkText = "블로그 목록으로";
 const href = "/blog";
 =======
 >>>>>>> f2a4627 (Refactor/#10 화면 정리하기 (#11))
+=======
+const linkText = "블로그 목록으로";
+const href = "/blog";
+>>>>>>> 057a29a (Feat/#9 프로젝트 노션 연동 (#16))
 
 export default function BlogPostScreen({
   pageId,
   serializedRecordMap,
 }: BlogPostScreenProps) {
+<<<<<<< HEAD
 <<<<<<< HEAD
   const { recordMap, loading, error, setLoading, setError } =
     useNotionRecord(serializedRecordMap);
@@ -51,6 +63,10 @@ export default function BlogPostScreen({
     }
   }, [serializedRecordMap]);
 >>>>>>> f2a4627 (Refactor/#10 화면 정리하기 (#11))
+=======
+  const { recordMap, loading, error, setLoading, setError } =
+    useNotionRecord(serializedRecordMap);
+>>>>>>> 057a29a (Feat/#9 프로젝트 노션 연동 (#16))
 
   const handleRetry = () => {
     setLoading(true);
@@ -61,6 +77,7 @@ export default function BlogPostScreen({
   if (error) {
     return (
 <<<<<<< HEAD
+<<<<<<< HEAD
       <PostLayout linkText={linkText} href={href}>
 =======
       <article>
@@ -68,6 +85,9 @@ export default function BlogPostScreen({
           ← 블로그 목록으로
         </Link>
 >>>>>>> f2a4627 (Refactor/#10 화면 정리하기 (#11))
+=======
+      <PostLayout linkText={linkText} href={href}>
+>>>>>>> 057a29a (Feat/#9 프로젝트 노션 연동 (#16))
         <div className="mt-8 p-4 border border-red-200 rounded bg-red-50">
           <h1 className="text-xl font-bold text-red-600 mb-2">
             콘텐츠를 불러오는 중 오류가 발생했습니다
@@ -87,14 +107,19 @@ export default function BlogPostScreen({
           </div>
         </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
       </PostLayout>
 =======
       </article>
 >>>>>>> f2a4627 (Refactor/#10 화면 정리하기 (#11))
+=======
+      </PostLayout>
+>>>>>>> 057a29a (Feat/#9 프로젝트 노션 연동 (#16))
     );
   }
 
   if (loading || !recordMap) {
+<<<<<<< HEAD
 <<<<<<< HEAD
     return <Loading />;
   }
@@ -127,5 +152,14 @@ export default function BlogPostScreen({
       </div>
     </article>
 >>>>>>> f2a4627 (Refactor/#10 화면 정리하기 (#11))
+=======
+    return <Loading />;
+  }
+
+  return (
+    <PostLayout linkText={linkText} href={href}>
+      <NotionRenderer recordMap={recordMap} />
+    </PostLayout>
+>>>>>>> 057a29a (Feat/#9 프로젝트 노션 연동 (#16))
   );
 }
