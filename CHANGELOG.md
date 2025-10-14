@@ -1,3 +1,9 @@
+## [1.1.0](https://github.com/Rose4tune/portfolio/compare/v1.0.0...v1.1.0) (2025-10-14)
+
+### Features
+
+* 프로젝트 섹션 추가 ([#17](https://github.com/Rose4tune/portfolio/issues/17)) ([f39190d](https://github.com/Rose4tune/portfolio/commit/f39190d1fdc091d9ce72d1bef4a61e27e7cd71fe)), closes [Refactor/#10](https://github.com/Refactor/portfolio/issues/10) [#11](https://github.com/Rose4tune/portfolio/issues/11) [Feat/#12](https://github.com/Feat/portfolio/issues/12) [#13](https://github.com/Rose4tune/portfolio/issues/13) [Feat/#9](https://github.com/Feat/portfolio/issues/9) [#16](https://github.com/Rose4tune/portfolio/issues/16)
+
 ## 1.0.0 (2025-09-22)
 
 ### Features
