@@ -169,11 +169,11 @@ export default function ProfileSection({ children }: ProfileSectionProps) {
               LinkedIn
             </Link>
           </li>
-          <li className="hover:underline">
+          {/* <li className="hover:underline">
             <Link href="/resume" rel="noopener noreferrer">
               Resume
             </Link>
-          </li>
+          </li> */}
         </ul>
         <div className="min-h-30 relative">{children}</div>
       </div>
