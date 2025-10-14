@@ -8,20 +8,21 @@ export interface PostBase {
   id: string;
   title: string;
   slug: string;
+  date: string;
   tags: string[];
+  excerpt?: string;
   content?: string;
 }
 
 export interface BlogPost extends PostBase {
-  date: string;
   excerpt?: string;
 }
 
 export interface ProjectPost extends PostBase {
-  date: object;
   date_end?: string;
   status?: string;
   techStack?: string[];
+  coverImage?: string;
 }
 
 export interface BookPost extends PostBase {

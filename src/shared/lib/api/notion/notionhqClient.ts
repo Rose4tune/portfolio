@@ -54,6 +54,7 @@ export async function getPosts(type: PostType) {
         const slug = generateSlug(title);
         const date = getPropertyValue(properties["날짜"]) as string;
         const tags = getPropertyValue(properties["키워드"]) as string[];
+        const excerpt = getPropertyValue(properties["설명"]) as string;
         const content = await getPageFirstContent(page.id);
 
         const basePost = {
@@ -62,22 +63,26 @@ export async function getPosts(type: PostType) {
           slug,
           date,
           tags,
+          excerpt,
           content,
         };
 
         switch (type) {
           case PostType.blog:
-            return {
-              ...basePost,
-              excerpt: getPropertyValue(properties["요약"]) as string,
-            } as BlogPost;
+            return { ...basePost } as BlogPost;
 
           case PostType.project:
             return {
               ...basePost,
-              date: getPropertyValue(properties["날짜"]) as object,
+              date,
               status: getPropertyValue(properties["진행 상태"]) as string,
               techStack: getPropertyValue(properties["기술 스택"]) as string[],
+              coverImage:
+                page.cover?.type === "external"
+                  ? page.cover.external.url
+                  : page.cover?.type === "file"
+                  ? page.cover.file.url
+                  : undefined,
             } as ProjectPost;
 
           case PostType.book:

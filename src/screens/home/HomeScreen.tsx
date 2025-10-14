@@ -9,11 +9,16 @@ import {
   ProjectSection,
 } from "./ui";
 import { useFetch } from "@/shared/lib/hooks";
+import { ProjectPost } from "@/shared/types/notion";
 
 export default function HomeScreen() {
   const [uniqueTags, setUniqueTags] = useState<string[]>([]);
   const pathname = usePathname();
   const { data: tags } = useFetch<string[]>("/api/tags", []);
+  const { data: projects } = useFetch<ProjectPost[]>(
+    "/api/projects/latest",
+    []
+  );
 
   useEffect(() => {
     setUniqueTags(tags);
@@ -38,7 +43,7 @@ export default function HomeScreen() {
           key={pathname}
         />
       </ProfileSection>
-      <ProjectSection />
+      <ProjectSection projects={projects} />
     </div>
   );
 }
