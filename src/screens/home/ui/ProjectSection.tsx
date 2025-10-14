@@ -70,11 +70,9 @@ export default function ProjectSection({
               <div className="h-50 rounded-xl sm:group-hover:rounded-[40px] overflow-hidden relative transition-[border-radius] duration-700 ease-in-out border border-primary-50 shadow-lg shadow-primary-100">
                 <Image
                   priority
-                  unoptimized
                   src={project.coverImage || "/images/test.jpeg"}
                   alt={project.title}
                   fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 960px) 50vw, 704px"
                   className="object-cover transition-all duration-700 ease-in-out group-hover:scale-120"
                 />
               </div>
