@@ -184,6 +184,7 @@ export default function ProfileSection({ children }: ProfileSectionProps) {
             </Link>
           </li>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<<< HEAD:src/screens/home/section/ProfileSection.tsx
 >>>>>>> 057a29a (Feat/#9 프로젝트 노션 연동 (#16))
@@ -202,10 +203,13 @@ export default function ProfileSection({ children }: ProfileSectionProps) {
 =======
 ========
           <li className="hover:underline">
+=======
+          {/* <li className="hover:underline">
+>>>>>>> 1ab732d (chore: 프로필 섹션 수정)
             <Link href="/resume" rel="noopener noreferrer">
               Resume
             </Link>
-          </li>
+          </li> */}
         </ul>
         <div className="min-h-30 relative">{children}</div>
 >>>>>>>> 057a29a (Feat/#9 프로젝트 노션 연동 (#16)):src/screens/home/ui/ProfileSection.tsx
