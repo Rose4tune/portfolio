@@ -35,6 +35,13 @@
 
 body {
   @apply text-gray-800;
+  -ms-overflow-style: none;
+  overflow: scroll;
+}
+
+/* Chrome, Safari, Edge, Opera */
+body::-webkit-scrollbar {
+  display: none;
 }
 
 @media (max-width: 768px) {

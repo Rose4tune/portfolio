@@ -18,7 +18,7 @@
   font-size: 1em;
 }
 
-/* Page Icon Custom */
+/* Page Icon & Cover Custom */
 .notion-page-icon-hero {
   display: none;
 }
@@ -26,11 +26,19 @@
   padding-top: 0;
   margin-top: 0 !important;
 }
-
-/* List Custom */
-.notion-list-disc {
-  width: 100%;
-  padding-inline-start: 1em;
+.notion-page-has-cover {
+  padding-top: 3rem;
+}
+.project .notion-page-cover-wrapper {
+  height: auto;
+  min-height: auto;
+  max-height: none;
+}
+.project .notion-page-cover-wrapper span,
+.project .notion-page-cover-wrapper img {
+  height: auto !important;
+  min-height: auto !important;
+  max-height: none !important;
 }
 
 /* Code Block Custom */

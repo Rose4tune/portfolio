@@ -23,13 +23,14 @@ export default function ProjectSection({
         }}
         transition={{
           width: {
-            duration: 0.8,
+            duration: 0.5,
             ease: "easeInOut",
+            delay: 2,
           },
           borderBottomColor: {
             duration: 0.4,
             ease: "easeInOut",
-            delay: 4,
+            delay: 5,
           },
         }}
         viewport={{ once: true }}
@@ -38,7 +39,7 @@ export default function ProjectSection({
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, ease: "easeOut", delay: 1 }}
+          transition={{ duration: 0.3, ease: "easeOut", delay: 2.6 }}
           viewport={{ once: true }}
         >
           <Link href="/projects" className="group">
@@ -58,7 +59,7 @@ export default function ProjectSection({
             key={project.id}
             initial={{ opacity: 0, y: -40 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, ease: "easeIn", delay: i * 0.3 + 0.2 }}
+            transition={{ duration: 0.3, ease: "easeIn", delay: i * 0.2 + 0.5 }}
             viewport={{ once: true }}
             className="group relative w-full h-50 rounded-xl sm:group-hover:rounded-[40px] cursor-pointer overflow-hidden sm:h-100 sm:overflow-visible sm:w-[calc(33%-1rem)]"
           >

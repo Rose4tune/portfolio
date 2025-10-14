@@ -54,7 +54,7 @@ export default function ProjectPostScreen({
   }
 
   return (
-    <PostLayout linkText={linkText} href={href}>
+    <PostLayout className="project" linkText={linkText} href={href}>
       <NotionRenderer recordMap={recordMap} />
     </PostLayout>
   );
