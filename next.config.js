@@ -19,6 +19,18 @@ const nextConfig = {
         hostname: "*.amazonaws.com",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "www.notion.so",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+        port: "",
+        pathname: "/**",
+      },
     ],
   },
   transpilePackages: ["notion-client", "notion-types", "react-notion-x"],
