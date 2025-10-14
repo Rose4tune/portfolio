@@ -1,13 +1,9 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
-import ThemeProvider from "@/shared/providers/ThemeProvider";
-import {
-  Navbar,
-  ClientLoading,
-  AnimatedLayout,
-  AnimatedWelcomeText,
-} from "@/layout";
-import "./globals.css";
+import { Navbar, ConditionalLayout } from "@/shared/layout";
+import { ThemeProvider } from "@/shared/providers";
+import { AnimatedWelcomeText, ClientLoading } from "@/shared/ui";
+import "@/styles/globals.css";
 
 export const metadata: Metadata = {
   title: "Ye Seo, LEE Portfolio",
@@ -30,10 +26,8 @@ export default function RootLayout({
         >
           <ClientLoading loadingContent={<AnimatedWelcomeText />}>
             <Navbar />
-            <main className="py-6 md:py-16">
-              <div className="container max-w-4xl mx-auto px-4 sm:px-6">
-                <AnimatedLayout>{children}</AnimatedLayout>
-              </div>
+            <main className="py-24 md:py-28">
+              <ConditionalLayout>{children}</ConditionalLayout>
             </main>
           </ClientLoading>
         </ThemeProvider>
