@@ -1,16 +1,7 @@
 "use client";
 
 import { useEffect, useState, ReactNode } from "react";
-<<<<<<<< HEAD:src/shared/ui/loader/ClientLoading.tsx
 import Loader from "./Loader";
-========
-import Loader from "./ui/Loader";
-
-interface ClientLoadingProps {
-  children: ReactNode;
-  loadingContent?: ReactNode;
-}
->>>>>>>> f2a4627 (Refactor/#10 화면 정리하기 (#11)):src/layout/ClientLoading.tsx
 
 interface ClientLoadingProps {
   children: ReactNode;
