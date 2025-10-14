@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import {
   RandomKeywordCloud,
@@ -8,21 +7,18 @@ import {
   ProfileSection,
   ProjectSection,
 } from "./ui";
-import { useFetch } from "@/shared/lib/hooks";
 import { ProjectPost } from "@/shared/types/notion";
 
-export default function HomeScreen() {
-  const [uniqueTags, setUniqueTags] = useState<string[]>([]);
-  const pathname = usePathname();
-  const { data: tags } = useFetch<string[]>("/api/tags", []);
-  const { data: projects } = useFetch<ProjectPost[]>(
-    "/api/projects/latest",
-    []
-  );
+interface HomeScreenProps {
+  initialTags: string[];
+  initialProjects: ProjectPost[];
+}
 
-  useEffect(() => {
-    setUniqueTags(tags);
-  }, [setUniqueTags, tags]);
+export default function HomeScreen({
+  initialTags,
+  initialProjects,
+}: HomeScreenProps) {
+  const pathname = usePathname();
 
   const renderKeyword = (word: string, size: string) => (
     <StickerLink
@@ -38,12 +34,12 @@ export default function HomeScreen() {
     <div className="space-y-25">
       <ProfileSection>
         <RandomKeywordCloud
-          keywords={uniqueTags}
+          keywords={initialTags}
           renderKeyword={renderKeyword}
           key={pathname}
         />
       </ProfileSection>
-      <ProjectSection projects={projects} />
+      <ProjectSection projects={initialProjects} />
     </div>
   );
 }
