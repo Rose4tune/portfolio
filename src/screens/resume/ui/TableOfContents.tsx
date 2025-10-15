@@ -1,15 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-<<<<<<< HEAD
-<<<<<<< HEAD
 import { Heading } from "@/shared/types/common";
-=======
-import { Heading } from "../types";
->>>>>>> f2a4627 (Refactor/#10 화면 정리하기 (#11))
-=======
-import { Heading } from "@/shared/types/common";
->>>>>>> 057a29a (Feat/#9 프로젝트 노션 연동 (#16))
 
 interface TableOfContentsProps {
   headings: Heading[];
