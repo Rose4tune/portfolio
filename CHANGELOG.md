@@ -1,3 +1,11 @@
+## [1.1.2](https://github.com/Rose4tune/portfolio/compare/v1.1.1...v1.1.2) (2025-10-15)
+
+### Bug Fixes
+
+* rebase 오류 해결 ([3ceb7e6](https://github.com/Rose4tune/portfolio/commit/3ceb7e6097d670d2dde72dc4ff76f1f8f515b1d8))
+* 릴리즈 플로우 Install dependencies 패키지 pnpm으로 변경 ([f8ea967](https://github.com/Rose4tune/portfolio/commit/f8ea967100f8db509271f406fd0ab544265335c8))
+* 릴리즈 플로우 Install dependencies 패키지 pnpm으로 변경 ([b23de1d](https://github.com/Rose4tune/portfolio/commit/b23de1d28fa1dcfbd99fa8373f37151d1bd59040))
+
 ## [1.1.1](https://github.com/Rose4tune/portfolio/compare/v1.1.0...v1.1.1) (2025-10-15)
 
 ### Bug Fixes
