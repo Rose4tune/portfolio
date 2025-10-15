@@ -1,3 +1,9 @@
+## [1.1.1](https://github.com/Rose4tune/portfolio/compare/v1.1.0...v1.1.1) (2025-10-15)
+
+### Bug Fixes
+
+* **hotfix:** Vercel 이미지 자동 최적화 비활성화(unoptimized 속성 추가)로 무료 제한 및 502 에러 해결 ([6e81c89](https://github.com/Rose4tune/portfolio/commit/6e81c892f144c22d16e60b37ebd981001df41d5c))
+
 ## [1.1.0](https://github.com/Rose4tune/portfolio/compare/v1.0.0...v1.1.0) (2025-10-14)
 
 ### Features
