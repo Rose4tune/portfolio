@@ -1,15 +1,8 @@
 {
   "branches": [
-<<<<<<< HEAD
     { "name": "beta", "prerelease": true },
     { "name": "rc", "prerelease": "rc" },
     "main"
-=======
-    {
-      "name": "main",
-      "prerelease": "beta"
-    }
->>>>>>> 889611d (Feat/#12 자동 릴리즈 파이프라인 구축 (#13))
   ],
   "plugins": [
     "@semantic-release/commit-analyzer",

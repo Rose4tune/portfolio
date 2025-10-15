@@ -29,7 +29,6 @@
 .notion-page-has-cover {
   padding-top: 3rem;
 }
-<<<<<<< HEAD
 .notion-page-cover-wrapper {
   height: 0;
   min-height: 0;
@@ -41,8 +40,6 @@
   min-height: 0 !important;
   max-height: 0 !important;
 }
-=======
->>>>>>> 057a29a (Feat/#9 프로젝트 노션 연동 (#16))
 .project .notion-page-cover-wrapper {
   height: auto;
   min-height: auto;

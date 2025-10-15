@@ -1,10 +1,6 @@
 "use client";
 
-<<<<<<< HEAD
-import styles from "./animation.module.css";
-=======
 import styles from "@/styles/animation.module.css";
->>>>>>> 057a29a (Feat/#9 프로젝트 노션 연동 (#16))
 
 interface LoaderProps {
   color?: string;

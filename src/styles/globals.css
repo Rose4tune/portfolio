@@ -37,24 +37,6 @@ body {
   @apply text-gray-800;
   -ms-overflow-style: none;
   overflow: scroll;
-<<<<<<< HEAD:src/app/globals.css
-}
-
-/* Chrome, Safari, Edge, Opera */
-body::-webkit-scrollbar {
-  display: none;
-}
-
-@media (max-width: 768px) {
-  html {
-    font-size: 12px;
-  }
-}
-
-.container {
-  @apply max-w-3xl mx-auto px-8;
-=======
->>>>>>> 057a29a (Feat/#9 프로젝트 노션 연동 (#16)):src/styles/globals.css
 }
 
 /* Chrome, Safari, Edge, Opera */

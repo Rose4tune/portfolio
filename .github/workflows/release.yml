@@ -5,14 +5,11 @@ on:
     branches:
       - main
 
-<<<<<<< HEAD
 permissions:
   contents: write
   issues: write
   pull-requests: write
 
-=======
->>>>>>> 889611d (Feat/#12 자동 릴리즈 파이프라인 구축 (#13))
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -24,7 +21,6 @@ jobs:
       - name: Use Node
         uses: actions/setup-node@v3
         with:
-<<<<<<< HEAD
           node-version: 20.9.0
 
       - name: Install pnpm
@@ -33,24 +29,8 @@ jobs:
       - name: Install pnpm
         run: npm install -g pnpm
 
-      - name: Install pnpm
-        run: npm install -g pnpm
-
       - name: Install dependencies
         run: pnpm install
-=======
-          node-version: 18
-
-      - name: Install pnpm
-        run: npm install -g pnpm
-
-      - name: Install dependencies
-<<<<<<< HEAD
-        run: npm ci
->>>>>>> 889611d (Feat/#12 자동 릴리즈 파이프라인 구축 (#13))
-=======
-        run: pnpm install
->>>>>>> aac70fe (fix: 릴리즈 플로우 Install dependencies 패키지 pnpm으로 변경)
 
       - name: Run Semantic Release
         env:
