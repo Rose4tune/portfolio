@@ -2,6 +2,7 @@
 
 import { useState, useEffect, Suspense } from "react";
 import Image from "next/image";
+import type { ImageProps } from "next/image";
 import dynamic from "next/dynamic";
 import Loading from "@/app/loading";
 import { NotionContentProps } from "@/shared/types/common";
@@ -37,6 +38,11 @@ const Modal = dynamic(
   { ssr: false }
 );
 
+// Notion 이미지에 unoptimized 적용 (Vercel 무료 제한 회피)
+const UnoptimizedImage = (props: ImageProps) => {
+  return <Image {...props} unoptimized />;
+};
+
 export default function NotionRenderer({ recordMap }: NotionContentProps) {
   const [isMounted, setIsMounted] = useState(false);
 
@@ -54,7 +60,7 @@ export default function NotionRenderer({ recordMap }: NotionContentProps) {
         recordMap={recordMap}
         fullPage={true}
         components={{
-          nextImage: Image,
+          nextImage: UnoptimizedImage,
           Code,
           Collection,
           Equation,

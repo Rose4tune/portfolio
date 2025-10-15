@@ -118,6 +118,7 @@ export default function ProfileSection({ children }: ProfileSectionProps) {
           }}
         >
           <Image
+            unoptimized
             src="/images/profile.jpeg"
             alt="프로필 이미지"
             sizes="(max-width: 400px) 100%, (min-width: 200px) 50%"

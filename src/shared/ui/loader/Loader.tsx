@@ -11,6 +11,7 @@ function Loader({ children }: LoadingProps) {
     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%]">
       <div className="flex flex-col justify-center items-center">
         <Image
+          unoptimized
           src="/images/logo.svg"
           alt="Loading"
           width={70}
