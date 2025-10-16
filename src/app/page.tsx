@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   description: "Front-developer YeSeo, LEE portfolio and blog",
 };
 
+export const revalidate = 3600;
+
 export default async function Home() {
   const [blogTags, projects] = await Promise.all([
     getUniqueTags(PostType.blog),
