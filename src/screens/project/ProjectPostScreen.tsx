@@ -1,7 +1,7 @@
 "use client";
 
 import { NotionRenderer, PostLayout } from "@/shared/ui";
-import { ExtendedRecordMap } from "notion-types";
+import type { ExtendedRecordMap } from "@/domain/notion";
 
 interface ProjectPostScreenProps {
   recordMap: ExtendedRecordMap;

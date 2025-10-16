@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { getPageIdBySlug, getPosts, PostType } from "@/domain/posts";
-import { getRecordMap } from "@/shared/lib/api/notion";
+import { getRecordMap } from "@/domain/notion";
 import BlogPostScreen from "@/screens/blog/BlogPostScreen";
 
 export const revalidate = 3600;
