@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 import HomeScreen from "@/screens/home/HomeScreen";
-import { getPosts, getUniqueTags } from "@/shared/lib/api/notion";
-import { PostType } from "@/shared/types/notion";
+import { getPosts, getUniqueTags, PostType } from "@/domain/posts";
 
 export const metadata: Metadata = {
   title: "Ye Seo, LEE",

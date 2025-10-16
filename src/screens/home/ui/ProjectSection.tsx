@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { ProjectPost } from "@/shared/types/notion";
+import { ProjectPost } from "@/domain/posts";
 
 export default function ProjectSection({
   projects,
