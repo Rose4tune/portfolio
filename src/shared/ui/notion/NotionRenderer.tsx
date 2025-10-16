@@ -38,8 +38,8 @@ const Modal = dynamic(
   { ssr: false }
 );
 
-// Notion 이미지에 unoptimized 적용 (Vercel 무료 제한 회피)
 const UnoptimizedImage = (props: ImageProps) => {
+  // eslint-disable-next-line jsx-a11y/alt-text
   return <Image {...props} unoptimized />;
 };
 
