@@ -1,12 +1,13 @@
 import { Metadata } from "next";
 import HomeScreen from "@/screens/home/HomeScreen";
-import { getPosts, getUniqueTags } from "@/shared/lib/api/notion";
-import { PostType } from "@/shared/types/notion";
+import { getPosts, getUniqueTags, PostType } from "@/domain/posts";
 
 export const metadata: Metadata = {
   title: "Ye Seo, LEE",
   description: "Front-developer YeSeo, LEE portfolio and blog",
 };
+
+export const revalidate = 3600;
 
 export default async function Home() {
   const [blogTags, projects] = await Promise.all([

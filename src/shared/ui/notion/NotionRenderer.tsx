@@ -2,11 +2,11 @@
 
 import { useState, useEffect, Suspense } from "react";
 import Image from "next/image";
-import type { ImageProps } from "next/image";
 import dynamic from "next/dynamic";
-import Loading from "@/app/loading";
-import { NotionContentProps } from "@/shared/types/common";
+import type { ImageProps } from "next/image";
+import type { ExtendedRecordMap } from "notion-types";
 import { NotionRenderer as ReactNotionRenderer } from "react-notion-x";
+import Loading from "@/app/loading";
 
 import "react-notion-x/src/styles.css";
 import "prismjs/themes/prism.css";
@@ -38,12 +38,16 @@ const Modal = dynamic(
   { ssr: false }
 );
 
-// Notion 이미지에 unoptimized 적용 (Vercel 무료 제한 회피)
 const UnoptimizedImage = (props: ImageProps) => {
+  // eslint-disable-next-line jsx-a11y/alt-text
   return <Image {...props} unoptimized />;
 };
 
-export default function NotionRenderer({ recordMap }: NotionContentProps) {
+export default function NotionRenderer({
+  recordMap,
+}: {
+  recordMap: ExtendedRecordMap;
+}) {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {

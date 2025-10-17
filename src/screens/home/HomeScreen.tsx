@@ -7,7 +7,7 @@ import {
   ProfileSection,
   ProjectSection,
 } from "./ui";
-import { ProjectPost } from "@/shared/types/notion";
+import { ProjectPost } from "@/domain/posts";
 
 interface HomeScreenProps {
   initialTags: string[];

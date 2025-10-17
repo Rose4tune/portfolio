@@ -1,10 +1,6 @@
 import { notFound } from "next/navigation";
-import {
-  getPageIdBySlug,
-  getPosts,
-  getRecordMap,
-} from "@/shared/lib/api/notion";
-import { PostType } from "@/shared/types/notion";
+import { getPageIdBySlug, getPosts, PostType } from "@/domain/posts";
+import { getRecordMap } from "@/domain/notion";
 import BlogPostScreen from "@/screens/blog/BlogPostScreen";
 
 export const revalidate = 3600;
@@ -12,12 +8,12 @@ export const revalidate = 3600;
 export async function generateStaticParams() {
   try {
     const posts = await getPosts(PostType.blog);
-
     return posts.map((post) => ({
       slug: post.slug,
     }));
   } catch (error) {
-    throw error;
+    console.error("Failed to generate static params:", error);
+    return [];
   }
 }
 
@@ -55,41 +51,22 @@ export default async function BlogPostPage(props: any) {
       return notFound();
     }
 
+    let recordMap;
     try {
-      let recordMap;
-      try {
-        recordMap = await withTimeout(getRecordMap(pageId), 60000);
-      } catch (firstAttemptError) {
-        if (
-          process.env.NODE_ENV === "production" &&
-          !process.env.NEXT_RUNTIME
-        ) {
-          await new Promise((resolve) => setTimeout(resolve, 5000));
-          recordMap = await withTimeout(getRecordMap(pageId), 90000);
-        } else {
-          throw firstAttemptError;
-        }
+      recordMap = await withTimeout(getRecordMap(pageId), 60000);
+    } catch (firstAttemptError) {
+      if (process.env.NODE_ENV === "production" && !process.env.NEXT_RUNTIME) {
+        console.warn("First attempt failed, retrying after 5s...");
+        await new Promise((resolve) => setTimeout(resolve, 5000));
+        recordMap = await withTimeout(getRecordMap(pageId), 90000);
+      } else {
+        throw firstAttemptError;
       }
-
-      try {
-        const serializedRecordMap = JSON.stringify(recordMap);
-        return (
-          <BlogPostScreen
-            pageId={pageId}
-            serializedRecordMap={serializedRecordMap}
-          />
-        );
-      } catch (serializeError) {
-        if (process.env.NODE_ENV === "production") {
-          return <BlogPostScreen pageId={pageId} serializedRecordMap="" />;
-        }
-
-        throw serializeError;
-      }
-    } catch (error) {
-      throw error;
     }
-  } catch {
+
+    return <BlogPostScreen recordMap={recordMap} />;
+  } catch (error) {
+    console.error("Failed to load blog post:", error);
     return notFound();
   }
 }

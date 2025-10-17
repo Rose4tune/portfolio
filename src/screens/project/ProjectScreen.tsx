@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ProjectPost } from "@/shared/types/notion";
+import { ProjectPost } from "@/domain/posts";
 import { getPreviewText } from "@/shared/lib/utils";
 import {
   SearchFilterBar,
