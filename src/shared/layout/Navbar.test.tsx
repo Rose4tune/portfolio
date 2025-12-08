@@ -41,9 +41,9 @@ describe("Navbar", () => {
   it("should render navigation items", () => {
     render(<Navbar />);
 
-    expect(screen.getByText("Blog")).toBeInTheDocument();
-    expect(screen.getByText("Projects")).toBeInTheDocument();
-    expect(screen.getByText("About")).toBeInTheDocument();
+    expect(screen.getAllByText("Blog").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Projects").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("About").length).toBeGreaterThan(0);
   });
 
   it("should not show logo on home page", () => {
@@ -64,40 +64,55 @@ describe("Navbar", () => {
     mockUsePathname.mockReturnValue("/blog");
     render(<Navbar />);
 
-    const blogLink = screen.getByText("Blog").closest("a");
-    expect(blogLink).toHaveClass("text-purple-400");
+    const blogLinks = screen.getAllByText("Blog");
+    const desktopLink = blogLinks.find((link) =>
+      link.closest(".hidden.md\\:flex")
+    );
+    expect(desktopLink).toHaveClass("text-purple-400");
   });
 
   it("should highlight active blog post page", () => {
     mockUsePathname.mockReturnValue("/blog/my-post");
     render(<Navbar />);
 
-    const blogLink = screen.getByText("Blog").closest("a");
-    expect(blogLink).toHaveClass("text-purple-400");
+    const blogLinks = screen.getAllByText("Blog");
+    const desktopLink = blogLinks.find((link) =>
+      link.closest(".hidden.md\\:flex")
+    );
+    expect(desktopLink).toHaveClass("text-purple-400");
   });
 
   it("should highlight active projects page", () => {
     mockUsePathname.mockReturnValue("/projects");
     render(<Navbar />);
 
-    const projectsLink = screen.getByText("Projects").closest("a");
-    expect(projectsLink).toHaveClass("text-purple-400");
+    const projectsLinks = screen.getAllByText("Projects");
+    const desktopLink = projectsLinks.find((link) =>
+      link.closest(".hidden.md\\:flex")
+    );
+    expect(desktopLink).toHaveClass("text-purple-400");
   });
 
   it("should highlight active project detail page", () => {
     mockUsePathname.mockReturnValue("/projects/my-project");
     render(<Navbar />);
 
-    const projectsLink = screen.getByText("Projects").closest("a");
-    expect(projectsLink).toHaveClass("text-purple-400");
+    const projectsLinks = screen.getAllByText("Projects");
+    const desktopLink = projectsLinks.find((link) =>
+      link.closest(".hidden.md\\:flex")
+    );
+    expect(desktopLink).toHaveClass("text-purple-400");
   });
 
   it("should not highlight inactive pages", () => {
     mockUsePathname.mockReturnValue("/blog");
     render(<Navbar />);
 
-    const projectsLink = screen.getByText("Projects").closest("a");
-    expect(projectsLink).not.toHaveClass("text-purple-400");
+    const projectsLinks = screen.getAllByText("Projects");
+    const desktopLink = projectsLinks.find((link) =>
+      link.closest(".hidden.md\\:flex")
+    );
+    expect(desktopLink).not.toHaveClass("text-purple-400");
   });
 
   it("should show menu icon when mobile menu is closed", () => {
@@ -128,8 +143,10 @@ describe("Navbar", () => {
     await user.click(menuButton);
 
     // 모바일 메뉴가 표시되어야 함
-    const mobileMenu = screen.getByText("Blog").closest("div");
-    expect(mobileMenu?.parentElement).toHaveClass("block");
+    const mobileMenuContainer = document.querySelector(
+      ".md\\:hidden.fixed.block"
+    );
+    expect(mobileMenuContainer).toBeInTheDocument();
   });
 
   it("should hide mobile menu when closed", () => {
@@ -163,21 +180,26 @@ describe("Navbar", () => {
   it("should have correct href attributes for navigation links", () => {
     render(<Navbar />);
 
-    const blogLink = screen.getByText("Blog").closest("a");
-    const projectsLink = screen.getByText("Projects").closest("a");
-    const aboutLink = screen.getByText("About").closest("a");
+    const blogLinks = screen.getAllByText("Blog");
+    const projectsLinks = screen.getAllByText("Projects");
+    const aboutLinks = screen.getAllByText("About");
 
-    expect(blogLink).toHaveAttribute("href", "/blog");
-    expect(projectsLink).toHaveAttribute("href", "/projects");
-    expect(aboutLink).toHaveAttribute("href", "/");
+    // 데스크톱 메뉴의 링크 확인
+    blogLinks.forEach((link) => {
+      expect(link.closest("a")).toHaveAttribute("href", "/blog");
+    });
+    projectsLinks.forEach((link) => {
+      expect(link.closest("a")).toHaveAttribute("href", "/projects");
+    });
+    aboutLinks.forEach((link) => {
+      expect(link.closest("a")).toHaveAttribute("href", "/");
+    });
   });
 
   it("should have desktop menu hidden on mobile", () => {
     render(<Navbar />);
 
-    const desktopMenu = screen
-      .getByText("Blog")
-      .closest(".hidden.md\\:flex");
+    const desktopMenu = document.querySelector(".hidden.md\\:flex");
     expect(desktopMenu).toBeInTheDocument();
   });
 
@@ -230,7 +252,10 @@ describe("Navbar", () => {
     const menuButton = screen.getByRole("button", { name: /open main menu/i });
     await user.click(menuButton);
 
-    const mobileBlogLink = screen.getAllByText("Blog")[1];
-    expect(mobileBlogLink.closest("a")).toHaveClass("text-purple-400");
+    const blogLinks = screen.getAllByText("Blog");
+    const mobileBlogLink = blogLinks.find((link) =>
+      link.closest(".md\\:hidden")
+    );
+    expect(mobileBlogLink?.closest("a")).toHaveClass("text-purple-400");
   });
 });

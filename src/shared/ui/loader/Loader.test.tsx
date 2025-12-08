@@ -68,15 +68,22 @@ describe("Loader", () => {
     render(<Loader />);
 
     const image = screen.getByAltText("Loading");
-    expect(image).toHaveClass("bouncing");
+    // CSS 모듈은 해시로 변환되므로 클래스명에 "bouncing"이 포함되는지 확인
+    expect(image.className).toContain("bouncing");
   });
 
   it("should have proper container structure", () => {
     render(<Loader />);
 
-    const container = screen.getByAltText("Loading").closest("div");
-    expect(container?.parentElement).toHaveClass("flex");
-    expect(container?.parentElement).toHaveClass("flex-col");
+    const image = screen.getByAltText("Loading");
+    // Image의 직접 부모가 flex 컨테이너인지 확인
+    const flexContainer = image.closest("div");
+    expect(flexContainer?.className).toContain("flex");
+    expect(flexContainer?.className).toContain("flex-col");
+    
+    // 그 부모가 absolute 컨테이너인지 확인
+    const absoluteContainer = flexContainer?.parentElement;
+    expect(absoluteContainer?.className).toContain("absolute");
   });
 
   it("should be positioned absolutely", () => {

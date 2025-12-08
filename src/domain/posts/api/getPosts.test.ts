@@ -8,9 +8,11 @@ import {
   createMockQueryResponse,
 } from "@/test/mocks/notion";
 
-// notionClient mock
-const mockDatabasesQuery = vi.fn();
-const mockBlocksList = vi.fn();
+// notionClient mock - vi.hoisted()를 사용하여 hoisting 문제 해결
+const { mockDatabasesQuery, mockBlocksList } = vi.hoisted(() => ({
+  mockDatabasesQuery: vi.fn(),
+  mockBlocksList: vi.fn(),
+}));
 
 vi.mock("../lib/notionClient", () => ({
   notionHQClient: {
@@ -30,12 +32,22 @@ vi.mock("../lib/notionClient", () => ({
   },
 }));
 
-// generateSlug mock
-vi.mock("@/shared/lib/utils", () => ({
-  generateSlug: vi.fn((text: string) =>
-    text.toLowerCase().replace(/\s+/g, "-")
-  ),
-}));
+// generateSlug 및 formatDate mock
+vi.mock("@/shared/lib/utils", async () => {
+  const actual = await vi.importActual<typeof import("@/shared/lib/utils")>(
+    "@/shared/lib/utils"
+  );
+  return {
+    ...actual,
+    generateSlug: vi.fn((text: string) =>
+      text
+        .toLowerCase()
+        .replace(/[^\p{Script=Hangul}a-z0-9]+/gu, "-")
+        .replace(/(^-|-$)/g, "")
+    ),
+    formatDate: vi.fn((date: string) => date), // formatDate도 mock
+  };
+});
 
 // helpers mock
 vi.mock("../lib/helpers", async () => {
@@ -209,7 +221,7 @@ describe("getPosts", () => {
     const postWithFileCover = {
       ...mockProjectPost,
       cover: {
-        type: "file",
+        type: "file" as const,
         file: {
           url: "https://example.com/file.jpg",
         },
@@ -217,7 +229,7 @@ describe("getPosts", () => {
     };
 
     mockDatabasesQuery.mockResolvedValue(
-      createMockQueryResponse([postWithFileCover])
+      createMockQueryResponse([postWithFileCover as any])
     );
 
     const posts = await getPosts(PostType.project);
@@ -232,19 +244,19 @@ describe("getPosts", () => {
         ...mockBlogPost.properties,
         저자: {
           id: "author",
-          type: "rich_text",
+          type: "rich_text" as const,
           rich_text: [{ plain_text: "Test Author" }],
         },
         평점: {
           id: "rating",
-          type: "number",
+          type: "number" as const,
           number: 4.5,
         },
       },
     };
 
     mockDatabasesQuery.mockResolvedValue(
-      createMockQueryResponse([bookPost])
+      createMockQueryResponse([bookPost as any])
     );
 
     const posts = await getPosts(PostType.book);

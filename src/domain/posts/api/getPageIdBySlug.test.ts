@@ -3,8 +3,10 @@ import { getPageIdBySlug } from "./getPageIdBySlug";
 import { PostType } from "../types";
 import { mockBlogPost, createMockQueryResponse } from "@/test/mocks/notion";
 
-// notionClient mock
-const mockDatabasesQuery = vi.fn();
+// notionClient mock - vi.hoisted()를 사용하여 hoisting 문제 해결
+const { mockDatabasesQuery } = vi.hoisted(() => ({
+  mockDatabasesQuery: vi.fn(),
+}));
 
 vi.mock("../lib/notionClient", () => ({
   notionHQClient: {
@@ -19,10 +21,13 @@ vi.mock("../lib/notionClient", () => ({
   },
 }));
 
-// generateSlug mock
+// generateSlug mock - 실제 구현과 유사하게
 vi.mock("@/shared/lib/utils", () => ({
   generateSlug: vi.fn((text: string) =>
-    text.toLowerCase().replace(/\s+/g, "-")
+    text
+      .toLowerCase()
+      .replace(/[^\p{Script=Hangul}a-z0-9]+/gu, "-")
+      .replace(/(^-|-$)/g, "")
   ),
 }));
 
