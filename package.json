@@ -20,7 +20,10 @@
     "test:e2e:mobile-chrome": "playwright test --project=Mobile Chrome",
     "test:e2e:mobile-safari": "playwright test --project=Mobile Safari",
     "test:e2e:ui": "playwright test --ui",
-    "test:e2e:debug": "playwright test --debug"
+    "test:e2e:debug": "playwright test --debug",
+    "check": "pnpm lint && pnpm test --run",
+    "check:all": "pnpm lint && pnpm test --run && pnpm test:e2e:chromium",
+    "precommit": "pnpm lint && pnpm test --run"
   },
   "dependencies": {
     "@notionhq/client": "^3.1.3",
