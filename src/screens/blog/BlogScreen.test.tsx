@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, within } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import BlogScreen from "./BlogScreen";
 import { BlogPost } from "@/domain/posts";
@@ -28,7 +28,11 @@ vi.mock("next/navigation", () => ({
 
 // Next.js Link mock
 vi.mock("next/link", () => ({
-  default: ({ children, href, ...props }: any) => (
+  default: ({
+    children,
+    href,
+    ...props
+  }: React.ComponentPropsWithoutRef<"a"> & { href: string }) => (
     <a href={href} {...props}>
       {children}
     </a>

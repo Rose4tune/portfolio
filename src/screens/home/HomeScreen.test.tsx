@@ -12,7 +12,11 @@ vi.mock("next/navigation", () => ({
 
 // Next.js Link mock
 vi.mock("next/link", () => ({
-  default: ({ children, href, ...props }: any) => (
+  default: ({
+    children,
+    href,
+    ...props
+  }: React.ComponentPropsWithoutRef<"a"> & { href: string }) => (
     <a href={href} {...props}>
       {children}
     </a>
@@ -21,7 +25,11 @@ vi.mock("next/link", () => ({
 
 // Next.js Image mock
 vi.mock("next/image", () => ({
-  default: ({ src, alt, ...props }: any) => (
+  default: ({
+    src,
+    alt,
+    ...props
+  }: React.ComponentPropsWithoutRef<"img"> & { src: string; alt: string }) => (
     // eslint-disable-next-line @next/next/no-img-element
     <img src={src} alt={alt} {...props} />
   ),
@@ -30,13 +38,19 @@ vi.mock("next/image", () => ({
 // Framer Motion mock
 vi.mock("framer-motion", () => ({
   motion: {
-    div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+    div: ({
+      children,
+      ...props
+    }: React.ComponentPropsWithoutRef<"div">) => <div {...props}>{children}</div>,
   },
 }));
 
 // TypeAnimation mock
 vi.mock("react-type-animation", () => ({
-  default: ({ sequence, className }: any) => (
+  default: ({
+    sequence,
+    className,
+  }: { sequence: unknown[]; className?: string }) => (
     <span className={className} data-testid="type-animation">
       {typeof sequence[0] === "string" ? sequence[0] : ""}
     </span>

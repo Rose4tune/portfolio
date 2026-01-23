@@ -67,14 +67,16 @@ describe("getPageIdBySlug", () => {
   });
 
   it("should return null for null slug", async () => {
-    const pageId = await getPageIdBySlug(PostType.blog, null as any);
+    // null을 테스트하기 위해 타입 단언 사용 (실제로는 타입 체크를 우회)
+    const pageId = await getPageIdBySlug(PostType.blog, null as unknown as string);
 
     expect(pageId).toBeNull();
     expect(mockDatabasesQuery).not.toHaveBeenCalled();
   });
 
   it("should return null for non-string slug", async () => {
-    const pageId = await getPageIdBySlug(PostType.blog, 123 as any);
+    // number를 테스트하기 위해 타입 단언 사용 (실제로는 타입 체크를 우회)
+    const pageId = await getPageIdBySlug(PostType.blog, 123 as unknown as string);
 
     expect(pageId).toBeNull();
     expect(mockDatabasesQuery).not.toHaveBeenCalled();
@@ -246,9 +248,8 @@ describe("getPageIdBySlug", () => {
 
     // generateSlug는 소문자로 변환하므로 대소문자 구분 없음
     const pageId1 = await getPageIdBySlug(PostType.blog, "테스트-블로그-포스트");
-    const pageId2 = await getPageIdBySlug(PostType.blog, "TEST-BLOG-POST");
 
-    // generateSlug가 소문자로 변환하므로 둘 다 매칭되어야 함
+    // generateSlug가 소문자로 변환하므로 매칭되어야 함
     expect(pageId1).toBe("test-blog-id-123");
   });
 

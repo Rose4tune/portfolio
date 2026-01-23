@@ -1,6 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { getPropertyValue, getPageFirstContent } from "./helpers";
 import { PageObjectResponse } from "@notionhq/client";
+import { getPropertyValue, getPageFirstContent } from "./helpers";
+
+type NotionProperty = PageObjectResponse["properties"][string];
 
 // notionClient mock - vi.hoisted()를 사용하여 hoisting 문제 해결
 const { mockBlocksList } = vi.hoisted(() => ({
@@ -25,161 +27,177 @@ vi.mock("@/shared/lib/utils", () => ({
 describe("helpers", () => {
   describe("getPropertyValue", () => {
     it("should return empty string for undefined property", () => {
-      const result = getPropertyValue(undefined as any);
+      const result = getPropertyValue(undefined as unknown as NotionProperty);
       expect(result).toBe("");
     });
 
     it("should extract title property", () => {
-      const property = {
+      const property: NotionProperty = {
+        id: "title",
         type: "title",
         title: [
-          { plain_text: "Test Title" },
-          { plain_text: " Part 2" },
+          { plain_text: "Test Title", type: "text", text: { content: "Test Title", link: null }, annotations: { bold: false, italic: false, strikethrough: false, underline: false, code: false, color: "default" }, href: null },
+          { plain_text: " Part 2", type: "text", text: { content: " Part 2", link: null }, annotations: { bold: false, italic: false, strikethrough: false, underline: false, code: false, color: "default" }, href: null },
         ],
-      } as any;
+      };
 
       const result = getPropertyValue(property);
       expect(result).toBe("Test Title Part 2");
     });
 
     it("should return empty string for empty title", () => {
-      const property = {
+      const property: NotionProperty = {
+        id: "title",
         type: "title",
         title: [],
-      } as any;
+      };
 
       const result = getPropertyValue(property);
       expect(result).toBe("");
     });
 
     it("should extract rich_text property", () => {
-      const property = {
+      const property: NotionProperty = {
+        id: "rich_text",
         type: "rich_text",
-        rich_text: [{ plain_text: "Rich text content" }],
-      } as any;
+        rich_text: [{ plain_text: "Rich text content", type: "text", text: { content: "Rich text content", link: null }, annotations: { bold: false, italic: false, strikethrough: false, underline: false, code: false, color: "default" }, href: null }],
+      };
 
       const result = getPropertyValue(property);
       expect(result).toBe("Rich text content");
     });
 
     it("should return empty string for empty rich_text", () => {
-      const property = {
+      const property: NotionProperty = {
+        id: "rich_text",
         type: "rich_text",
         rich_text: [],
-      } as any;
+      };
 
       const result = getPropertyValue(property);
       expect(result).toBe("");
     });
 
     it("should extract date property", () => {
-      const property = {
+      const property: NotionProperty = {
+        id: "date",
         type: "date",
-        date: { start: "2024-01-15" },
-      } as any;
+        date: { start: "2024-01-15", end: null, time_zone: null },
+      };
 
       const result = getPropertyValue(property);
       expect(result).toBe("2024-01-15");
     });
 
     it("should return empty string for null date", () => {
-      const property = {
+      const property: NotionProperty = {
+        id: "date",
         type: "date",
         date: null,
-      } as any;
+      };
 
       const result = getPropertyValue(property);
       expect(result).toBe("");
     });
 
     it("should extract select property", () => {
-      const property = {
+      const property: NotionProperty = {
+        id: "select",
         type: "select",
-        select: { name: "In Progress" },
-      } as any;
+        select: { id: "1", name: "In Progress", color: "blue" },
+      };
 
       const result = getPropertyValue(property);
       expect(result).toBe("In Progress");
     });
 
     it("should return empty string for null select", () => {
-      const property = {
+      const property: NotionProperty = {
+        id: "select",
         type: "select",
         select: null,
-      } as any;
+      };
 
       const result = getPropertyValue(property);
       expect(result).toBe("");
     });
 
     it("should extract multi_select property", () => {
-      const property = {
+      const property: NotionProperty = {
+        id: "multi_select",
         type: "multi_select",
         multi_select: [
-          { name: "React" },
-          { name: "TypeScript" },
-          { name: "Next.js" },
+          { id: "1", name: "React", color: "blue" },
+          { id: "2", name: "TypeScript", color: "green" },
+          { id: "3", name: "Next.js", color: "purple" },
         ],
-      } as any;
+      };
 
       const result = getPropertyValue(property);
       expect(result).toEqual(["React", "TypeScript", "Next.js"]);
     });
 
     it("should return empty array for empty multi_select", () => {
-      const property = {
+      const property: NotionProperty = {
+        id: "multi_select",
         type: "multi_select",
         multi_select: [],
-      } as any;
+      };
 
       const result = getPropertyValue(property);
       expect(result).toEqual([]);
     });
 
     it("should extract number property", () => {
-      const property = {
+      const property: NotionProperty = {
+        id: "number",
         type: "number",
         number: 4.5,
-      } as any;
+      };
 
       const result = getPropertyValue(property);
       expect(result).toBe(4.5);
     });
 
     it("should return 0 for null number", () => {
-      const property = {
+      const property: NotionProperty = {
+        id: "number",
         type: "number",
         number: null,
-      } as any;
+      };
 
       const result = getPropertyValue(property);
       expect(result).toBe(0);
     });
 
     it("should extract checkbox property", () => {
-      const property = {
+      const property: NotionProperty = {
+        id: "checkbox",
         type: "checkbox",
         checkbox: true,
-      } as any;
+      };
 
       const result = getPropertyValue(property);
       expect(result).toBe(true);
     });
 
     it("should return false for null checkbox", () => {
-      const property = {
+      const property: NotionProperty = {
+        id: "checkbox",
         type: "checkbox",
-        checkbox: null,
-      } as any;
+        checkbox: false,
+      };
 
       const result = getPropertyValue(property);
       expect(result).toBe(false);
     });
 
     it("should return empty string for unknown property type", () => {
+      // unknown property type을 테스트하기 위해 타입 단언 사용
       const property = {
+        id: "unknown",
         type: "unknown_type",
-      } as any;
+      } as unknown as NotionProperty;
 
       const result = getPropertyValue(property);
       expect(result).toBe("");

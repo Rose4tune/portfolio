@@ -170,7 +170,7 @@ describe("useHeadings", () => {
   });
 
   it("should re-run when selector changes", () => {
-    const { result, rerender } = renderHook(
+    const { rerender } = renderHook(
       ({ selector }) => useHeadings(selector),
       {
         initialProps: { selector: "h2" },
