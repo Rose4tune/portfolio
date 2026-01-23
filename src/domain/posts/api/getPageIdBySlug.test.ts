@@ -110,6 +110,7 @@ describe("getPageIdBySlug", () => {
   });
 
   it("should return null for invalid database id", async () => {
+    vi.resetModules();
     vi.doMock("../lib/notionClient", () => ({
       notionHQClient: {
         databases: {
@@ -123,7 +124,13 @@ describe("getPageIdBySlug", () => {
       },
     }));
 
-    const pageId = await getPageIdBySlug(PostType.blog, "test-slug");
+    const { getPageIdBySlug: getPageIdBySlugWithInvalidDb } = await import(
+      "./getPageIdBySlug"
+    );
+    const pageId = await getPageIdBySlugWithInvalidDb(
+      PostType.blog,
+      "test-slug"
+    );
 
     expect(pageId).toBeNull();
   });
