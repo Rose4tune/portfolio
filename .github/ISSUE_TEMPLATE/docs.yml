@@ -1,0 +1,55 @@
+name: 📚 Documentation
+description: 문서 개선이나 수정을 제안해주세요.
+title: "[Docs]: "
+labels: ["docs"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        문서 개선을 제안해주셔서 감사합니다!
+
+  - type: dropdown
+    id: type
+    attributes:
+      label: 문서 유형
+      description: 어떤 종류의 문서인가요?
+      options:
+        - README
+        - API 문서
+        - 가이드/튜토리얼
+        - 코드 주석
+        - 기타
+    validations:
+      required: true
+
+  - type: textarea
+    id: issue
+    attributes:
+      label: 문제점
+      description: 현재 문서의 어떤 부분이 불명확하거나 잘못되었나요?
+      placeholder: "... 부분이 이해하기 어렵습니다."
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: 개선 제안
+      description: 어떻게 개선하면 좋을까요?
+      placeholder: "... 라고 수정하면 더 명확할 것 같습니다."
+    validations:
+      required: true
+
+  - type: input
+    id: location
+    attributes:
+      label: 위치
+      description: 문서의 위치나 파일명을 알려주세요.
+      placeholder: "예: README.md의 Installation 섹션"
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: 추가 정보
+      description: 참고할 만한 다른 자료가 있나요?
+      placeholder: 참고 링크나 예시를 공유해주세요.

@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 💬 질문 및 토론
+    url: https://github.com/rose/portfolio/discussions
+    about: 질문이 있으시다면 Discussions를 이용해주세요.
+  - name: 🔒 보안 이슈
+    url: https://github.com/rose/portfolio/security/advisories/new
+    about: 보안 관련 이슈는 여기에서 비공개로 보고해주세요.
