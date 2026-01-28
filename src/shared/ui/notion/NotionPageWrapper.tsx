@@ -19,14 +19,12 @@ export default function NotionPageWrapper({
   const [recordMap, setRecordMap] =
     useState<ExtendedRecordMap>(initialRecordMap);
   const lastFetchTime = useRef<number>(Date.now());
+  const hasRefreshed = useRef(false);
 
   const refreshRecordMap = useCallback(async () => {
     const now = Date.now();
-    // 스로틀 체크: 마지막 요청으로부터 15초 이내면 무시 (최초 요청 제외)
-    if (
-      now - lastFetchTime.current < THROTTLE_TIME &&
-      recordMap !== initialRecordMap
-    ) {
+    // 스로틀 체크: 첫 갱신 이후 15초 이내면 무시
+    if (hasRefreshed.current && now - lastFetchTime.current < THROTTLE_TIME) {
       return;
     }
 
@@ -36,12 +34,13 @@ export default function NotionPageWrapper({
         const newRecordMap = await res.json();
         setRecordMap(newRecordMap);
         lastFetchTime.current = Date.now();
+        hasRefreshed.current = true;
         console.log("Notion recordMap refreshed");
       }
     } catch (error) {
       console.error("Error refreshing Notion recordMap:", error);
     }
-  }, [pageId, initialRecordMap, recordMap]);
+  }, [pageId]);
 
   // 55분 주기 자동 갱신
   useEffect(() => {
