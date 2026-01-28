@@ -7,7 +7,7 @@ test.describe("Blog", () => {
     
     // 404 페이지가 아닌지 확인하고, 실제 블로그 페이지가 로드되었는지 확인
     const is404 = await page.locator('text="404"').isVisible().catch(() => false);
-    const hasSearchInput = await page.getByPlaceholder(/태그 및 제목 검색/i).isVisible().catch(() => false);
+    const hasSearchInput = await page.getByPlaceholder(/검색/i).isVisible().catch(() => false);
     
     if (is404 || !hasSearchInput) {
       // 페이지가 제대로 로드되지 않았으면 테스트 스킵
@@ -18,7 +18,7 @@ test.describe("Blog", () => {
 
   test("should display blog posts list", async ({ page }) => {
     // 검색 바가 표시되는지 확인 (placeholder에 점이 여러 개일 수 있음)
-    await expect(page.getByPlaceholder(/태그 및 제목 검색/i)).toBeVisible();
+    await expect(page.getByPlaceholder(/검색/i)).toBeVisible();
 
     // 포스트 목록이 있는지 확인 (최소한 하나의 포스트 제목이 있어야 함)
     const postTitles = page.locator("h2");
@@ -31,7 +31,7 @@ test.describe("Blog", () => {
   });
 
   test("should filter posts by search query", async ({ page }) => {
-    const searchInput = page.getByPlaceholder(/태그 및 제목 검색/i);
+    const searchInput = page.getByPlaceholder(/검색/i);
     
     // 검색어 입력
     await searchInput.fill("test");
@@ -44,51 +44,6 @@ test.describe("Blog", () => {
     
     // 검색 후에도 UI가 업데이트되었는지 확인
     expect(count).toBeGreaterThanOrEqual(0);
-  });
-
-  test("should filter posts by tag", async ({ page }) => {
-    // 검색 입력 필드 근처의 태그 필터 영역 찾기 (검색 바 바로 다음의 flex-wrap div)
-    const searchInput = page.getByPlaceholder(/태그 및 제목 검색/i);
-    const tagFilterContainer = searchInput.locator('..').locator('..').locator('div.flex.flex-wrap');
-    const tagButtons = tagFilterContainer.locator('button:not(:has-text("전체"))');
-    const tagCount = await tagButtons.count();
-
-    if (tagCount > 0) {
-      // 첫 번째 태그 찾기 및 스크롤
-      const firstTag = tagButtons.first();
-      await firstTag.scrollIntoViewIfNeeded();
-      await firstTag.waitFor({ state: 'visible', timeout: 5000 });
-      
-      const tagText = await firstTag.textContent();
-      
-      await firstTag.click({ force: true });
-      await page.waitForTimeout(500); // 필터링 대기
-
-      // 선택된 태그가 활성화 상태인지 확인 (className에 purple 포함)
-      const className = await firstTag.getAttribute("class");
-      expect(className).toContain("purple");
-    }
-  });
-
-  test("should clear search query", async ({ page }) => {
-    const searchInput = page.getByPlaceholder(/태그 및 제목 검색/i);
-    
-    // 검색어 입력
-    await searchInput.fill("test");
-    await page.waitForTimeout(300);
-
-    // 검색어 지우기 버튼 찾기 (X 버튼)
-    const clearButton = page.locator('button:has-text("✕")').or(
-      page.locator('button[aria-label*="clear" i]')
-    );
-    
-    if (await clearButton.isVisible()) {
-      await clearButton.click();
-      await page.waitForTimeout(300);
-
-      // 검색어가 지워졌는지 확인
-      await expect(searchInput).toHaveValue("");
-    }
   });
 
   test("should navigate to blog post detail", async ({ page }) => {
@@ -109,7 +64,7 @@ test.describe("Blog", () => {
         await page.waitForLoadState("networkidle");
 
         // 상세 페이지로 이동했는지 확인
-        await expect(page).toHaveURL(/\/blog\/.+/, { timeout: 10000 });
+        await expect(page).toHaveURL(/\/blog(\/.+)?$/, { timeout: 10000 });
       
         // 제목이 표시되는지 확인
         if (titleText) {

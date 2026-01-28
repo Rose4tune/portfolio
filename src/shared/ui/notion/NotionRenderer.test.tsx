@@ -5,10 +5,17 @@ import type { ExtendedRecordMap } from "notion-types";
 import NotionRenderer from "./NotionRenderer";
 
 // react-notion-x mock – 전달된 props를 캡쳐해서 mapImageUrl 동작을 검증하기 위함
-const mockNotionRenderer = vi.fn(() => null);
+const { mockNotionRenderer, mockDefaultMapImageUrl } = vi.hoisted(() => ({
+  mockNotionRenderer: vi.fn<
+    (props: { mapImageUrl: (url: string, block: unknown) => string }) => void
+  >(),
+  mockDefaultMapImageUrl: vi.fn((url: string) => url),
+}));
 
 vi.mock("react-notion-x", () => ({
-  NotionRenderer: (props: unknown) => {
+  NotionRenderer: (props: {
+    mapImageUrl: (url: string, block: unknown) => string;
+  }) => {
     mockNotionRenderer(props);
     return <div data-testid="notion-renderer-mock" />;
   },
@@ -16,25 +23,18 @@ vi.mock("react-notion-x", () => ({
 
 // next/image mock – 단순 img 태그로 대체
 vi.mock("next/image", () => ({
-  default: (props: React.ComponentPropsWithoutRef<"img">) => (
+  default: (props: React.ComponentPropsWithoutRef<"img">) => {
+    const { alt = "", ...rest } = props;
     // eslint-disable-next-line @next/next/no-img-element
-    <img {...props} />
-  ),
+    return <img alt={alt} {...rest} />;
+  },
 }));
 
-// next/dynamic mock – 동적으로 로드되는 컴포넌트를 그대로 반환
+// next/dynamic mock – 동적으로 로드되는 컴포넌트를 간단한 더미 컴포넌트로 대체
 vi.mock("next/dynamic", () => ({
-  default:
-    (factory: () => Promise<{ default: React.ComponentType }>) =>
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (props: any) => {
-      const Lazy = (await factory()).default;
-      return <Lazy {...props} />;
-    },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  default: () => (props: any) => <div data-testid="dynamic-mock" {...props} />,
 }));
-
-// notion-utils mock – defaultMapImageUrl의 동작을 제어하기 위함
-const mockDefaultMapImageUrl = vi.fn((url: string) => url);
 
 vi.mock("notion-utils", () => ({
   defaultMapImageUrl: mockDefaultMapImageUrl,
@@ -50,7 +50,7 @@ describe("NotionRenderer (mapImageUrl)", () => {
     collection: {},
     collection_view: {},
     notion_user: {},
-    space: {},
+    collection_query: {},
     signed_urls: {},
   };
 
@@ -69,9 +69,7 @@ describe("NotionRenderer (mapImageUrl)", () => {
     render(<NotionRenderer recordMap={recordMap} />);
 
     expect(mockNotionRenderer).toHaveBeenCalledTimes(1);
-    const props = mockNotionRenderer.mock.calls[0][0] as {
-      mapImageUrl: (url: string, block: unknown) => string;
-    };
+    const [props] = mockNotionRenderer.mock.calls[0]!;
 
     // defaultMapImageUrl가 id 쿼리 파라미터가 포함된 URL을 반환한다고 가정
     mockDefaultMapImageUrl.mockReturnValueOnce(
@@ -97,9 +95,7 @@ describe("NotionRenderer (mapImageUrl)", () => {
     render(<NotionRenderer recordMap={recordMap} />);
 
     expect(mockNotionRenderer).toHaveBeenCalledTimes(1);
-    const props = mockNotionRenderer.mock.calls[0][0] as {
-      mapImageUrl: (url: string, block: unknown) => string;
-    };
+    const [props] = mockNotionRenderer.mock.calls[0]!;
 
     mockDefaultMapImageUrl.mockReturnValueOnce(s3Url);
 
@@ -121,9 +117,7 @@ describe("NotionRenderer (mapImageUrl)", () => {
     render(<NotionRenderer recordMap={recordMap} />);
 
     expect(mockNotionRenderer).toHaveBeenCalledTimes(1);
-    const props = mockNotionRenderer.mock.calls[0][0] as {
-      mapImageUrl: (url: string, block: unknown) => string;
-    };
+    const [props] = mockNotionRenderer.mock.calls[0]!;
 
     mockDefaultMapImageUrl.mockReturnValueOnce(mappedUrl);
 
@@ -133,5 +127,5 @@ describe("NotionRenderer (mapImageUrl)", () => {
 
     expect(result).toBe(mappedUrl);
   });
-}
+});
 

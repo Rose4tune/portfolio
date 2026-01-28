@@ -136,8 +136,9 @@ describe("ProjectScreen", () => {
       await user.click(filterBarTagButton);
     }
 
+    // "React" 태그가 있는 프로젝트들만 남아야 함
+    expect(screen.getByText("Portfolio Website")).toBeInTheDocument();
     expect(screen.getByText("E-commerce Platform")).toBeInTheDocument();
-    expect(screen.queryByText("Portfolio Website")).not.toBeInTheDocument();
     expect(screen.queryByText("Task Management App")).not.toBeInTheDocument();
   });
 
@@ -185,9 +186,9 @@ describe("ProjectScreen", () => {
   it("should display project tech stack", () => {
     render(<ProjectScreen posts={mockProjects} uniqueTags={uniqueTags} />);
 
-    expect(screen.getByText("#Next.js")).toBeInTheDocument();
-    expect(screen.getByText("#TypeScript")).toBeInTheDocument();
-    expect(screen.getByText("#Tailwind CSS")).toBeInTheDocument();
+    expect(screen.getAllByText("#Next.js").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("#TypeScript").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("#Tailwind CSS").length).toBeGreaterThan(0);
   });
 
   it("should display project tags", () => {

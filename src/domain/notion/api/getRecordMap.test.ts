@@ -2,8 +2,17 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 
 import { getRecordMap } from "./getRecordMap";
 
-// notionClient (notion-client) mock
-const mockGetPage = vi.fn();
+// vi.mock은 hoisted 되기 때문에, mock 함수들은 vi.hoisted 안에서 정의
+const { mockGetPage, mockWithRetry, mockBlocksRetrieve, mockPagesRetrieve } =
+  vi.hoisted(() => {
+    return {
+      mockGetPage: vi.fn(),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      mockWithRetry: vi.fn((fn: () => Promise<any>) => fn()),
+      mockBlocksRetrieve: vi.fn(),
+      mockPagesRetrieve: vi.fn(),
+    };
+  });
 
 vi.mock("../lib/client", () => ({
   notionClient: {
@@ -11,19 +20,9 @@ vi.mock("../lib/client", () => ({
   },
 }));
 
-// withRetry mock – 전달 받은 함수를 바로 실행하도록 단순화
-const mockWithRetry = vi.fn(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (fn: () => Promise<any>) => fn()
-);
-
 vi.mock("../lib/withRetry", () => ({
   withRetry: mockWithRetry,
 }));
-
-// @notionhq/client wrapper mock (notionHQClient)
-const mockBlocksRetrieve = vi.fn();
-const mockPagesRetrieve = vi.fn();
 
 vi.mock("@/domain/posts/lib/notionClient", () => ({
   notionHQClient: {
@@ -93,7 +92,11 @@ describe("getRecordMap (이미지 관련)", () => {
     const pageId = "test-page-id-cover";
 
     mockGetPage.mockResolvedValue({
-      block: {},
+      // block이 완전히 비어 있으면 구현에서 에러를 던지므로,
+      // 더미 블록 하나를 넣어 빈 recordMap 에러를 피한다.
+      block: {
+        dummy: { value: {} },
+      },
       signed_urls: {},
     });
 
@@ -119,5 +122,5 @@ describe("getRecordMap (이미지 관련)", () => {
       "https://prod-files-secure.s3.us-west-2.amazonaws.com/cover-image.jpg"
     );
   });
-}
+});
 
