@@ -1,6 +1,6 @@
-name: 📚 Documentation
+name: 📚 docs
 description: 문서 개선이나 수정을 제안해주세요.
-title: "[Docs]: "
+title: "[docs]: "
 labels: ["docs"]
 body:
   - type: markdown
@@ -19,8 +19,6 @@ body:
         - 가이드/튜토리얼
         - 코드 주석
         - 기타
-    validations:
-      required: true
 
   - type: textarea
     id: issue
@@ -28,8 +26,6 @@ body:
       label: 문제점
       description: 현재 문서의 어떤 부분이 불명확하거나 잘못되었나요?
       placeholder: "... 부분이 이해하기 어렵습니다."
-    validations:
-      required: true
 
   - type: textarea
     id: suggestion
@@ -37,8 +33,6 @@ body:
       label: 개선 제안
       description: 어떻게 개선하면 좋을까요?
       placeholder: "... 라고 수정하면 더 명확할 것 같습니다."
-    validations:
-      required: true
 
   - type: input
     id: location

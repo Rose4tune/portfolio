@@ -1,6 +1,6 @@
-name: 🐛 Bug Report
+name: 🐛 bugfix
 description: 버그를 발견하셨나요? 버그 리포트를 작성해주세요.
-title: "[Bug]: "
+title: "[bugfix]: "
 labels: ["bugfix"]
 body:
   - type: markdown
@@ -14,8 +14,6 @@ body:
       label: 버그 설명
       description: 발생한 버그에 대해 명확하고 간결하게 설명해주세요.
       placeholder: 어떤 문제가 발생했나요?
-    validations:
-      required: true
 
   - type: textarea
     id: reproduction
@@ -27,8 +25,6 @@ body:
         2. '...' 클릭
         3. '...'까지 스크롤
         4. 오류 발생
-    validations:
-      required: true
 
   - type: textarea
     id: expected
@@ -36,8 +32,6 @@ body:
       label: 예상된 동작
       description: 어떤 동작을 예상하셨나요?
       placeholder: 원래 어떻게 동작해야 하나요?
-    validations:
-      required: true
 
   - type: textarea
     id: actual
@@ -45,8 +39,6 @@ body:
       label: 실제 동작
       description: 실제로 어떻게 동작했나요?
       placeholder: 실제로 어떤 일이 발생했나요?
-    validations:
-      required: true
 
   - type: textarea
     id: screenshots
