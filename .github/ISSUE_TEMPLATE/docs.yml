@@ -2,6 +2,8 @@ name: 📚 docs
 description: 문서 개선이나 수정을 제안해주세요.
 title: "[docs]: "
 labels: ["docs"]
+assignees:
+  - Rose4tune
 body:
   - type: markdown
     attributes:

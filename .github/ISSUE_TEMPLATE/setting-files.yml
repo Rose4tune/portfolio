@@ -2,6 +2,8 @@ name: ⚙️ setting files
 description: 설정 파일 관련 이슈를 작성해주세요.
 title: "[setting files]: "
 labels: ["setting files"]
+assignees:
+  - Rose4tune
 body:
   - type: markdown
     attributes:

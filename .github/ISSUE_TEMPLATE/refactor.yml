@@ -2,6 +2,8 @@ name: ♻️ refactor
 description: 코드 리팩토링을 제안해주세요.
 title: "[refactor]: "
 labels: ["refactor"]
+assignees:
+  - Rose4tune
 body:
   - type: markdown
     attributes:

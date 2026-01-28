@@ -2,6 +2,8 @@ name: 🐛 bugfix
 description: 버그를 발견하셨나요? 버그 리포트를 작성해주세요.
 title: "[bugfix]: "
 labels: ["bugfix"]
+assignees:
+  - Rose4tune
 body:
   - type: markdown
     attributes:
