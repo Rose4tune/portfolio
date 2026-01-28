@@ -8,4 +8,5 @@ export { default as Loader } from "./loader/Loader";
 
 // notion
 export { default as NotionRenderer } from "./notion/NotionRenderer";
+export { default as NotionPageWrapper } from "./notion/NotionPageWrapper";
 export { default as PostLayout } from "./notion/PostLayout";
