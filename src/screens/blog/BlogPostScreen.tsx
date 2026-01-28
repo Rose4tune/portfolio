@@ -1,19 +1,23 @@
 "use client";
 
 import type { ExtendedRecordMap } from "notion-types";
-import { NotionRenderer, PostLayout } from "@/shared/ui";
+import { NotionPageWrapper, PostLayout } from "@/shared/ui";
 
 interface BlogPostScreenProps {
+  pageId: string;
   recordMap: ExtendedRecordMap;
 }
 
 const linkText = "블로그 목록으로";
 const href = "/blog";
 
-export default function BlogPostScreen({ recordMap }: BlogPostScreenProps) {
+export default function BlogPostScreen({
+  pageId,
+  recordMap,
+}: BlogPostScreenProps) {
   return (
     <PostLayout linkText={linkText} href={href}>
-      <NotionRenderer recordMap={recordMap} />
+      <NotionPageWrapper pageId={pageId} initialRecordMap={recordMap} />
     </PostLayout>
   );
 }

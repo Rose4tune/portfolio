@@ -8,6 +8,7 @@ overrides:
   react-notion-x: ^7.4.2
   notion-client: ^7.4.2
   notion-types: ^7.4.2
+  notion-utils: ^7.4.2
 
 importers:
 
@@ -41,6 +42,9 @@ importers:
         specifier: ^7.4.2
         version: 7.4.3
       notion-types:
+        specifier: ^7.4.2
+        version: 7.4.3
+      notion-utils:
         specifier: ^7.4.2
         version: 7.4.3
       pretendard:

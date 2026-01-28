@@ -46,16 +46,25 @@ vi.mock("framer-motion", () => ({
 }));
 
 // TypeAnimation mock
-vi.mock("react-type-animation", () => ({
-  default: ({
+vi.mock("react-type-animation", () => {
+  const MockTypeAnimation = ({
     sequence,
     className,
-  }: { sequence: unknown[]; className?: string }) => (
+  }: {
+    sequence: unknown[];
+    className?: string;
+  }) => (
     <span className={className} data-testid="type-animation">
       {typeof sequence[0] === "string" ? sequence[0] : ""}
     </span>
-  ),
-}));
+  );
+
+  return {
+    __esModule: true,
+    default: MockTypeAnimation,
+    TypeAnimation: MockTypeAnimation,
+  };
+});
 
 // lucide-react mock
 vi.mock("lucide-react", () => ({
@@ -141,8 +150,8 @@ describe("HomeScreen", () => {
   it("should render project tags", () => {
     render(<HomeScreen initialTags={initialTags} initialProjects={mockProjects} />);
 
-    expect(screen.getByText("#Next.js")).toBeInTheDocument();
-    expect(screen.getByText("#React")).toBeInTheDocument();
+    expect(screen.getAllByText("#Next.js").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("#React").length).toBeGreaterThan(0);
   });
 
   it("should handle empty projects array", () => {

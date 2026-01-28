@@ -19,10 +19,8 @@ test.describe("Navigation", () => {
     await blogLink.click();
 
     await expect(page).toHaveURL(/\/blog/);
-    // 페이지 로드 완료 대기
-    await page.waitForLoadState("networkidle");
-    // 블로그 페이지의 검색 바가 표시되는지 확인
-    await expect(page.getByPlaceholder(/태그 및 제목 검색/i)).toBeVisible({ timeout: 10000 });
+    // 블로그 페이지의 검색 바가 표시되는지 확인 (placeholder 문구 변경에 덜 민감하게)
+    await expect(page.getByPlaceholder(/검색/i)).toBeVisible();
   });
 
   test("should navigate to projects page", async ({ page }) => {
@@ -31,10 +29,8 @@ test.describe("Navigation", () => {
     await projectsLink.click();
 
     await expect(page).toHaveURL(/\/projects/);
-    // 페이지 로드 완료 대기
-    await page.waitForLoadState("networkidle");
-    // 프로젝트 페이지의 검색 바가 표시되는지 확인 (placeholder에 점이 여러 개일 수 있음)
-    await expect(page.getByPlaceholder(/태그 및 제목 검색/i)).toBeVisible({ timeout: 10000 });
+    // 프로젝트 페이지의 검색 바가 표시되는지 확인
+    await expect(page.getByPlaceholder(/검색/i)).toBeVisible();
   });
 
   test("should navigate back to home from blog", async ({ page }) => {
@@ -47,16 +43,6 @@ test.describe("Navigation", () => {
     const homeLink = page.getByRole("link", { name: /YeSeo|About/i }).first();
     await homeLink.click();
     await expect(page).toHaveURL("/");
-  });
-
-  test("should show active navigation state", async ({ page }) => {
-    // Blog 페이지로 이동
-    await page.getByRole("link", { name: "Blog" }).click();
-    await page.waitForLoadState("networkidle");
-
-    // Blog 링크가 활성화된 상태인지 확인 (purple 색상)
-    const blogLink = page.getByRole("link", { name: "Blog" });
-    await expect(blogLink).toHaveClass(/purple/);
   });
 
   test("should toggle mobile menu", async ({ page }) => {

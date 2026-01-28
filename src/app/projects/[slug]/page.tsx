@@ -65,7 +65,7 @@ export default async function ProjectPostPage(props: any) {
       }
     }
 
-    return <ProjectPostScreen recordMap={recordMap} />;
+    return <ProjectPostScreen pageId={pageId} recordMap={recordMap} />;
   } catch (error) {
     console.error("Failed to load project post:", error);
     return notFound();

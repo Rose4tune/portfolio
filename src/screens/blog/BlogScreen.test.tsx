@@ -181,7 +181,7 @@ describe("BlogScreen", () => {
 
     // 태그가 여러 곳에 표시되므로 getAllByText 사용
     expect(screen.getAllByText("React").length).toBeGreaterThan(0);
-    expect(screen.getByText("Testing")).toBeInTheDocument();
+    expect(screen.getAllByText("Testing").length).toBeGreaterThan(0);
   });
 
   it("should allow clicking tags to filter", async () => {
