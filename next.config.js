@@ -35,7 +35,12 @@ const nextConfig = {
     deviceSizes: [640],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384, 640, 750],
   },
-  transpilePackages: ["notion-client", "notion-types", "react-notion-x"],
+  transpilePackages: [
+    "notion-client",
+    "notion-types",
+    "notion-utils",
+    "react-notion-x",
+  ],
 };
 
 export default nextConfig;
