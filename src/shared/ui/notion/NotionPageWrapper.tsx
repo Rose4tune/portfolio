@@ -21,6 +21,12 @@ export default function NotionPageWrapper({
   const lastFetchTime = useRef<number>(Date.now());
   const hasRefreshed = useRef(false);
 
+  useEffect(() => {
+    setRecordMap(initialRecordMap);
+    lastFetchTime.current = Date.now();
+    hasRefreshed.current = false;
+  }, [initialRecordMap, pageId]);
+
   const refreshRecordMap = useCallback(async () => {
     const now = Date.now();
     // 스로틀 체크: 첫 갱신 이후 15초 이내면 무시
