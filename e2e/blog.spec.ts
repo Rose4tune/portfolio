@@ -64,7 +64,7 @@ test.describe("Blog", () => {
         await page.waitForLoadState("networkidle");
 
         // 상세 페이지로 이동했는지 확인
-        await expect(page).toHaveURL(/\/blog(\/.+)?$/, { timeout: 10000 });
+        await expect(page).toHaveURL(/\/blog\/.+$/, { timeout: 10000 });
       
         // 제목이 표시되는지 확인
         if (titleText) {
