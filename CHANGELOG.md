@@ -1,3 +1,9 @@
+## [1.2.0](https://github.com/Rose4tune/portfolio/compare/v1.1.2...v1.2.0) (2026-01-28)
+
+### Features
+
+* Notion 이미지 자동 갱신 및 API 개선 ([80867e0](https://github.com/Rose4tune/portfolio/commit/80867e02d6d308504147dca42b945833d33c441e))
+
 ## [1.1.2](https://github.com/Rose4tune/portfolio/compare/v1.1.1...v1.1.2) (2025-10-15)
 
 ### Bug Fixes
