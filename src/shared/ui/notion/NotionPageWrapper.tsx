@@ -20,12 +20,22 @@ export default function NotionPageWrapper({
     useState<ExtendedRecordMap>(initialRecordMap);
   const lastFetchTime = useRef<number>(Date.now());
   const hasRefreshed = useRef(false);
+  const currentPageIdRef = useRef(pageId);
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   useEffect(() => {
+    currentPageIdRef.current = pageId;
     setRecordMap(initialRecordMap);
     lastFetchTime.current = Date.now();
     hasRefreshed.current = false;
+    abortControllerRef.current?.abort();
   }, [initialRecordMap, pageId]);
+
+  useEffect(() => {
+    return () => {
+      abortControllerRef.current?.abort();
+    };
+  }, []);
 
   const refreshRecordMap = useCallback(async () => {
     const now = Date.now();
@@ -34,16 +44,35 @@ export default function NotionPageWrapper({
       return;
     }
 
+    const requestPageId = pageId;
+    abortControllerRef.current?.abort();
+    const controller = new AbortController();
+    abortControllerRef.current = controller;
+
     try {
-      const res = await fetch(`/api/notion-recordmap?pageId=${pageId}`);
-      if (res.ok) {
-        const newRecordMap = await res.json();
-        setRecordMap(newRecordMap);
-        lastFetchTime.current = Date.now();
-        hasRefreshed.current = true;
-        console.log("Notion recordMap refreshed");
+      const res = await fetch(
+        `/api/notion-recordmap?pageId=${requestPageId}`,
+        {
+          signal: controller.signal,
+        }
+      );
+      if (!res.ok) {
+        return;
       }
+
+      const newRecordMap = await res.json();
+      if (currentPageIdRef.current !== requestPageId) {
+        return;
+      }
+
+      setRecordMap(newRecordMap);
+      lastFetchTime.current = Date.now();
+      hasRefreshed.current = true;
+      console.log("Notion recordMap refreshed");
     } catch (error) {
+      if ((error as Error).name === "AbortError") {
+        return;
+      }
       console.error("Error refreshing Notion recordMap:", error);
     }
   }, [pageId]);
