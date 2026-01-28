@@ -37,7 +37,7 @@ export async function getRecordMap(pageId: string) {
       }
 
       // 이미지 블록의 실제 S3 URL을 가져와서 signed_urls에 추가
-      await enhanceImageUrls(recordMap, idFormat);
+      await enhanceImageUrls(recordMap);
 
       // 페이지 커버 이미지도 처리
       await enhancePageCover(recordMap, idFormat);
@@ -60,8 +60,7 @@ export async function getRecordMap(pageId: string) {
  * 홈 화면과 동일한 방식으로 이미지를 로드하기 위함
  */
 async function enhanceImageUrls(
-  recordMap: Awaited<ReturnType<typeof notionClient.getPage>>,
-  pageId: string
+  recordMap: Awaited<ReturnType<typeof notionClient.getPage>>
 ) {
   try {
     // recordMap에서 이미지 블록 ID들 찾기

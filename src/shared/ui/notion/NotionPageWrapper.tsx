@@ -9,6 +9,9 @@ interface NotionPageWrapperProps {
   initialRecordMap: ExtendedRecordMap;
 }
 
+const REFRESH_INTERVAL = 55 * 60 * 1000; // 55분
+const THROTTLE_TIME = 15 * 1000; // 15초 스로틀
+
 export default function NotionPageWrapper({
   pageId,
   initialRecordMap,
@@ -16,8 +19,6 @@ export default function NotionPageWrapper({
   const [recordMap, setRecordMap] =
     useState<ExtendedRecordMap>(initialRecordMap);
   const lastFetchTime = useRef<number>(Date.now());
-  const REFRESH_INTERVAL = 55 * 60 * 1000; // 55분
-  const THROTTLE_TIME = 15 * 1000; // 15초 스로틀
 
   const refreshRecordMap = useCallback(async () => {
     const now = Date.now();

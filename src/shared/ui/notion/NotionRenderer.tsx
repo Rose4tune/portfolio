@@ -94,7 +94,7 @@ export default function NotionRenderer({
                 return signedUrl;
               }
             }
-          } catch (e) {
+          } catch {
             // URL 파싱 실패 시 무시
           }
 
