@@ -64,7 +64,7 @@ export default async function BlogPostPage(props: any) {
       }
     }
 
-    return <BlogPostScreen recordMap={recordMap} />;
+    return <BlogPostScreen pageId={pageId} recordMap={recordMap} />;
   } catch (error) {
     console.error("Failed to load blog post:", error);
     return notFound();

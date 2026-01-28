@@ -45,8 +45,10 @@ const UnoptimizedImage = (props: ImageProps) => {
 
 export default function NotionRenderer({
   recordMap,
+  onImageError,
 }: {
   recordMap: ExtendedRecordMap;
+  onImageError?: () => void;
 }) {
   const [isMounted, setIsMounted] = useState(false);
 
@@ -64,7 +66,9 @@ export default function NotionRenderer({
         recordMap={recordMap}
         fullPage={true}
         components={{
-          nextImage: UnoptimizedImage,
+          nextImage: (props: ImageProps) => (
+            <UnoptimizedImage {...props} onError={onImageError} />
+          ),
           Code,
           Collection,
           Equation,
