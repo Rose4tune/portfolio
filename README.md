@@ -65,9 +65,13 @@ Notion Database (CMS)
   ↓
 @notionhq/client (메타데이터 쿼리)
   ↓
-notion-client (페이지 recordMap 추출)
+notion-client (페이지 recordMap 추출, signFileUrls: true)
   ↓
-react-notion-x (Notion 블록 렌더링)
+getRecordMap: enhanceImageUrls / enhancePageCover (이미지·커버 S3 URL 보강)
+  ↓
+개별 포스트: NotionPageWrapper (recordMap state, 55분/탭/에러 시 갱신) ← /api/notion-recordmap
+  ↓
+react-notion-x (Notion 블록 렌더링, mapImageUrl → signed_urls)
   ↓
 Next.js ISR (정적 생성 + 주기적 갱신)
   ↓
@@ -84,7 +88,8 @@ Vercel (배포)
 **2. 데이터 Fetching 전략**  
 - `@notionhq/client`로 데이터베이스 쿼리 → 메타데이터 추출
 - `notion-client`로 페이지 recordMap 가져오기 → 전체 블록 구조 확보
-- 이미지 블록 ID로 S3 URL을 `signed_urls`에 매핑하여 렌더링 시 사용
+- `getRecordMap` 내부에서 `@notionhq/client`로 이미지 블록·페이지 커버의 S3 URL을 조회해 `signed_urls`에 보강
+- 개별 포스트는 `NotionPageWrapper`가 recordMap을 state로 관리하며, 55분 주기·탭 활성화·이미지 로드 실패 시 `/api/notion-recordmap`으로 갱신
 
 **3. ISR 설정**  
 - 홈, 블로그, 프로젝트 목록: `revalidate: 3600` (1시간마다 갱신)
@@ -101,7 +106,7 @@ src/
 ├── screens/          # 화면별 컴포넌트 (Home, Blog, Project, Resume)
 ├── shared/           # 공통 UI, 레이아웃, 유틸리티
 │   ├── layout/       # Navbar, AnimatedLayout
-│   ├── ui/           # NotionRenderer, Loader 등
+│   ├── ui/           # NotionRenderer, NotionPageWrapper, Loader 등
 │   └── lib/          # 유틸리티 함수, 커스텀 훅
 └── widgets/          # 재사용 가능한 기능 단위 (SearchFilterBar)
 ```
@@ -132,6 +137,10 @@ src/
 - **@notionhq/client**: 공식 API로 데이터베이스 쿼리 및 메타데이터 조회
 - **notion-client**: private API로 페이지 전체 구조(recordMap) 추출
 - 두 클라이언트를 조합하여 메타데이터 관리와 블록 렌더링을 모두 구현
+
+### notion-utils
+- `defaultMapImageUrl`로 Notion 내부 URL을 notion.so 이미지 URL로 변환
+- `NotionRenderer`의 `mapImageUrl`에서 변환 후 `recordMap.signed_urls` fallback으로 S3 URL 매칭
 
 ### Framer Motion
 - 페이지 전환 애니메이션, 인터랙션 효과
@@ -189,8 +198,7 @@ src/
 
 ### 2. 이미지 URL 만료 문제
 Notion의 S3 URL은 1시간 후 만료되어, 정적 생성만으로는 이미지가 깨지는 문제가 발생했습니다.</br>
-ISR을 1시간 주기(`revalidate: 3600`)로 설정하여 해결했지만, 사용자가 오래된 캐시를 보면 이미지가 로딩되지 않을 수 있습니다.</br>
-`getRecordMap`에서 이미지 블록의 실제 S3 URL을 명시적으로 갱신하여 이를 최소화했습니다.
+개별 포스트는 **ISR 50분**(`revalidate: 3000`)과 **클라이언트 갱신**을 조합해 대응합니다. 클라이언트에서는 55분 주기 자동 갱신, 탭 복귀 시 5분 이상 경과 시 갱신, 초기 로드 시 URL이 30분 이상이면 갱신, 이미지 로드 실패 시 즉시 갱신을 수행하며, `/api/notion-recordmap`으로 실시간 recordMap을 가져옵니다. 새로고침 없이도 이미지가 유지됩니다.
 
 ### 3. Notion 블록 스타일 커스터마이징의 한계
 `react-notion-x`는 Notion의 기본 스타일을 충실히 재현하지만, 커스텀 디자인을 적용하기 어렵습니다.</br>
