@@ -68,20 +68,89 @@ export default function NotionPageWrapper({
       setRecordMap(newRecordMap);
       lastFetchTime.current = Date.now();
       hasRefreshed.current = true;
-      console.log("Notion recordMap refreshed");
+      // 디버깅: console.log("[NotionPageWrapper] recordMap 갱신 완료");
     } catch (error) {
       if ((error as Error).name === "AbortError") {
         return;
       }
-      console.error("Error refreshing Notion recordMap:", error);
+      console.error("[NotionPageWrapper] 갱신 실패:", error);
     }
   }, [pageId]);
 
-  // 55분 주기 자동 갱신
+  // 55분 주기 자동 갱신 (페이지를 오래 켜둘 때)
   useEffect(() => {
-    const interval = setInterval(refreshRecordMap, REFRESH_INTERVAL);
+    const interval = setInterval(() => {
+      // 디버깅: console.log("[NotionPageWrapper] 55분 경과 → 갱신");
+      refreshRecordMap();
+    }, REFRESH_INTERVAL);
     return () => clearInterval(interval);
   }, [refreshRecordMap]);
+
+  // 탭이 다시 활성화될 때 갱신 (다른 탭에서 돌아올 때)
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        const now = Date.now();
+        const timeSinceLastFetch = now - lastFetchTime.current;
+
+        // 5분 이상 지났으면 갱신 (너무 자주 갱신 방지)
+        if (timeSinceLastFetch > 5 * 60 * 1000) {
+          // 디버깅: console.log("[NotionPageWrapper] 탭 활성화 → 갱신");
+          refreshRecordMap();
+        }
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () =>
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+  }, [refreshRecordMap]);
+
+  // 초기 로드 시 signed URL 유효성 체크
+  useEffect(() => {
+    const signedUrlCount = Object.keys(recordMap.signed_urls || {}).length;
+    // 디버깅: console.log("[NotionPageWrapper] 초기 signed_urls:", signedUrlCount);
+
+    if (signedUrlCount === 0) {
+      refreshRecordMap();
+      return;
+    }
+
+    const sampleUrl = Object.values(recordMap.signed_urls || {})[0];
+    if (typeof sampleUrl === "string" && sampleUrl.includes("X-Amz-Date=")) {
+      try {
+        const urlObj = new URL(sampleUrl);
+        const amzDate = urlObj.searchParams.get("X-Amz-Date");
+        if (amzDate) {
+          const year = parseInt(amzDate.substring(0, 4));
+          const month = parseInt(amzDate.substring(4, 6)) - 1;
+          const day = parseInt(amzDate.substring(6, 8));
+          const hour = parseInt(amzDate.substring(9, 11));
+          const minute = parseInt(amzDate.substring(11, 13));
+          const second = parseInt(amzDate.substring(13, 15));
+
+          const urlCreatedAt = new Date(
+            Date.UTC(year, month, day, hour, minute, second)
+          );
+          const urlAge = Date.now() - urlCreatedAt.getTime();
+          const urlAgeMinutes = Math.floor(urlAge / 1000 / 60);
+
+          // 30분 이상 된 URL이면 즉시 갱신
+          if (urlAgeMinutes >= 30) {
+            console.warn(
+              "[NotionPageWrapper] URL 오래됨 (",
+              urlAgeMinutes,
+              "분) → 갱신"
+            );
+            refreshRecordMap();
+          }
+        }
+      } catch {
+        // URL 나이 파싱 실패 시 무시
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pageId]);
 
   return (
     <NotionRenderer recordMap={recordMap} onImageError={refreshRecordMap} />

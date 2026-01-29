@@ -55,7 +55,8 @@ export default function NotionRenderer({
 
   useEffect(() => {
     setIsMounted(true);
-  }, []);
+    // 디버깅: console.log("[NotionRenderer] signed_urls:", Object.keys(recordMap.signed_urls || {}).length);
+  }, [recordMap]);
 
   if (!isMounted) {
     return <Loading />;
@@ -78,31 +79,76 @@ export default function NotionRenderer({
         mapImageUrl={(url, block) => {
           if (!url) return "";
 
-          // 1. defaultMapImageUrl로 URL 변환 (attachment: -> notion.so URL)
           const resolvedUrl = defaultMapImageUrl(url, block as Block) || url;
 
-          // 2. URL에서 block ID 추출하여 signed URL 찾기
-          try {
-            const urlObj = new URL(resolvedUrl, "https://www.notion.so");
-            const blockId = urlObj.searchParams.get("id");
-
-            // block ID로 signed_urls에서 실제 S3 URL 찾기 (홈 화면과 동일한 방식)
-            if (blockId && recordMap.signed_urls?.[blockId]) {
-              const signedUrl = recordMap.signed_urls[blockId];
-              // S3 URL이면 직접 사용 (홈 화면과 동일)
-              if (signedUrl.includes("amazonaws.com")) {
-                return signedUrl;
-              }
-            }
-          } catch {
-            // URL 파싱 실패 시 무시
-          }
-
-          // 3. S3 URL이면 직접 반환, 그 외는 변환된 URL 반환
-          if (resolvedUrl.includes("amazonaws.com")) {
+          if (resolvedUrl.includes("amazonaws.com") || resolvedUrl.includes("prod-files-secure")) {
             return resolvedUrl;
           }
 
+          try {
+            if (recordMap.signed_urls?.[resolvedUrl]) {
+              const signedUrl = recordMap.signed_urls[resolvedUrl];
+              if (signedUrl.includes("amazonaws.com")) return signedUrl;
+            }
+
+            const urlObj = new URL(resolvedUrl, "https://www.notion.so");
+            const blockId = urlObj.searchParams.get("id");
+
+            if (blockId) {
+              if (recordMap.signed_urls?.[blockId]) {
+                const signedUrl = recordMap.signed_urls[blockId];
+                if (signedUrl.includes("amazonaws.com")) return signedUrl;
+              }
+              const normalizedId = blockId.replace(/-/g, "");
+              if (recordMap.signed_urls?.[normalizedId]) {
+                const signedUrl = recordMap.signed_urls[normalizedId];
+                if (signedUrl.includes("amazonaws.com")) return signedUrl;
+              }
+            }
+
+            const blockWithId = block as Block;
+            if (blockWithId?.id && recordMap.signed_urls?.[blockWithId.id]) {
+              const signedUrl = recordMap.signed_urls[blockWithId.id];
+              if (signedUrl.includes("amazonaws.com")) return signedUrl;
+            }
+          } catch {
+            // URL 파싱 실패
+          }
+
+          if (resolvedUrl.includes("amazonaws.com")) return resolvedUrl;
+
+          if (url.startsWith("attachment:")) {
+            const attachmentMatch = url.match(/attachment:([a-f0-9-]+):/);
+            if (attachmentMatch) {
+              const attachmentId = attachmentMatch[1];
+              for (const [, value] of Object.entries(recordMap.signed_urls || {})) {
+                if (typeof value === "string" && value.includes(attachmentId)) return value;
+              }
+            }
+          }
+
+          if (resolvedUrl.includes("amazonaws.com") || resolvedUrl.includes("file.notion.so")) {
+            return resolvedUrl;
+          }
+
+          if (recordMap.signed_urls) {
+            for (const [key, value] of Object.entries(recordMap.signed_urls)) {
+              if (
+                typeof value === "string" &&
+                (value.includes("amazonaws.com") || value.includes("file.notion.so")) &&
+                (resolvedUrl.includes(key) || key.includes(resolvedUrl))
+              ) {
+                return value;
+              }
+            }
+          }
+
+          console.warn(
+            "[mapImageUrl] 매칭 실패:",
+            url?.substring(0, 60),
+            "signed_urls 키:",
+            Object.keys(recordMap.signed_urls || {}).slice(0, 3)
+          );
           return resolvedUrl;
         }}
         darkMode={false}

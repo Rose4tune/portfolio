@@ -9,7 +9,9 @@ const { mockNotionRenderer, mockDefaultMapImageUrl } = vi.hoisted(() => ({
   mockNotionRenderer: vi.fn<
     (props: { mapImageUrl: (url: string, block: unknown) => string }) => void
   >(),
-  mockDefaultMapImageUrl: vi.fn((url: string) => url),
+  // 실제 defaultMapImageUrl(url, block) 시그니처와 동일 (2인자)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- mock에서 block 인자는 사용하지 않음
+  mockDefaultMapImageUrl: vi.fn((url: string, _block?: unknown) => url),
 }));
 
 vi.mock("react-notion-x", () => ({
@@ -43,6 +45,8 @@ vi.mock("notion-utils", () => ({
 describe("NotionRenderer (mapImageUrl)", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    // mapImageUrl 매칭 실패 시 출력되는 console.warn 억제 (의도된 동작)
+    vi.spyOn(console, "warn").mockImplementation(() => {});
   });
 
   const baseRecordMap: ExtendedRecordMap = {
@@ -101,6 +105,34 @@ describe("NotionRenderer (mapImageUrl)", () => {
 
     const result = props.mapImageUrl("attachment:direct", {
       value: { id: "some-id" },
+    });
+
+    expect(result).toBe(s3Url);
+  });
+
+  it("block.id로 signed_urls에 매칭되면 해당 S3 URL을 반환해야 한다", () => {
+    const blockId = "block-with-id";
+    const s3Url =
+      "https://prod-files-secure.s3.us-west-2.amazonaws.com/block-id-image.jpg";
+
+    const recordMap: ExtendedRecordMap = {
+      ...baseRecordMap,
+      signed_urls: { [blockId]: s3Url },
+    };
+
+    render(<NotionRenderer recordMap={recordMap} />);
+
+    expect(mockNotionRenderer).toHaveBeenCalledTimes(1);
+    const [props] = mockNotionRenderer.mock.calls[0]!;
+
+    // resolvedUrl에 id 쿼리 없음 → URL 파싱으로 blockId 추출 불가, block.id로 매칭
+    mockDefaultMapImageUrl.mockReturnValueOnce(
+      "https://www.notion.so/image/another.png"
+    );
+
+    const result = props.mapImageUrl("attachment:by-block-id", {
+      id: blockId,
+      value: {},
     });
 
     expect(result).toBe(s3Url);
