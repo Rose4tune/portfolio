@@ -93,7 +93,7 @@ Vercel (배포)
 
 **3. ISR 설정**  
 - 홈, 블로그, 프로젝트 목록: `revalidate: 3600` (1시간마다 갱신)
-- 개별 포스트: 동적 라우트에서 ISR 적용
+- 개별 포스트(블로그/프로젝트 상세): `revalidate: 3000` (50분). signed URL 만료(약 1시간) 전에 재생성하며, 클라이언트 `NotionPageWrapper`에서 추가 갱신으로 보완
 
 ### 폴더 구조
 
@@ -174,8 +174,9 @@ src/
 - 클릭 시 해당 태그로 필터링된 블로그 목록으로 이동
 
 ### 5. 이미지 최적화
-- Notion S3 URL을 `signed_urls`에 매핑하여 Next.js Image 컴포넌트로 최적화
-- ISR 주기 설정으로 URL 만료 이슈 해결
+- 서버: `getRecordMap`에서 이미지 블록·페이지 커버의 S3 URL을 `signed_urls`에 보강 (`enhanceImageUrls`, `enhancePageCover`)
+- 개별 포스트: ISR 50분 + 클라이언트 `NotionPageWrapper`(55분 주기, 탭 활성화 시 5분 경과 시 갱신, 이미지 로드 실패 시 즉시 갱신)로 signed URL 만료 없이 표시
+- 상세 설계 및 트러블슈팅: `.cursor/docs/NOTION_IMAGE_SYSTEM.md` 참고
 
 <!-- ### 6. 다크 모드 지원
 - `next-themes`로 테마 전환 구현
