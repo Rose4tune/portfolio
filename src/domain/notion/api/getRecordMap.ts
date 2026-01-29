@@ -70,7 +70,8 @@ async function enhanceImageUrls(
     const imageBlockIds: string[] = [];
     for (const [blockId, block] of Object.entries(recordMap.block)) {
       const blockValue = block?.value;
-      const blockType = blockValue?.type || (block as any)?.type;
+      const blockType =
+      blockValue?.type || (block as { type?: string } | undefined)?.type;
       if (blockType === "image") {
         imageBlockIds.push(blockId);
       }

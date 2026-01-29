@@ -106,9 +106,9 @@ export default function NotionRenderer({
               }
             }
 
-            const blockObj = block as any;
-            if (blockObj?.id && recordMap.signed_urls?.[blockObj.id]) {
-              const signedUrl = recordMap.signed_urls[blockObj.id];
+            const blockWithId = block as Block;
+            if (blockWithId?.id && recordMap.signed_urls?.[blockWithId.id]) {
+              const signedUrl = recordMap.signed_urls[blockWithId.id];
               if (signedUrl.includes("amazonaws.com")) return signedUrl;
             }
           } catch {
