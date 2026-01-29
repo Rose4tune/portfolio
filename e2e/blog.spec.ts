@@ -59,12 +59,16 @@ test.describe("Blog", () => {
       const linkExists = await postLink.count() > 0;
       
       if (linkExists) {
-        // 링크 클릭
-        await postLink.click();
-        await page.waitForLoadState("networkidle");
+        // 링크 클릭 후 상세 페이지 URL로 네비게이션 완료 대기 (Next.js 클라이언트 라우팅)
+        await Promise.all([
+          page.waitForURL(/\/blog\/.+$/, {
+            timeout: 10000,
+            waitUntil: "commit", // client-side nav는 load 이벤트 없이 URL만 변경
+          }),
+          postLink.click(),
+        ]);
 
-        // 상세 페이지로 이동했는지 확인
-        await expect(page).toHaveURL(/\/blog\/.+$/, { timeout: 10000 });
+        await expect(page).toHaveURL(/\/blog\/.+$/);
       
         // 제목이 표시되는지 확인
         if (titleText) {
