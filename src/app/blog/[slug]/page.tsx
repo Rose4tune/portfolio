@@ -3,7 +3,8 @@ import { getPageIdBySlug, getPosts, PostType } from "@/domain/posts";
 import { getRecordMap } from "@/domain/notion";
 import BlogPostScreen from "@/screens/blog/BlogPostScreen";
 
-export const revalidate = 3600;
+// ISR: 50분마다 재생성 (signed URL 만료 전에 갱신)
+export const revalidate = 3000; // 50분
 
 export async function generateStaticParams() {
   try {

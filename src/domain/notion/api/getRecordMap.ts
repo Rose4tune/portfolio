@@ -7,6 +7,8 @@ export async function getRecordMap(pageId: string) {
     throw new Error("Invalid pageId");
   }
 
+  // 디버깅: console.log(`[getRecordMap] pageId=${pageId}`);
+
   const formats = [
     pageId,
     pageId.replace(/-/g, ""),
@@ -36,6 +38,8 @@ export async function getRecordMap(pageId: string) {
         throw new Error("Empty recordMap returned from Notion API");
       }
 
+      // 디버깅: console.log(`[getRecordMap] 성공, signed_urls: ${Object.keys(recordMap.signed_urls || {}).length}개`);
+
       // 이미지 블록의 실제 S3 URL을 가져와서 signed_urls에 추가
       await enhanceImageUrls(recordMap);
 
@@ -63,16 +67,25 @@ async function enhanceImageUrls(
   recordMap: Awaited<ReturnType<typeof notionClient.getPage>>
 ) {
   try {
-    // recordMap에서 이미지 블록 ID들 찾기
     const imageBlockIds: string[] = [];
     for (const [blockId, block] of Object.entries(recordMap.block)) {
       const blockValue = block?.value;
-      if (blockValue?.type === "image") {
+      const blockType = blockValue?.type || (block as any)?.type;
+      if (blockType === "image") {
         imageBlockIds.push(blockId);
       }
     }
 
-    // 각 이미지 블록의 실제 S3 URL 가져오기
+    // 디버깅: 이미지 블록 0개일 때 원인 파악용
+    // if (imageBlockIds.length === 0) {
+    //   const blockTypes: Record<string, number> = {};
+    //   for (const [, b] of Object.entries(recordMap.block)) {
+    //     const t = (b?.value?.type || (b as any)?.type) || "unknown";
+    //     blockTypes[t] = (blockTypes[t] || 0) + 1;
+    //   }
+    //   console.warn("[enhanceImageUrls] 이미지 블록 0개, 블록 타입:", blockTypes);
+    // }
+
     for (const blockId of imageBlockIds) {
       try {
         const block = await notionHQClient.blocks.retrieve({
@@ -88,18 +101,22 @@ async function enhanceImageUrls(
               : null;
 
           if (imageUrl && imageUrl.includes("amazonaws.com")) {
-            // S3 URL을 signed_urls에 추가 (홈 화면과 동일한 형식)
             recordMap.signed_urls[blockId] = imageUrl;
+            const normalizedId = blockId.replace(/-/g, "");
+            recordMap.signed_urls[normalizedId] = imageUrl;
+            const notionUrl = `https://www.notion.so/image/${encodeURIComponent(imageUrl)}?table=block&id=${blockId}`;
+            recordMap.signed_urls[notionUrl] = imageUrl;
           }
         }
       } catch (error) {
-        // 개별 블록 조회 실패 시 무시
-        console.warn(`Failed to fetch image block ${blockId}:`, error);
+        console.error(
+          `[enhanceImageUrls] block ${blockId}:`,
+          error instanceof Error ? error.message : error
+        );
       }
     }
   } catch (error) {
-    // 이미지 URL 강화 실패해도 계속 진행
-    console.warn("Failed to enhance image URLs:", error);
+    console.warn("[enhanceImageUrls] 실패:", error);
   }
 }
 
@@ -124,12 +141,12 @@ async function enhancePageCover(
           : null;
 
       if (coverUrl && coverUrl.includes("amazonaws.com")) {
-        // 페이지 ID를 키로 사용하여 커버 이미지 URL 저장
         recordMap.signed_urls[pageId] = coverUrl;
+        const normalizedId = pageId.replace(/-/g, "");
+        recordMap.signed_urls[normalizedId] = coverUrl;
       }
     }
   } catch (error) {
-    // 커버 이미지 조회 실패 시 무시
-    console.warn("Failed to fetch page cover:", error);
+    console.warn("[enhancePageCover] 실패:", error);
   }
 }
