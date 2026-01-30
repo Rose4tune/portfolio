@@ -111,6 +111,10 @@ src/
 └── widgets/          # 재사용 가능한 기능 단위 (SearchFilterBar)
 ```
 
+### 테스트 전략
+- **단위/통합 (Vitest)**: `src/**/*.test.{ts,tsx}`. 훅·컴포넌트·화면 단위로 검색/태그/필터 로직, 목록·메타데이터 표시를 상세 검증.
+- **E2E (Playwright)**: `e2e/*.spec.ts`. 실제 브라우저·라우팅 기준으로 페이지 도달, 목록 노출, 상세 이동, 네비게이션·모바일 메뉴만 검증. 필터/메타데이터 상세는 단위·통합에 맡겨 중복을 피함.
+
 </br></br>
 
 ## 🛠️ Tech Stack
@@ -147,8 +151,8 @@ src/
 - 키워드 클라우드의 랜덤 애니메이션 구현
 
 ### Vitest + Playwright
-- Vitest: 컴포넌트 단위 테스트, 유틸리티 함수 테스트
-- Playwright: E2E 테스트 (네비게이션, 블로그 필터링, 프로젝트 조회)
+- **Vitest** (`pnpm test`): 단위·통합 테스트. 훅/유틸 로직(useSearchFilter, useTagFilter), 공통 UI(TagButton, Loader), 화면(BlogScreen, ProjectScreen)에서 검색·태그·필터 동작, 목록/메타데이터 표시를 상세 검증.
+- **Playwright** (`pnpm test:e2e`): E2E 테스트. 페이지 도달, 목록 노출, 상세 이동, 라우팅·메뉴·모바일 네비게이션만 검증. 필터/메타데이터 상세는 단위·통합에 맡기고 중복을 피함.
 
 </br></br>
 

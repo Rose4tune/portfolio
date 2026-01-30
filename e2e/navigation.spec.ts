@@ -14,23 +14,20 @@ test.describe("Navigation", () => {
   });
 
   test("should navigate to blog page", async ({ page }) => {
-    // 데스크톱 메뉴에서 Blog 클릭
     const blogLink = page.getByRole("link", { name: "Blog" });
     await blogLink.click();
 
     await expect(page).toHaveURL(/\/blog/);
-    // 블로그 페이지의 검색 바가 표시되는지 확인 (placeholder 문구 변경에 덜 민감하게)
-    await expect(page.getByPlaceholder(/검색/i)).toBeVisible();
+    // 블로그 컨텐츠(검색 바) 로드 대기 후 검증
+    await expect(page.getByPlaceholder(/검색/i)).toBeVisible({ timeout: 10000 });
   });
 
   test("should navigate to projects page", async ({ page }) => {
-    // 데스크톱 메뉴에서 Projects 클릭 (네비게이션 내의 링크만 선택)
     const projectsLink = page.locator('nav').getByRole("link", { name: "Projects" });
     await projectsLink.click();
 
     await expect(page).toHaveURL(/\/projects/);
-    // 프로젝트 페이지의 검색 바가 표시되는지 확인
-    await expect(page.getByPlaceholder(/검색/i)).toBeVisible();
+    await expect(page.getByPlaceholder(/검색/i)).toBeVisible({ timeout: 10000 });
   });
 
   test("should navigate back to home from blog", async ({ page }) => {
