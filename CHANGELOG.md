@@ -1,3 +1,13 @@
+## [1.2.1](https://github.com/Rose4tune/portfolio/compare/v1.2.0...v1.2.1) (2026-01-30)
+
+### Bug Fixes
+
+* Notion 상세 페이지 이미지 400/403 해결 (signed_urls 우선·enhanceImageUrls 보강) ([#31](https://github.com/Rose4tune/portfolio/issues/31)) ([b3a3f3f](https://github.com/Rose4tune/portfolio/commit/b3a3f3fab587cfdeb72cd3aa22291179cc6dfe1f))
+
+### Documentation
+
+* readme 업데이트 ([a99528f](https://github.com/Rose4tune/portfolio/commit/a99528faf520385aa2e5c0138a1e0cd988fe6bcb))
+
 ## [1.2.0](https://github.com/Rose4tune/portfolio/compare/v1.1.2...v1.2.0) (2026-01-28)
 
 ### Features
