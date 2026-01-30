@@ -39,23 +39,20 @@ const Modal = dynamic(
   { ssr: false }
 );
 
-const UnoptimizedImage = (props: ImageProps) => {
+function UnoptimizedImage(props: ImageProps) {
   // eslint-disable-next-line jsx-a11y/alt-text
   return <Image {...props} unoptimized />;
-};
+}
 
 export default function NotionRenderer({
   recordMap,
-  onImageError,
 }: {
   recordMap: ExtendedRecordMap;
-  onImageError?: () => void;
 }) {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
-    // 디버깅: console.log("[NotionRenderer] signed_urls:", Object.keys(recordMap.signed_urls || {}).length);
   }, [recordMap]);
 
   if (!isMounted) {
@@ -68,9 +65,7 @@ export default function NotionRenderer({
         recordMap={recordMap}
         fullPage={true}
         components={{
-          nextImage: (props: ImageProps) => (
-            <UnoptimizedImage {...props} onError={onImageError} />
-          ),
+          nextImage: (props: ImageProps) => <UnoptimizedImage {...props} />,
           Code,
           Collection,
           Equation,

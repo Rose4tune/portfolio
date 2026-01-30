@@ -2,20 +2,16 @@ import { notionClient } from "../lib/client";
 import { withRetry } from "../lib/withRetry";
 import { notionHQClient } from "@/domain/posts/lib/notionClient";
 
+const RETRIES = 5;
+const DELAY_MS = 2000;
+const TIMEOUT_MS = 30000;
+
 export async function getRecordMap(pageId: string) {
   if (!pageId) {
     throw new Error("Invalid pageId");
   }
 
-  // 디버깅: console.log(`[getRecordMap] pageId=${pageId}`);
-
-  const formats = [
-    pageId,
-    pageId.replace(/-/g, ""),
-    pageId.split("-")[0],
-    pageId.includes("-") ? pageId.split("-").slice(1).join("-") : pageId,
-  ];
-
+  const formats = [pageId, pageId.replace(/-/g, "")];
   let lastError: Error | unknown = null;
 
   for (const idFormat of formats) {
@@ -25,9 +21,9 @@ export async function getRecordMap(pageId: string) {
           notionClient.getPage(idFormat, {
             signFileUrls: true,
           }),
-        5,
-        2000,
-        30000
+        RETRIES,
+        DELAY_MS,
+        TIMEOUT_MS
       );
 
       if (
@@ -38,12 +34,7 @@ export async function getRecordMap(pageId: string) {
         throw new Error("Empty recordMap returned from Notion API");
       }
 
-      // 디버깅: console.log(`[getRecordMap] 성공, signed_urls: ${Object.keys(recordMap.signed_urls || {}).length}개`);
-
-      // 이미지 블록의 실제 S3 URL을 가져와서 signed_urls에 추가
       await enhanceImageUrls(recordMap);
-
-      // 페이지 커버 이미지도 처리
       await enhancePageCover(recordMap, idFormat);
 
       return recordMap;
