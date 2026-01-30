@@ -3,9 +3,8 @@ import { getPageIdBySlug, getPosts, PostType } from "@/domain/posts";
 import { getRecordMap } from "@/domain/notion";
 import ProjectPostScreen from "@/screens/project/ProjectPostScreen";
 
-// 매 요청마다 서버에서 getRecordMap 호출 (signed URL 만료 방지, dynamic 테스트와 동일)
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+// ISR: 50분마다 재생성 (signed URL 만료 전에 갱신)
+export const revalidate = 3000; // 50분
 
 export async function generateStaticParams() {
   try {
