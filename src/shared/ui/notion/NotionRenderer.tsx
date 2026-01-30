@@ -95,7 +95,7 @@ export default function NotionRenderer({
               return signedNorm;
           }
 
-          let resolvedUrl = defaultMapImageUrl(url, block as Block) || url;
+          const resolvedUrl = defaultMapImageUrl(url, block as Block) || url;
 
           // notion.so/image/... 래퍼는 400 반환 → 내부 S3 URL 추출 (signed_urls에 없을 때만 보조)
           if (resolvedUrl.startsWith("https://www.notion.so/image/")) {
