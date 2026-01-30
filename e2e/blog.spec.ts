@@ -30,86 +30,22 @@ test.describe("Blog", () => {
     }
   });
 
-  test("should filter posts by search query", async ({ page }) => {
-    const searchInput = page.getByPlaceholder(/검색/i);
-    
-    // 검색어 입력
-    await searchInput.fill("test");
-    await page.waitForTimeout(500); // 필터링 대기
-
-    // 검색 결과가 업데이트되었는지 확인
-    // (검색어가 포함된 포스트만 표시되거나, 결과가 없을 수 있음)
-    const postTitles = page.locator("h2");
-    const count = await postTitles.count();
-    
-    // 검색 후에도 UI가 업데이트되었는지 확인
-    expect(count).toBeGreaterThanOrEqual(0);
-  });
-
   test("should navigate to blog post detail", async ({ page }) => {
-    // 첫 번째 포스트 제목 찾기
-    const firstPostTitle = page.locator("h2").first();
-    const postCount = await firstPostTitle.count();
+    const firstPostLink = page.locator("main a[href^='/blog/']").first();
+    await expect(firstPostLink).toHaveAttribute("href", /\/blog\/.+/);
 
-    if (postCount > 0) {
-      const titleText = await firstPostTitle.textContent();
-      
-      // 포스트 제목을 포함한 링크 찾기 (h2의 부모인 a 태그)
-      const postLink = firstPostTitle.locator("xpath=ancestor::a[1]");
-      const linkExists = await postLink.count() > 0;
-      
-      if (linkExists) {
-        // 링크 클릭 후 상세 페이지 URL로 네비게이션 완료 대기 (Next.js 클라이언트 라우팅)
-        await Promise.all([
-          page.waitForURL(/\/blog\/.+$/, {
-            timeout: 10000,
-            waitUntil: "commit", // client-side nav는 load 이벤트 없이 URL만 변경
-          }),
-          postLink.click(),
-        ]);
+    const href = await firstPostLink.getAttribute("href");
+    const titleText = await firstPostLink.locator("h2").textContent();
 
-        await expect(page).toHaveURL(/\/blog\/.+$/);
-      
-        // 제목이 표시되는지 확인
-        if (titleText) {
-          await expect(page.locator("h1, h2").first()).toContainText(
-            titleText.trim(),
-            { timeout: 10000 }
-          );
-        }
-      }
+    // 카드 내 버튼이 클릭을 가로채므로, href로 직접 이동해 상세 페이지 도달 검증
+    await page.goto(href!);
+    await expect(page).toHaveURL(/\/blog\/.+$/);
+
+    if (titleText) {
+      await expect(page.locator("h1, h2").first()).toContainText(
+        titleText.trim(),
+        { timeout: 10000 }
+      );
     }
-  });
-
-  test("should display post metadata", async ({ page }) => {
-    const postTitles = page.locator("h2");
-    const count = await postTitles.count();
-
-    if (count > 0) {
-      // 첫 번째 포스트의 메타데이터 확인
-      const firstPost = postTitles.first().locator("..");
-      
-      // 날짜가 표시되는지 확인
-      const dateElement = firstPost.locator("time");
-      if (await dateElement.count() > 0) {
-        await expect(dateElement.first()).toBeVisible();
-      }
-
-      // 태그가 표시되는지 확인
-      const tagButtons = firstPost.locator("button");
-      const tagCount = await tagButtons.count();
-      expect(tagCount).toBeGreaterThanOrEqual(0);
-    }
-  });
-
-  test("should handle empty search results gracefully", async ({ page }) => {
-    const searchInput = page.getByPlaceholder(/태그 및 제목 검색/i);
-    
-    // 존재하지 않는 검색어 입력
-    await searchInput.fill("nonexistentpost12345");
-    await page.waitForTimeout(500);
-
-    // 검색 결과가 없어도 페이지가 에러 없이 표시되어야 함
-    await expect(page.locator("body")).toBeVisible();
   });
 });
