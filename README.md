@@ -140,7 +140,7 @@ src/
 
 ### notion-utils
 - `defaultMapImageUrl`로 Notion 내부 URL을 notion.so 이미지 URL로 변환
-- `NotionRenderer`의 `mapImageUrl`에서 변환 후 `recordMap.signed_urls` fallback으로 S3 URL 매칭
+- `NotionRenderer`의 `mapImageUrl`에서 `block.id` 기준 `recordMap.signed_urls`를 최우선 조회한 뒤, 없을 때만 변환·fallback 매칭
 
 ### Framer Motion
 - 페이지 전환 애니메이션, 인터랙션 효과

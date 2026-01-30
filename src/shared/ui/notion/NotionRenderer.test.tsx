@@ -45,6 +45,8 @@ vi.mock("notion-utils", () => ({
 describe("NotionRenderer (mapImageUrl)", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockDefaultMapImageUrl.mockReset();
+    mockDefaultMapImageUrl.mockImplementation((url: string) => url);
     // mapImageUrl 매칭 실패 시 출력되는 console.warn 억제 (의도된 동작)
     vi.spyOn(console, "warn").mockImplementation(() => {});
   });

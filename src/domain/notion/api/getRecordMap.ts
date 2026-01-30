@@ -67,15 +67,21 @@ async function enhanceImageUrls(
   recordMap: Awaited<ReturnType<typeof notionClient.getPage>>
 ) {
   try {
-    const imageBlockIds: string[] = [];
+    const imageBlockIdSet = new Set<string>();
     for (const [blockId, block] of Object.entries(recordMap.block)) {
       const blockValue = block?.value;
       const blockType =
-      blockValue?.type || (block as { type?: string } | undefined)?.type;
-      if (blockType === "image") {
-        imageBlockIds.push(blockId);
+        blockValue?.type || (block as { type?: string } | undefined)?.type;
+      const hasSource =
+        !!(blockValue as { properties?: { source?: unknown } } | undefined)
+          ?.properties?.source ||
+        !!(block as { properties?: { source?: unknown } } | undefined)
+          ?.properties?.source;
+      if (blockType === "image" || hasSource) {
+        imageBlockIdSet.add(blockId);
       }
     }
+    const imageBlockIds = Array.from(imageBlockIdSet);
 
     // 디버깅: 이미지 블록 0개일 때 원인 파악용
     // if (imageBlockIds.length === 0) {
