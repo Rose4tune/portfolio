@@ -1,3 +1,9 @@
+## [1.2.2](https://github.com/Rose4tune/portfolio/compare/v1.2.1...v1.2.2) (2026-01-30)
+
+### Bug Fixes
+
+* Notion signed URL 만료 방지 - 블로그/프로젝트 상세 force-dynamic 전환 ([afab351](https://github.com/Rose4tune/portfolio/commit/afab351b45f65f69401936c5f084f0e787f3b6aa))
+
 ## [1.2.1](https://github.com/Rose4tune/portfolio/compare/v1.2.0...v1.2.1) (2026-01-30)
 
 ### Bug Fixes
