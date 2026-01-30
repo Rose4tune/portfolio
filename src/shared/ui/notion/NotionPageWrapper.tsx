@@ -116,7 +116,12 @@ export default function NotionPageWrapper({
       return;
     }
 
-    const sampleUrl = Object.values(recordMap.signed_urls || {})[0];
+    // 커버 이미지(pageId) URL을 우선 검사 (상단 커버가 만료되면 가장 먼저 403 발생)
+    const signedUrls = recordMap.signed_urls || {};
+    const coverUrl = signedUrls[pageId];
+    const sampleUrl =
+      (typeof coverUrl === "string" ? coverUrl : null) ||
+      Object.values(signedUrls)[0];
     if (typeof sampleUrl === "string" && sampleUrl.includes("X-Amz-Date=")) {
       try {
         const urlObj = new URL(sampleUrl);
