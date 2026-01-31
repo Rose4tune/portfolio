@@ -1,3 +1,13 @@
+## [1.3.0](https://github.com/Rose4tune/portfolio/compare/v1.2.2...v1.3.0) (2026-01-31)
+
+### Features
+
+* 프로젝트 cover 이미지 public 추가 ([d787081](https://github.com/Rose4tune/portfolio/commit/d787081f90e08d28ea58fddf212424f92909c6bd))
+
+### Bug Fixes
+
+* Notion 이미지 403 해결 — Notion 프록시 기반 렌더링 ([b5d12ad](https://github.com/Rose4tune/portfolio/commit/b5d12ad93347c18c495c39e27b347ce4196878a0))
+
 ## [1.2.2](https://github.com/Rose4tune/portfolio/compare/v1.2.1...v1.2.2) (2026-01-30)
 
 ### Bug Fixes
