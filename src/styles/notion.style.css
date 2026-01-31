@@ -40,16 +40,9 @@
   min-height: 0 !important;
   max-height: 0 !important;
 }
+/* 상세 프로젝트 커버는 public/images/cover 로컬 이미지로 통일 → Notion 커버 숨김 */
 .project .notion-page-cover-wrapper {
-  height: auto;
-  min-height: auto;
-  max-height: none;
-}
-.project .notion-page-cover-wrapper span,
-.project .notion-page-cover-wrapper img {
-  height: auto !important;
-  min-height: auto !important;
-  max-height: none !important;
+  display: none;
 }
 
 /* Code Block Custom */

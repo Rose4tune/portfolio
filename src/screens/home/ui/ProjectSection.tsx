@@ -1,9 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { ProjectPost } from "@/domain/posts";
+import { getCoverSrc, COVER_FALLBACK } from "@/shared/lib/utils";
 
 export default function ProjectSection({
   projects,
@@ -55,52 +57,67 @@ export default function ProjectSection({
 
       <div className="flex flex-col items-center xs:items-start xs:justify-center gap-6 sm:gap-y-0 xs:flex-row xs:flex-wrap">
         {projects.map((project, i) => (
-          <motion.div
-            key={project.id}
-            initial={{ opacity: 0, y: -40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{
-              opacity: { duration: 0.6, ease: "easeIn", delay: i * 0.3 + 2.8 },
-              y: { duration: 0.3, ease: "easeIn", delay: i * 0.3 + 2.8 },
-            }}
-            viewport={{ once: true }}
-            className="group relative w-full h-50 rounded-xl sm:group-hover:rounded-[40px] cursor-pointer overflow-hidden sm:h-100 sm:overflow-visible sm:w-[calc(33%-1rem)]"
-          >
-            <Link href={`/projects/${project.slug}`}>
-              <div className="h-50 rounded-xl sm:group-hover:rounded-[40px] overflow-hidden relative transition-[border-radius] duration-700 ease-in-out border border-primary-50 shadow-lg shadow-primary-100">
-                <Image
-                  priority
-                  unoptimized
-                  src={project.coverImage || "/images/test.jpeg"}
-                  alt={project.title}
-                  fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 960px) 50vw, 704px"
-                  className="object-cover transition-all duration-700 ease-in-out group-hover:scale-120"
-                />
-              </div>
-
-              <div className="absolute inset-0 h-50 bg-linear-[40deg,#8888ffee_30%,#c27affcc_70%] sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-700 ease-in-out rounded-xl sm:group-hover:rounded-[40px]"></div>
-
-              <div className="absolute inset-0 py-4 px-5 h-50 transform sm:translate-y-50 sm:group-hover:translate-y-0 transition-all duration-500 ease-out space-y-2 text-sm text-white font-light sm:text-gray-600 sm:group-hover:text-gray-100">
-                <h3 className="text-xl font-normal sm:group-hover:text-white transition-all duration-500">
-                  {project.title}
-                </h3>
-                <p className="transition-all duration-500">{project.excerpt}</p>
-                <div className="flex flex-wrap gap-2 transition-all duration-500">
-                  {project.tags?.map((tech) => (
-                    <span
-                      key={tech}
-                      className="bg-white/20 rounded-md px-1.5 sm:bg-transparent sm:text-transparent sm:group-hover:text-gray-100 sm:group-hover:bg-white/20 transition-all duration-500"
-                    >
-                      #{tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </Link>
-          </motion.div>
+          <ProjectCard key={project.id} project={project} index={i} />
         ))}
       </div>
     </section>
+  );
+}
+
+function ProjectCard({
+  project,
+  index,
+}: {
+  project: ProjectPost;
+  index: number;
+}) {
+  const [imgError, setImgError] = useState(false);
+  const src = imgError ? COVER_FALLBACK : getCoverSrc(project.title);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: -40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{
+        opacity: { duration: 0.6, ease: "easeIn", delay: index * 0.3 + 2.8 },
+        y: { duration: 0.3, ease: "easeIn", delay: index * 0.3 + 2.8 },
+      }}
+      viewport={{ once: true }}
+      className="group relative w-full h-50 rounded-xl sm:group-hover:rounded-[40px] cursor-pointer overflow-hidden sm:h-100 sm:overflow-visible sm:w-[calc(33%-1rem)]"
+    >
+      <Link href={`/projects/${project.slug}`}>
+        <div className="h-50 rounded-xl sm:group-hover:rounded-[40px] overflow-hidden relative transition-[border-radius] duration-700 ease-in-out border border-primary-50 shadow-lg shadow-primary-100">
+          <Image
+            priority
+            unoptimized
+            src={src}
+            alt={project.title}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 960px) 50vw, 704px"
+            className="object-cover transition-all duration-700 ease-in-out group-hover:scale-120"
+            onError={() => setImgError(true)}
+          />
+        </div>
+
+        <div className="absolute inset-0 h-50 bg-linear-[40deg,#8888ffee_30%,#c27affcc_70%] sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-700 ease-in-out rounded-xl sm:group-hover:rounded-[40px]"></div>
+
+        <div className="absolute inset-0 py-4 px-5 h-50 transform sm:translate-y-50 sm:group-hover:translate-y-0 transition-all duration-500 ease-out space-y-2 text-sm text-white font-light sm:text-gray-600 sm:group-hover:text-gray-100">
+          <h3 className="text-xl font-normal sm:group-hover:text-white transition-all duration-500">
+            {project.title}
+          </h3>
+          <p className="transition-all duration-500">{project.excerpt}</p>
+          <div className="flex flex-wrap gap-2 transition-all duration-500">
+            {project.tags?.map((tech) => (
+              <span
+                key={tech}
+                className="bg-white/20 rounded-md px-1.5 sm:bg-transparent sm:text-transparent sm:group-hover:text-gray-100 sm:group-hover:bg-white/20 transition-all duration-500"
+              >
+                #{tech}
+              </span>
+            ))}
+          </div>
+        </div>
+      </Link>
+    </motion.div>
   );
 }
