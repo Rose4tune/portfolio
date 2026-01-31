@@ -5,5 +5,5 @@
 export const COVER_FALLBACK = "/images/test.jpeg";
 
 export function getCoverSrc(title: string): string {
-  return `/images/cover/${encodeURIComponent(title)}.png`;
+  return `/images/cover/${encodeURIComponent(title.replace(/_/g, ""))}.png`;
 }
