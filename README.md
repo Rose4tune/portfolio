@@ -67,11 +67,11 @@ Notion Database (CMS)
   ↓
 notion-client (페이지 recordMap 추출, signFileUrls: true)
   ↓
-getRecordMap: enhanceImageUrls / enhancePageCover (이미지·커버 S3 URL 보강)
+getRecordMap (원본 recordMap 반환)
   ↓
-개별 포스트: NotionPageWrapper (recordMap state, 55분/탭/에러 시 갱신) ← /api/notion-recordmap
+개별 포스트: NotionPageWrapper (recordMap state, initialRecordMap 동기화)
   ↓
-react-notion-x (Notion 블록 렌더링, mapImageUrl → signed_urls)
+react-notion-x (Notion 블록 렌더링, mapImageUrl → defaultMapImageUrl → notion.so/image 프록시)
   ↓
 Next.js ISR (정적 생성 + 주기적 갱신)
   ↓
@@ -88,12 +88,12 @@ Vercel (배포)
 **2. 데이터 Fetching 전략**  
 - `@notionhq/client`로 데이터베이스 쿼리 → 메타데이터 추출
 - `notion-client`로 페이지 recordMap 가져오기 → 전체 블록 구조 확보
-- `getRecordMap` 내부에서 `@notionhq/client`로 이미지 블록·페이지 커버의 S3 URL을 조회해 `signed_urls`에 보강
-- 개별 포스트는 `NotionPageWrapper`가 recordMap을 state로 관리하며, 55분 주기·탭 활성화·이미지 로드 실패 시 `/api/notion-recordmap`으로 갱신
+- `getRecordMap`은 Notion API에서 받은 recordMap을 가공 없이 반환 (이미지 URL 보강 없음)
+- 개별 포스트는 `NotionPageWrapper`가 recordMap을 state로 관리하며, `initialRecordMap`/`pageId` 변경 시 동기화
 
 **3. ISR 설정**  
 - 홈, 블로그, 프로젝트 목록: `revalidate: 3600` (1시간마다 갱신)
-- 개별 포스트(블로그/프로젝트 상세): `revalidate: 3000` (50분). signed URL 만료(약 1시간) 전에 재생성하며, 클라이언트 `NotionPageWrapper`에서 추가 갱신으로 보완
+- 개별 포스트(블로그/프로젝트 상세): `revalidate: 3000` (50분)
 
 ### 폴더 구조
 
@@ -143,8 +143,8 @@ src/
 - 두 클라이언트를 조합하여 메타데이터 관리와 블록 렌더링을 모두 구현
 
 ### notion-utils
-- `defaultMapImageUrl`로 Notion 내부 URL을 notion.so 이미지 URL로 변환
-- `NotionRenderer`의 `mapImageUrl`에서 `block.id` 기준 `recordMap.signed_urls`를 최우선 조회한 뒤, 없을 때만 변환·fallback 매칭
+- `defaultMapImageUrl`로 Notion 내부 URL을 notion.so 이미지 프록시 URL로 변환
+- `NotionRenderer`의 `mapImageUrl`은 `defaultMapImageUrl(url, block)` 결과만 사용 (Notion 프록시 기반, S3 signed URL 미사용)
 
 ### Framer Motion
 - 페이지 전환 애니메이션, 인터랙션 효과
@@ -177,10 +177,9 @@ src/
 - 홈 화면에서 블로그 태그를 랜덤 애니메이션으로 표시
 - 클릭 시 해당 태그로 필터링된 블로그 목록으로 이동
 
-### 5. 이미지 최적화
-- 서버: `getRecordMap`에서 이미지 블록·페이지 커버의 S3 URL을 `signed_urls`에 보강 (`enhanceImageUrls`, `enhancePageCover`)
-- 개별 포스트: ISR 50분 + 클라이언트 `NotionPageWrapper`(55분 주기, 탭 활성화 시 5분 경과 시 갱신, 이미지 로드 실패 시 즉시 갱신)로 signed URL 만료 없이 표시
-- 상세 설계 및 트러블슈팅: `.cursor/docs/NOTION_IMAGE_SYSTEM.md` 참고
+### 5. 이미지 렌더링 (Notion 프록시)
+- 이미지 URL은 `notion-utils`의 `defaultMapImageUrl`로 `notion.so/image/...` 프록시 형태만 사용 (S3 signed URL 미사용)
+- URL 만료/갱신 책임을 Notion 프록시에 위임하여 1시간 이상 페이지 유지 시에도 이미지 403 없이 표시
 
 <!-- ### 6. 다크 모드 지원
 - `next-themes`로 테마 전환 구현
