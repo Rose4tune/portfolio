@@ -1,3 +1,9 @@
+## [1.3.2](https://github.com/Rose4tune/portfolio/compare/v1.3.1...v1.3.2) (2026-01-31)
+
+### Bug Fixes
+
+* 커버 이미지명 변경 ([9b84108](https://github.com/Rose4tune/portfolio/commit/9b84108116741de332a14ad712372145f525b8b7))
+
 ## [1.3.1](https://github.com/Rose4tune/portfolio/compare/v1.3.0...v1.3.1) (2026-01-31)
 
 ### Bug Fixes
