@@ -1,3 +1,9 @@
+## [1.3.1](https://github.com/Rose4tune/portfolio/compare/v1.3.0...v1.3.1) (2026-01-31)
+
+### Bug Fixes
+
+* cover 이미지 타이틀 수정 ([62e1c4a](https://github.com/Rose4tune/portfolio/commit/62e1c4a2c38456667d08111690245989748688ce))
+
 ## [1.3.0](https://github.com/Rose4tune/portfolio/compare/v1.2.2...v1.3.0) (2026-01-31)
 
 ### Features
