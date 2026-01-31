@@ -90,6 +90,7 @@ Vercel (배포)
 - `notion-client`로 페이지 recordMap 가져오기 → 전체 블록 구조 확보
 - `getRecordMap`은 Notion API에서 받은 recordMap을 가공 없이 반환 (이미지 URL 보강 없음)
 - 개별 포스트는 `NotionPageWrapper`가 recordMap을 state로 관리하며, `initialRecordMap`/`pageId` 변경 시 동기화
+- 프로젝트 커버: 홈·상세 모두 `getCoverSrc(제목)` → `public/images/cover/{제목}.png` 사용 (Notion/API 미사용)
 
 **3. ISR 설정**  
 - 홈, 블로그, 프로젝트 목록: `revalidate: 3600` (1시간마다 갱신)
@@ -165,7 +166,7 @@ src/
 
 ### 2. 프로젝트 쇼케이스
 - 진행 상태(완료/진행 중)와 기술 스택 표시
-- 커버 이미지와 요약 설명으로 프로젝트 개요 제공
+- 커버 이미지는 `public/images/cover/{프로젝트 제목}.png` 로컬 파일 사용 (홈·상세 동일)
 - 상세 페이지에서 Notion 블록으로 작성된 전체 내용 렌더링
 
 ### 3. 기술 블로그
@@ -177,9 +178,9 @@ src/
 - 홈 화면에서 블로그 태그를 랜덤 애니메이션으로 표시
 - 클릭 시 해당 태그로 필터링된 블로그 목록으로 이동
 
-### 5. 이미지 렌더링 (Notion 프록시)
-- 이미지 URL은 `notion-utils`의 `defaultMapImageUrl`로 `notion.so/image/...` 프록시 형태만 사용 (S3 signed URL 미사용)
-- URL 만료/갱신 책임을 Notion 프록시에 위임하여 1시간 이상 페이지 유지 시에도 이미지 403 없이 표시
+### 5. 이미지 렌더링
+- **본문 이미지**: `notion-utils`의 `defaultMapImageUrl`로 `notion.so/image/...` 프록시만 사용 (S3 signed URL 미사용). 1시간 이상 페이지 유지 시에도 403 없음.
+- **프로젝트 커버**: 홈·상세 모두 `public/images/cover/{프로젝트 제목}.png` 로컬 파일 사용. 제목·파일명 불일치 시 소문자 경로 1회 재시도 후 fallback.
 
 <!-- ### 6. 다크 모드 지원
 - `next-themes`로 테마 전환 구현
@@ -201,8 +202,7 @@ src/
 콘텐츠가 수백 개 수준으로 늘어나면 캐싱 전략을 재고해야 할 것입니다.
 
 ### 2. 이미지 URL 만료 문제
-Notion의 S3 URL은 1시간 후 만료되어, 정적 생성만으로는 이미지가 깨지는 문제가 발생했습니다.</br>
-개별 포스트는 **ISR 50분**(`revalidate: 3000`)과 **클라이언트 갱신**을 조합해 대응합니다. 클라이언트에서는 55분 주기 자동 갱신, 탭 복귀 시 5분 이상 경과 시 갱신, 초기 로드 시 URL이 30분 이상이면 갱신, 이미지 로드 실패 시 즉시 갱신을 수행하며, `/api/notion-recordmap`으로 실시간 recordMap을 가져옵니다. 새로고침 없이도 이미지가 유지됩니다.
+Notion의 S3 signed URL은 1시간 후 만료됩니다. **본문 이미지**는 S3 URL을 쓰지 않고 `defaultMapImageUrl`로 `notion.so/image/...` 프록시만 사용해, 갱신/재요청 없이 403을 피합니다. **프로젝트 커버**는 Notion/API 대신 `public/images/cover/{제목}.png` 로컬 파일을 쓰므로 만료·400 이슈가 없습니다.
 
 ### 3. Notion 블록 스타일 커스터마이징의 한계
 `react-notion-x`는 Notion의 기본 스타일을 충실히 재현하지만, 커스텀 디자인을 적용하기 어렵습니다.</br>
